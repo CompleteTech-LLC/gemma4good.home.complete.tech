@@ -5,6 +5,7 @@ SSH alias: train.home.complete.tech
 Remote root: /srv/openclaw/gemma4good
 Deploy root: /srv/openclaw/deploy
 Public URL: https://gemma4good.home.complete.tech/
+GitHub repo: https://github.com/CompleteTech-LLC/gemma4good.home.complete.tech
 Service host: completetrain / train.home.complete.tech
 Ingress: Caddy container `home-complete-tech-domain-proxy`
 TLS certificate: wildcard `*.home.complete.tech` mounted from `/home/completetrain/.certs/home.complete.tech` into the Caddy container as `/certs`
@@ -56,4 +57,4 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
 2026-05-16 local scaffold correction:
 - Local directory was expanded from minimal `AGENTS.md` and `DOMAIN_CONTEXT.md` notes into the same scaffold pattern used by other `home.complete.tech` dev domains.
 - Added `.vscode/`, `remote.ps1`, `Caddyfile.snippet`, `README.md`, `TODO.md`, workspace file, and `docs/`.
-- Created Git repository for the local scaffold.
+- Created Git repository for the local scaffold and pushed it to `CompleteTech-LLC/gemma4good.home.complete.tech`.
