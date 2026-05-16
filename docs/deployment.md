@@ -40,6 +40,7 @@ Implemented values:
 - Auth: disabled with `--auth none`
 - Browser theme: `Default Dark Modern`
 - Project-local tools: `/srv/openclaw/gemma4good/.tools`
+- Static report mirror: `/srv/openclaw/draw-imports/gemma4good-public`
 
 Healthcheck:
 
@@ -68,3 +69,21 @@ Remote backups created during setup:
 
 - `/srv/openclaw/deploy/docker-compose.yml.bak-gemma4good-20260516-164200`
 - `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-20260516-164200`
+- `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-menu-20260516-193757`
+
+## Report Pages
+
+The clean report routes are intended to be:
+
+```text
+https://gemma4good.home.complete.tech/menu/fieldreport/
+https://gemma4good.home.complete.tech/menu/missioncontrol/
+```
+
+The Caddy route serves `/menu/*` from `/draw-imports/gemma4good-public`, backed by host path `/srv/openclaw/draw-imports/gemma4good-public`.
+
+After editing `/srv/openclaw/deploy/Caddyfile`, reload the rootful proxy:
+
+```powershell
+ssh train.home.complete.tech "sudo podman exec home-complete-tech-domain-proxy caddy reload --config /etc/caddy/Caddyfile"
+```

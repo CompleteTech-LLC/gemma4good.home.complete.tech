@@ -1,9 +1,16 @@
 gemma4good.home.complete.tech:443 {
     tls /certs/fullchain.pem /certs/privkey.pem
 
-    reverse_proxy gemma4good-home-complete-tech:8080 {
-        header_up X-Forwarded-For {remote_host}
-        header_up X-Forwarded-Proto https
-        header_up X-Forwarded-Host {host}
+    handle /menu/* {
+        root * /draw-imports/gemma4good-public
+        file_server
+    }
+
+    handle {
+        reverse_proxy gemma4good-home-complete-tech:8080 {
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto https
+            header_up X-Forwarded-Host {host}
+        }
     }
 }

@@ -69,3 +69,11 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
   - Codex CLI `0.130.0`
 - Updated `/srv/openclaw/gemma4good/.local/share/code-server/User/settings.json` and `/srv/openclaw/gemma4good/.vscode/settings.json` to use `Default Dark Modern` and prepend `.tools/node_modules/.bin` to the integrated terminal PATH.
 - The shared image still provides Node 22/npm, PowerShell, GitHub CLI, and baked-in Codex. Direct rootful container verification requires sudo on `train.home.complete.tech`; this session verified the project-local CLIs before sync and verified the remote files/settings after sync.
+
+2026-05-16 report pages:
+- Added report pages to the local repo and remote workspace:
+  - `/srv/openclaw/gemma4good/public/menu/fieldreport/index.html`
+  - `/srv/openclaw/gemma4good/public/menu/missioncontrol/index.html`
+- Mirrored the same files to `/srv/openclaw/draw-imports/gemma4good-public/menu/...` because `home-complete-tech-domain-proxy` already mounts `/srv/openclaw/draw-imports` as `/draw-imports`.
+- Updated `/srv/openclaw/deploy/Caddyfile` so `gemma4good.home.complete.tech` serves `/menu/*` from `/draw-imports/gemma4good-public` before falling back to code-server. Backup: `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-menu-20260516-193757`.
+- Pending privileged step: reload the rootful Caddy proxy with `sudo podman exec home-complete-tech-domain-proxy caddy reload --config /etc/caddy/Caddyfile`. Until Caddy is reloaded, `/menu/fieldreport/` and `/menu/missioncontrol/` still return the old code-server `404`.
