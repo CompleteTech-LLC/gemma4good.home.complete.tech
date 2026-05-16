@@ -78,3 +78,9 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
 - Updated `/srv/openclaw/deploy/Caddyfile` so `gemma4good.home.complete.tech` serves `/menu/*` from `/draw-imports/gemma4good-public` before falling back to code-server. Backup: `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-menu-20260516-193757`.
 - Caddy validation and reload completed with the rootful proxy. Because the running container had the original single-file bind mount inode for `/etc/caddy/Caddyfile`, the patched host config was copied into the container as `/tmp/Caddyfile.gemma4good` and reloaded from there for the live process. Future proxy/container restarts should pick up the patched host `/srv/openclaw/deploy/Caddyfile`.
 - Verification after reload: `https://gemma4good.home.complete.tech/menu/fieldreport/` returned HTTP `200` with `Water Report - Field Capture`, `https://gemma4good.home.complete.tech/menu/missioncontrol/` returned HTTP `200` with `AQUA-TRACK - SOMALIA WATER RESOURCE MISSION CONTROL`, and `https://gemma4good.home.complete.tech/` still returned the passwordless code-server workspace.
+
+2026-05-16 Gemma4 field report wiring plan:
+- Planning artifact: `docs/fieldreport-gemma4-wiring-plan.md`.
+- Current field report page is static HTML with image/tag/location/note capture and placeholder Google Forms submit IDs.
+- Verified Gemma4 model service on `train`: `http://172.30.88.4:18084/health` returned `{"status":"ok"}` and `/v1/models` listed `ggml-org/gemma-4-26b-a4b-it-GGUF:Q4_K_M` with `completion` and `multimodal` capabilities.
+- Plan recommends a narrow same-origin `/api/fieldreport/analyze` backend service rather than exposing the raw model endpoint directly to browser JavaScript.
