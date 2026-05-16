@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "remote: pwd",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\remote.ps1",
+        "pwd"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "remote: list deploy root",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\remote.ps1",
+        "ls -la"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "remote: podman stack status",
+      "type": "shell",
+      "command": "ssh",
+      "args": [
+        "train.home.complete.tech",
+        "sudo systemctl status podman-migrated-stacks.service --no-pager"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "remote: dev service container",
+      "type": "shell",
+      "command": "ssh",
+      "args": [
+        "train.home.complete.tech",
+        "sudo podman ps --filter name=gemma4good-home-complete-tech --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "remote: dev service health",
+      "type": "shell",
+      "command": "ssh",
+      "args": [
+        "train.home.complete.tech",
+        "sudo podman inspect gemma4good-home-complete-tech --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}'"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "check: dev URL headers",
+      "type": "shell",
+      "command": "curl.exe",
+      "args": [
+        "-k",
+        "-I",
+        "https://gemma4good.home.complete.tech/"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "mcp-search": {
+      "type": "http",
+      "url": "https://mcp-search.home.complete.tech/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:MCP_SEARCH_AUTH_TOKEN}"
+      }
+    }
+  }
+}

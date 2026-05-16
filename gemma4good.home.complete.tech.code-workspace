@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "name": "gemma4good.home.complete.tech",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  }
+}
