@@ -38,6 +38,8 @@ Implemented values:
 - Persistent workspace path: `/srv/openclaw/gemma4good`
 - Static network address: `172.30.88.40`
 - Auth: disabled with `--auth none`
+- Browser theme: `Default Dark Modern`
+- Project-local tools: `/srv/openclaw/gemma4good/.tools`
 
 Healthcheck:
 

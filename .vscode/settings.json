@@ -9,6 +9,11 @@
   "markdown.extension.toc.updateOnSave": false,
   "powershell.codeFormatting.useCorrectCasing": true,
   "workbench.colorTheme": "Default Dark Modern",
+  "window.autoDetectColorScheme": false,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.env.linux": {
+    "PATH": "/home/coder/project/.tools/node_modules/.bin:${env:PATH}"
+  },
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,

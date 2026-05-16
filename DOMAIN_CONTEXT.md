@@ -32,6 +32,8 @@ Local development setup:
 - The real VS Code MCP search config lives in `.vscode/mcp.json` and is ignored by Git because it contains the `MCP_SEARCH_AUTH_TOKEN` bearer token.
 - The checked-in MCP reference config is `.vscode/mcp.example.json`.
 - Planning and implementation notes live in `docs/`.
+- Browser code-server is configured for `Default Dark Modern`.
+- The code-server terminal PATH prepends `/home/coder/project/.tools/node_modules/.bin`.
 
 Validation:
 
@@ -58,3 +60,12 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
 - Local directory was expanded from minimal `AGENTS.md` and `DOMAIN_CONTEXT.md` notes into the same scaffold pattern used by other `home.complete.tech` dev domains.
 - Added `.vscode/`, `remote.ps1`, `Caddyfile.snippet`, `README.md`, `TODO.md`, workspace file, and `docs/`.
 - Created Git repository for the local scaffold and pushed it to `CompleteTech-LLC/gemma4good.home.complete.tech`.
+
+2026-05-16 browser workspace tooling:
+- Fixed `remote.ps1` to use the same `completetrain_b550_ed25519` SSH key pattern as other local domain helpers.
+- Copied `AGENTS.md`, `CLAUDE.md`, README/TODO, domain context, workspace file, and docs into `/srv/openclaw/gemma4good` so browser-based Codex/Claude sessions see the same project instructions.
+- Installed project-local agent CLIs into `/srv/openclaw/gemma4good/.tools`:
+  - Claude Code `2.1.143`
+  - Codex CLI `0.130.0`
+- Updated `/srv/openclaw/gemma4good/.local/share/code-server/User/settings.json` and `/srv/openclaw/gemma4good/.vscode/settings.json` to use `Default Dark Modern` and prepend `.tools/node_modules/.bin` to the integrated terminal PATH.
+- The shared image still provides Node 22/npm, PowerShell, GitHub CLI, and baked-in Codex. Direct rootful container verification requires sudo on `train.home.complete.tech`; this session verified the project-local CLIs before sync and verified the remote files/settings after sync.

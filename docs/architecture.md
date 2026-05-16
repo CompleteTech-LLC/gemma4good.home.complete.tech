@@ -27,6 +27,8 @@ Service:
 - Persistent workspace: `/srv/openclaw/gemma4good`
 - Container workspace: `/home/coder/project`
 - Auth: disabled with `--auth none`
+- Browser theme: `Default Dark Modern`
+- Project-local tools: `/home/coder/project/.tools/node_modules/.bin`
 
 Health:
 

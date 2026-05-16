@@ -45,6 +45,21 @@ https://gemma4good.home.complete.tech/
 
 The browser endpoint is backed by code-server with `--auth none`. There is no code-server password secret for this service.
 
+## Browser Tooling
+
+The remote workspace is configured for dark mode and agent CLI work:
+
+- code-server theme: `Default Dark Modern`
+- Node/npm: provided by the shared `localhost/code-server-node:22` image
+- Codex: provided by the shared image and also installed project-locally under `.tools`
+- Claude Code: installed project-locally under `.tools`
+
+The code-server terminal PATH prepends:
+
+```text
+/home/coder/project/.tools/node_modules/.bin
+```
+
 ## Remote Commands
 
 From PowerShell:
@@ -75,4 +90,5 @@ Current runtime:
 - Internal route: `gemma4good-home-complete-tech:8080`
 - Persistent workspace: `/srv/openclaw/gemma4good`
 - Auth: disabled with `--auth none`
+- Workspace tools: `/srv/openclaw/gemma4good/.tools`
 - Healthcheck: local code-server HTTP root `/`, surfaced in `podman ps` as healthy/unhealthy. Do not use `/healthz | grep alive`; it can expire when there is no current browser heartbeat.
