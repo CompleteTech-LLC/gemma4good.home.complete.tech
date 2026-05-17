@@ -107,6 +107,8 @@ Runtime path:
 /srv/openclaw/gemma4good/api
 ```
 
+The browser sends image plus user/device location to the API. A user-selected issue tag is optional before analysis; Gemma4 can infer the category, severity, summary, observed issues, recommended actions, and escalation flag. The page then requires user review of the draft before submit.
+
 The API forwards validated reports to the private Gemma4 endpoint:
 
 ```text

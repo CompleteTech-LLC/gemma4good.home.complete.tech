@@ -82,8 +82,11 @@ export async function analyzeFieldReport(payload, config) {
 }
 
 async function callGemma(payload, config, maxTokens) {
+  const issueTag = ALLOWED_TAGS.has(payload.tag)
+    ? payload.tag
+    : 'not provided; infer the best category from the image and metadata';
   const metadata = [
-    `Issue tag: ${payload.tag}`,
+    `Issue tag: ${issueTag}`,
     `District: ${payload.district || 'unknown'}`,
     `City: ${payload.city || 'unknown'}`,
     `GPS: ${payload.lat && payload.lon ? `${payload.lat}, ${payload.lon}` : 'not provided'}`,
@@ -201,7 +204,7 @@ function truncateText(value, max) {
 function validatePayload(payload) {
   if (!payload || typeof payload !== 'object') return { ok: false, error: 'invalid_json' };
   if (!isDataImage(payload.imageDataUrl)) return { ok: false, error: 'image_required' };
-  if (!ALLOWED_TAGS.has(payload.tag)) return { ok: false, error: 'invalid_tag' };
+  if (payload.tag && !ALLOWED_TAGS.has(payload.tag)) return { ok: false, error: 'invalid_tag' };
   if (!payload.district && !payload.city && !(payload.lat && payload.lon)) {
     return { ok: false, error: 'location_required' };
   }

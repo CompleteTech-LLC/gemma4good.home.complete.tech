@@ -93,6 +93,7 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
   - `POST /api/fieldreport/analyze`
 - Caddy now routes `/api/fieldreport/*` to `gemma4good-api-home-complete-tech:3000`.
 - Field report UI now has a `Gemma4 Triage` card with explicit `Analyze with Gemma4` action. The browser resizes the captured image before posting it to the same-origin API.
+- 2026-05-17 workflow correction: field report triage is image-first. The user supplies image plus location first, Gemma4 infers category/severity/summary/actions, and the user reviews or corrects the draft before submit. A user-selected issue tag is no longer required before analysis.
 - Updated files were synced to:
   - `/srv/openclaw/gemma4good/api`
   - `/srv/openclaw/gemma4good/public`

@@ -507,6 +507,10 @@
     color: var(--muted);
   }
 
+  .location-copy {
+    padding: 0 16px 16px;
+  }
+
   .btn-analyze {
     width: 100%;
     padding: 14px;
@@ -755,42 +759,11 @@
     <input type="file" id="input-album" accept="image/*">
   </div>
 
-  <!-- ISSUE TAG -->
+  <!-- LOCATION -->
   <div class="card">
     <div class="card-header">
       <span class="step-num">02</span>
-      <span class="card-title">Tag Issue Type</span>
-    </div>
-
-    <div class="tag-grid">
-      <button class="tag-btn" data-value="water_quality" onclick="selectTag(this)" aria-pressed="false">
-        <span class="check-mark">✓</span>
-        <span class="tag-emoji">💧</span>
-        <span class="tag-label">Water Quality</span>
-      </button>
-      <button class="tag-btn" data-value="sanitation" onclick="selectTag(this)" aria-pressed="false">
-        <span class="check-mark">✓</span>
-        <span class="tag-emoji">💩</span>
-        <span class="tag-label">Sanitation</span>
-      </button>
-      <button class="tag-btn" data-value="infrastructure" onclick="selectTag(this)" aria-pressed="false">
-        <span class="check-mark">✓</span>
-        <span class="tag-emoji">💥</span>
-        <span class="tag-label">Infrastructure</span>
-      </button>
-      <button class="tag-btn" data-value="health_risk" onclick="selectTag(this)" aria-pressed="false">
-        <span class="check-mark">✓</span>
-        <span class="tag-emoji">🩸</span>
-        <span class="tag-label">Health Risk</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- LOCATION + NOTE -->
-  <div class="card">
-    <div class="card-header">
-      <span class="step-num">03</span>
-      <span class="card-title">Location & Note</span>
+      <span class="card-title">Location</span>
     </div>
 
     <!-- GPS auto-fill -->
@@ -811,23 +784,19 @@
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="note-wrap">
-      <textarea id="note-field" name="entry.NOTE" placeholder="Short field note — describe what you see. Long queue, damaged pipe, discoloured water…" maxlength="280"></textarea>
-    </div>
+    <div class="ai-copy location-copy">Location is provided by the device or field user. Gemma should not invent it.</div>
   </div>
 
   <!-- GEMMA4 TRIAGE -->
   <div class="card ai-card">
     <div class="card-header">
-      <span class="step-num">04</span>
+      <span class="step-num">03</span>
       <span class="card-title">Gemma4 Triage</span>
     </div>
 
     <div class="ai-body">
       <p class="ai-copy">
-        Run local Gemma4 analysis after image, tag, and location are ready.
+        Run local Gemma4 after evidence and location are ready. It will suggest the issue type, description, severity, and actions.
       </p>
       <button class="btn-analyze" id="btn-analyze" onclick="handleAnalyze()">
         <span id="btn-analyze-text">Analyze with Gemma4</span>
@@ -837,14 +806,55 @@
     </div>
   </div>
 
+  <!-- REVIEW DRAFT -->
+  <div class="card review-card">
+    <div class="card-header">
+      <span class="step-num">04</span>
+      <span class="card-title">Review Draft Report</span>
+    </div>
+
+    <div class="ai-body">
+      <p class="ai-copy">
+        Confirm or correct the AI draft before submitting. The selected type and note remain editable.
+      </p>
+
+      <div class="tag-grid">
+        <button class="tag-btn" data-value="water_quality" onclick="selectTag(this)" aria-pressed="false">
+          <span class="check-mark">✓</span>
+          <span class="tag-emoji">💧</span>
+          <span class="tag-label">Water Quality</span>
+        </button>
+        <button class="tag-btn" data-value="sanitation" onclick="selectTag(this)" aria-pressed="false">
+          <span class="check-mark">✓</span>
+          <span class="tag-emoji">💩</span>
+          <span class="tag-label">Sanitation</span>
+        </button>
+        <button class="tag-btn" data-value="infrastructure" onclick="selectTag(this)" aria-pressed="false">
+          <span class="check-mark">✓</span>
+          <span class="tag-emoji">💥</span>
+          <span class="tag-label">Infrastructure</span>
+        </button>
+        <button class="tag-btn" data-value="health_risk" onclick="selectTag(this)" aria-pressed="false">
+          <span class="check-mark">✓</span>
+          <span class="tag-emoji">🩸</span>
+          <span class="tag-label">Health Risk</span>
+        </button>
+      </div>
+
+      <div class="note-wrap">
+        <textarea id="note-field" name="entry.NOTE" placeholder="Gemma will draft this from the image. You can edit before submitting." maxlength="280"></textarea>
+      </div>
+    </div>
+  </div>
+
   <!-- SUBMIT -->
   <div class="card" style="background: transparent; border: none;">
 
     <!-- Validation chips -->
     <div class="hint-row">
       <div class="hint-chip" id="chip-img"><span class="chip-dot"></span>Image</div>
-      <div class="hint-chip" id="chip-tag"><span class="chip-dot"></span>Tag</div>
       <div class="hint-chip" id="chip-location"><span class="chip-dot"></span>Location</div>
+      <div class="hint-chip" id="chip-review"><span class="chip-dot"></span>Review</div>
     </div>
 
     <div style="height:12px"></div>
@@ -955,23 +965,25 @@
   // Location fields auto-validate
   document.getElementById('field-district').addEventListener('input', validate);
   document.getElementById('field-city').addEventListener('input', validate);
+  document.getElementById('note-field').addEventListener('input', validate);
 
   // ---- Validation ----
   function validate() {
     const hasImg = !!capturedFile;
-    const hasTag = !!selectedTag;
     const hasLocation = document.getElementById('field-district').value.trim() ||
                         document.getElementById('field-city').value.trim() ||
                         gpsCoords;
+    const hasReview = !!selectedTag && !!document.getElementById('note-field').value.trim();
 
     setChip('chip-img', hasImg);
-    setChip('chip-tag', hasTag);
     setChip('chip-location', !!hasLocation);
+    setChip('chip-review', hasReview);
 
-    const ready = hasImg && hasTag && hasLocation;
-    document.getElementById('btn-submit').disabled = !ready;
-    document.getElementById('btn-analyze').disabled = !ready || analysisStatus === 'loading';
-    return ready;
+    const analysisReady = hasImg && hasLocation;
+    const submitReady = analysisReady && hasReview;
+    document.getElementById('btn-submit').disabled = !submitReady;
+    document.getElementById('btn-analyze').disabled = !analysisReady || analysisStatus === 'loading';
+    return analysisReady;
   }
 
   function setChip(id, done) {
@@ -1044,6 +1056,15 @@
       ? `${Math.round(Number(data.confidence) * 100)}%`
       : 'n/a';
 
+    if (['water_quality', 'sanitation', 'infrastructure', 'health_risk'].includes(data.category)) {
+      selectTagValue(data.category);
+    }
+
+    const noteField = document.getElementById('note-field');
+    if (!noteField.value.trim() && data.summary) {
+      noteField.value = String(data.summary).slice(0, 280);
+    }
+
     const result = document.getElementById('ai-result');
     result.className = 'ai-result visible';
     result.innerHTML = `
@@ -1060,6 +1081,7 @@
         Escalation: ${data.needsEscalation ? 'yes' : 'no'} · Confidence: ${confidence}
       </div>
     `;
+    validate();
   }
 
   function renderAnalysisError(code) {
@@ -1080,6 +1102,11 @@
     const list = Array.isArray(items) ? items : [];
     const safe = list.slice(0, 5).map(item => `<li>${escapeHTML(item)}</li>`);
     return safe.length ? safe.join('') : '<li>Review report manually.</li>';
+  }
+
+  function selectTagValue(value) {
+    const btn = document.querySelector(`.tag-btn[data-value="${value}"]`);
+    if (btn) selectTag(btn);
   }
 
   function escapeHTML(value) {
@@ -1119,7 +1146,8 @@
 
   // ---- Submit ----
   function handleSubmit() {
-    if (!validate()) return;
+    validate();
+    if (document.getElementById('btn-submit').disabled) return;
 
     const district = document.getElementById('field-district').value.trim();
     const city = document.getElementById('field-city').value.trim();

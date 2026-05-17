@@ -69,7 +69,7 @@ https://gemma4good.home.complete.tech/menu/fieldreport/
 https://gemma4good.home.complete.tech/api/fieldreport/analyze
 ```
 
-The browser page sends captured image, issue tag, location, and note data to the API. The API validates the request and forwards it to the private Gemma4 service on the Podman network.
+The browser page follows an image-first review workflow: the user supplies a captured image and location, Gemma4 suggests the issue type, summary, severity, observations, and actions, then the user confirms or edits the draft before submit. The API validates the request and forwards it to the private Gemma4 service on the Podman network.
 
 ## Remote Commands
 

@@ -71,6 +71,49 @@ test('analyze returns normalized model JSON', async () => {
   }
 });
 
+test('analyze can infer category without a user-selected tag', async () => {
+  let modelRequest;
+  const { baseUrl, close } = await startTestServer({
+    fetchImpl: async (url, options) => {
+      modelRequest = JSON.parse(options.body);
+      return new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  summary: 'Long queue at a water point suggests access pressure.',
+                  severity: 'medium',
+                  category: 'water_quality',
+                  observedIssues: ['Long queue'],
+                  recommendedActions: ['Verify queue duration'],
+                  needsEscalation: false,
+                  confidence: 0.63,
+                }),
+              },
+            },
+          ],
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    },
+  });
+
+  try {
+    const res = await post(baseUrl, {
+      imageDataUrl,
+      district: 'Hodan',
+      city: 'Mogadishu',
+    });
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.category, 'water_quality');
+    assert.match(modelRequest.messages[1].content[0].text, /infer the best category/);
+  } finally {
+    await close();
+  }
+});
+
 test('falls back when model content is empty', async () => {
   const { baseUrl, close } = await startTestServer({
     fetchImpl: async () =>
