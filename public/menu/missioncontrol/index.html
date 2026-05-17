@@ -688,7 +688,8 @@ async function loadSubmittedReports(){
 }
 function mapSubmittedReport(report){
   const severity=report.analysis?.severity||'medium';
-  const category=report.analysis?.category||report.tag||'field report';
+  const tags=Array.isArray(report.tags)&&report.tags.length?report.tags:(report.tag?[report.tag]:[]);
+  const category=tags.length?tags.map(t=>String(t).replaceAll('_',' ')).join(' + '):(report.analysis?.category||'field report').replaceAll('_',' ');
   const loc=[report.district,report.city].filter(Boolean).join(', ')||'Manual location';
   const created=report.createdAt?new Date(report.createdAt):new Date();
   const time=Number.isNaN(created.getTime())?'Submitted':`${pad(created.getHours())}:${pad(created.getMinutes())}`;
@@ -696,7 +697,7 @@ function mapSubmittedReport(report){
   const desc=report.analysis?.summary||report.note||'Reviewed field report submitted';
   return{
     img:{loc,desc,time:`Submitted · ${time}`,dist:report.lat&&report.lon?`${report.lat}, ${report.lon}`:'manual',sev:imageSeverity(severity),ico:'📸'},
-    triage:{id:shortId,loc,type:category.replaceAll('_',' '),sev:triageSeverity(severity),age:'now',status:report.analysis?.needsEscalation?'New':'Review',team:'Ops'}
+    triage:{id:shortId,loc,type:category,sev:triageSeverity(severity),age:'now',status:report.analysis?.needsEscalation?'New':'Review',team:'Ops'}
   };
 }
 function imageSeverity(severity){

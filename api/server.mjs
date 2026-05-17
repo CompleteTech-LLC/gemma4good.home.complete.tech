@@ -101,6 +101,7 @@ async function readReviewedReports(config) {
       id: report.id,
       createdAt: report.createdAt,
       tag: report.tag,
+      tags: Array.isArray(report.tags) ? report.tags : normalizeTags(report),
       district: report.district,
       city: report.city,
       note: report.note,
@@ -121,10 +122,12 @@ async function readReviewedReports(config) {
 }
 
 async function storeReviewedReport(payload, config) {
+  const tags = normalizeTags(payload);
   const report = {
     id: randomUUID(),
     createdAt: new Date(config.now()).toISOString(),
-    tag: payload.tag,
+    tag: tags[0],
+    tags,
     district: truncateText(payload.district, 120),
     city: truncateText(payload.city, 120),
     note: truncateText(payload.note, 500),
@@ -168,11 +171,12 @@ export async function analyzeFieldReport(payload, config) {
 }
 
 async function callGemma(payload, config, maxTokens) {
-  const issueTag = ALLOWED_TAGS.has(payload.tag)
-    ? payload.tag
+  const tags = normalizeTags(payload);
+  const issueTags = tags.length
+    ? tags.join(', ')
     : 'not provided; infer the best category from the image and metadata';
   const metadata = [
-    `Issue tag: ${issueTag}`,
+    `Issue tag(s): ${issueTags}`,
     `District: ${payload.district || 'unknown'}`,
     `City: ${payload.city || 'unknown'}`,
     `GPS: ${payload.lat && payload.lon ? `${payload.lat}, ${payload.lon}` : 'not provided'}`,
@@ -265,13 +269,16 @@ function normalizeAnalysis(raw, model) {
 }
 
 function fallbackAnalysis(payload, model) {
+  const tags = normalizeTags(payload);
+  const primaryTag = tags[0];
+  const hasHealthRisk = tags.includes('health_risk');
   return {
     summary: 'Gemma4 could not return structured JSON; field review is still recommended.',
-    severity: payload.tag === 'health_risk' ? 'high' : 'medium',
-    category: ALLOWED_TAGS.has(payload.tag) ? payload.tag : 'unknown',
+    severity: hasHealthRisk ? 'high' : 'medium',
+    category: primaryTag || 'unknown',
     observedIssues: ['Submitted image and field metadata need manual review.'],
     recommendedActions: ['Escalate to the local coordinator if the issue affects active water access or safety.'],
-    needsEscalation: payload.tag === 'health_risk',
+    needsEscalation: hasHealthRisk,
     confidence: 0.2,
     model,
   };
@@ -290,7 +297,8 @@ function truncateText(value, max) {
 function validatePayload(payload) {
   if (!payload || typeof payload !== 'object') return { ok: false, error: 'invalid_json' };
   if (!isDataImage(payload.imageDataUrl)) return { ok: false, error: 'image_required' };
-  if (payload.tag && !ALLOWED_TAGS.has(payload.tag)) return { ok: false, error: 'invalid_tag' };
+  const tagValidation = validateTags(payload, false);
+  if (!tagValidation.ok) return tagValidation;
   if (!payload.district && !payload.city && !(payload.lat && payload.lon)) {
     return { ok: false, error: 'location_required' };
   }
@@ -300,12 +308,33 @@ function validatePayload(payload) {
 function validateSubmissionPayload(payload) {
   if (!payload || typeof payload !== 'object') return { ok: false, error: 'invalid_json' };
   if (!isDataImage(payload.imageDataUrl)) return { ok: false, error: 'image_required' };
-  if (!ALLOWED_TAGS.has(payload.tag)) return { ok: false, error: 'tag_required' };
+  const tagValidation = validateTags(payload, true);
+  if (!tagValidation.ok) return tagValidation;
   if (!truncateText(payload.note, 500)) return { ok: false, error: 'note_required' };
   if (!payload.district && !payload.city && !(payload.lat && payload.lon)) {
     return { ok: false, error: 'location_required' };
   }
   return { ok: true };
+}
+
+function validateTags(payload, required) {
+  if (payload.tag && !ALLOWED_TAGS.has(payload.tag)) return { ok: false, error: 'invalid_tag' };
+  if (payload.tags !== undefined && !Array.isArray(payload.tags)) return { ok: false, error: 'invalid_tags' };
+  if (Array.isArray(payload.tags) && payload.tags.some(tag => !ALLOWED_TAGS.has(tag))) {
+    return { ok: false, error: 'invalid_tags' };
+  }
+  if (required && normalizeTags(payload).length === 0) return { ok: false, error: 'tag_required' };
+  return { ok: true };
+}
+
+function normalizeTags(payload) {
+  const candidates = [
+    payload?.tag,
+    ...(Array.isArray(payload?.tags) ? payload.tags : []),
+  ];
+  return candidates.filter((tag, index) =>
+    ALLOWED_TAGS.has(tag) && candidates.indexOf(tag) === index
+  );
 }
 
 function isDataImage(value) {

@@ -31,9 +31,11 @@ test('rejects missing image', async () => {
 });
 
 test('analyze returns normalized model JSON', async () => {
+  let modelRequest;
   const { baseUrl, close } = await startTestServer({
-    fetchImpl: async () =>
-      new Response(
+    fetchImpl: async (url, options) => {
+      modelRequest = JSON.parse(options.body);
+      return new Response(
         JSON.stringify({
           choices: [
             {
@@ -52,13 +54,15 @@ test('analyze returns normalized model JSON', async () => {
           ],
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
-      ),
+      );
+    },
   });
 
   try {
     const res = await post(baseUrl, {
       imageDataUrl,
       tag: 'infrastructure',
+      tags: ['infrastructure', 'sanitation'],
       district: 'Hodan',
       city: 'Mogadishu',
       note: 'Pipe damage near queue.',
@@ -69,6 +73,7 @@ test('analyze returns normalized model JSON', async () => {
     assert.equal(body.category, 'infrastructure');
     assert.equal(body.needsEscalation, true);
     assert.equal(body.model, 'test-model');
+    assert.match(modelRequest.messages[1].content[0].text, /Issue tag\(s\): infrastructure, sanitation/);
   } finally {
     await close();
   }
@@ -156,6 +161,7 @@ test('submit stores a reviewed draft report', async () => {
       body: JSON.stringify({
         imageDataUrl,
         tag: 'infrastructure',
+        tags: ['infrastructure', 'sanitation'],
         district: 'Hodan',
         city: 'Mogadishu',
         note: 'Damaged pipe near a long queue.',
@@ -178,6 +184,7 @@ test('submit stores a reviewed draft report', async () => {
 
     const stored = JSON.parse((await readFile(reportStorePath, 'utf8')).trim());
     assert.equal(stored.tag, 'infrastructure');
+    assert.deepEqual(stored.tags, ['infrastructure', 'sanitation']);
     assert.equal(stored.analysis.severity, 'high');
   } finally {
     await close();
@@ -197,6 +204,7 @@ test('reports endpoint returns submitted reports without image payloads', async 
       body: JSON.stringify({
         imageDataUrl,
         tag: 'water_quality',
+        tags: ['water_quality', 'health_risk'],
         district: 'Hodan',
         city: 'Mogadishu',
         note: 'Discolored water near a queue.',
@@ -221,6 +229,7 @@ test('reports endpoint returns submitted reports without image payloads', async 
     assert.equal(body.ok, true);
     assert.equal(body.reports.length, 1);
     assert.equal(body.reports[0].district, 'Hodan');
+    assert.deepEqual(body.reports[0].tags, ['water_quality', 'health_risk']);
     assert.equal(body.reports[0].analysis.severity, 'high');
     assert.equal(body.reports[0].imageDataUrl, undefined);
   } finally {

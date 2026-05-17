@@ -850,26 +850,26 @@
 
     <div class="ai-body">
       <p class="ai-copy">
-        Confirm or correct the AI draft before submitting. The selected type and note remain editable.
+        Confirm or correct the AI draft before submitting. Select every applicable type and edit the note if needed.
       </p>
 
       <div class="tag-grid">
-        <button class="tag-btn" data-value="water_quality" onclick="selectTag(this)" aria-pressed="false">
+        <button class="tag-btn" type="button" data-value="water_quality" onclick="selectTag(this)" aria-pressed="false">
           <span class="check-mark">✓</span>
           <span class="tag-emoji">💧</span>
           <span class="tag-label">Water Quality</span>
         </button>
-        <button class="tag-btn" data-value="sanitation" onclick="selectTag(this)" aria-pressed="false">
+        <button class="tag-btn" type="button" data-value="sanitation" onclick="selectTag(this)" aria-pressed="false">
           <span class="check-mark">✓</span>
           <span class="tag-emoji">💩</span>
           <span class="tag-label">Sanitation</span>
         </button>
-        <button class="tag-btn" data-value="infrastructure" onclick="selectTag(this)" aria-pressed="false">
+        <button class="tag-btn" type="button" data-value="infrastructure" onclick="selectTag(this)" aria-pressed="false">
           <span class="check-mark">✓</span>
           <span class="tag-emoji">💥</span>
           <span class="tag-label">Infrastructure</span>
         </button>
-        <button class="tag-btn" data-value="health_risk" onclick="selectTag(this)" aria-pressed="false">
+        <button class="tag-btn" type="button" data-value="health_risk" onclick="selectTag(this)" aria-pressed="false">
           <span class="check-mark">✓</span>
           <span class="tag-emoji">🩸</span>
           <span class="tag-label">Health Risk</span>
@@ -910,7 +910,7 @@
 
 <script>
   // ---- State ----
-  let selectedTag = null;
+  let selectedTags = [];
   let capturedFile = null;
   let capturedDataURL = null;
   let gpsCoords = null;
@@ -953,13 +953,17 @@
 
   // ---- Tag selection ----
   function selectTag(btn) {
-    document.querySelectorAll('.tag-btn').forEach(b => {
-      b.classList.remove('selected');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('selected');
-    btn.setAttribute('aria-pressed', 'true');
-    selectedTag = btn.dataset.value;
+    const value = btn.dataset.value;
+    if (!value) return;
+
+    const isSelected = btn.classList.toggle('selected');
+    btn.setAttribute('aria-pressed', String(isSelected));
+
+    if (isSelected) {
+      selectedTags = Array.from(new Set([...selectedTags, value]));
+    } else {
+      selectedTags = selectedTags.filter(tag => tag !== value);
+    }
     validate();
   }
 
@@ -1063,7 +1067,7 @@
     const hasLocation = document.getElementById('field-district').value.trim() ||
                         document.getElementById('field-city').value.trim() ||
                         gpsCoords;
-    const hasReview = !!selectedTag && !!document.getElementById('note-field').value.trim();
+    const hasReview = selectedTags.length > 0 && !!document.getElementById('note-field').value.trim();
 
     setChip('chip-img', hasImg);
     setChip('chip-location', !!hasLocation);
@@ -1101,7 +1105,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           imageDataUrl,
-          tag: selectedTag,
+          tag: primaryTag(),
+          tags: selectedTags,
           district,
           city,
           note,
@@ -1196,7 +1201,11 @@
 
   function selectTagValue(value) {
     const btn = document.querySelector(`.tag-btn[data-value="${value}"]`);
-    if (btn) selectTag(btn);
+    if (btn && !selectedTags.includes(value)) selectTag(btn);
+  }
+
+  function primaryTag() {
+    return selectedTags[0] || null;
   }
 
   function escapeHTML(value) {
@@ -1254,7 +1263,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           imageDataUrl,
-          tag: selectedTag,
+          tag: primaryTag(),
+          tags: selectedTags,
           district,
           city,
           note,
@@ -1281,7 +1291,7 @@
   function resetForm() {
     capturedFile = null;
     capturedDataURL = null;
-    selectedTag = null;
+    selectedTags = [];
     gpsCoords = null;
     analysisStatus = 'idle';
     analysisResult = null;
@@ -1292,7 +1302,10 @@
     document.getElementById('img-overlay').classList.remove('visible');
     document.getElementById('capture-placeholder').style.display = 'flex';
     document.getElementById('capture-zone').classList.remove('has-image');
-    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.tag-btn').forEach(b => {
+      b.classList.remove('selected');
+      b.setAttribute('aria-pressed', 'false');
+    });
     document.getElementById('field-district').value = '';
     document.getElementById('field-city').value = '';
     document.getElementById('note-field').value = '';
