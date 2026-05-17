@@ -235,6 +235,19 @@
 
   #preview-img.visible { display: block; }
 
+  #camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    display: none;
+    border-radius: calc(var(--radius-sm) - 2px);
+    background: #000;
+  }
+
+  #camera-video.visible { display: block; }
+
   .img-overlay {
     position: absolute;
     inset: 0;
@@ -798,6 +811,7 @@
 
     <div class="capture-zone" id="capture-zone" tabindex="0" role="button" aria-label="Tap to open camera">
       <img id="preview-img" alt="Captured field image" />
+      <video id="camera-video" autoplay muted playsinline></video>
       <div class="img-overlay" id="img-overlay">
         <span class="img-overlay-badge">✓ Image Ready</span>
       </div>
@@ -809,10 +823,10 @@
     </div>
 
     <div class="capture-actions">
-      <button class="btn-capture btn-camera" onclick="document.getElementById('input-camera').click()">
-        📷 Camera
+      <button class="btn-capture btn-camera" id="btn-camera" onclick="handleCameraButton()">
+        <span id="btn-camera-label">📷 Camera</span>
       </button>
-      <button class="btn-capture btn-album" onclick="document.getElementById('input-album').click()">
+      <button class="btn-capture btn-album" onclick="stopCamera(); document.getElementById('input-album').click()">
         🖼 Album
       </button>
     </div>
@@ -960,6 +974,7 @@
   let selectedTags = [];
   let capturedFile = null;
   let capturedDataURL = null;
+  let cameraStream = null;
   let reportTimestamp = null;
   let reportTimestampSource = 'current';
   let gpsCoords = null;
@@ -973,6 +988,7 @@
   // ---- Image Capture ----
   function handleImageFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
+    stopCamera();
     capturedFile = file;
     const fallbackTimestamp = new Date();
     setReportTimestamp(fallbackTimestamp, 'current');
@@ -992,12 +1008,7 @@
     const reader = new FileReader();
     reader.onload = e => {
       capturedDataURL = e.target.result;
-      const img = document.getElementById('preview-img');
-      img.src = capturedDataURL;
-      img.classList.add('visible');
-      document.getElementById('img-overlay').classList.add('visible');
-      document.getElementById('capture-placeholder').style.display = 'none';
-      document.getElementById('capture-zone').classList.add('has-image');
+      showCapturedImage(capturedDataURL);
       validate();
     };
     reader.readAsDataURL(file);
@@ -1005,6 +1016,102 @@
 
   document.getElementById('input-camera').addEventListener('change', e => handleImageFile(e.target.files[0]));
   document.getElementById('input-album').addEventListener('change',  e => handleImageFile(e.target.files[0]));
+
+  async function handleCameraButton() {
+    if (cameraStream) {
+      captureCameraFrame();
+      return;
+    }
+    await openCamera();
+  }
+
+  async function openCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showToast('Camera stream unavailable; using camera picker');
+      document.getElementById('input-camera').click();
+      return;
+    }
+
+    try {
+      stopCamera();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+      });
+      cameraStream = stream;
+      const video = document.getElementById('camera-video');
+      video.srcObject = stream;
+      video.onloadedmetadata = () => video.play().catch(() => {});
+      video.classList.add('visible');
+      document.getElementById('preview-img').classList.remove('visible');
+      document.getElementById('img-overlay').classList.remove('visible');
+      document.getElementById('capture-placeholder').style.display = 'none';
+      document.getElementById('capture-zone').classList.add('has-image');
+      document.getElementById('btn-camera-label').textContent = '✓ Take Photo';
+      showToast('Camera ready');
+    } catch (error) {
+      stopCamera();
+      showToast('Camera blocked; using camera picker');
+      document.getElementById('input-camera').click();
+    }
+  }
+
+  function captureCameraFrame() {
+    const video = document.getElementById('camera-video');
+    if (!cameraStream || !video.videoWidth || !video.videoHeight) {
+      showToast('Camera is still starting');
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    capturedDataURL = canvas.toDataURL('image/jpeg', 0.9);
+    capturedFile = dataUrlToFile(capturedDataURL, `field-camera-${Date.now()}.jpg`);
+    setReportTimestamp(new Date(), 'current');
+    showCapturedImage(capturedDataURL);
+    stopCamera();
+    validate();
+    showToast('Photo captured');
+  }
+
+  function showCapturedImage(dataUrl) {
+    const img = document.getElementById('preview-img');
+    img.src = dataUrl;
+    img.classList.add('visible');
+    document.getElementById('camera-video').classList.remove('visible');
+    document.getElementById('img-overlay').classList.add('visible');
+    document.getElementById('capture-placeholder').style.display = 'none';
+    document.getElementById('capture-zone').classList.add('has-image');
+  }
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream = null;
+    }
+    const video = document.getElementById('camera-video');
+    video.pause();
+    video.srcObject = null;
+    video.classList.remove('visible');
+    document.getElementById('btn-camera-label').textContent = '📷 Camera';
+  }
+
+  function dataUrlToFile(dataUrl, filename) {
+    const [header, base64] = dataUrl.split(',');
+    const mime = (header.match(/^data:([^;]+)/) || [])[1] || 'image/jpeg';
+    const binary = atob(base64 || '');
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    return new File([bytes], filename, { type: mime, lastModified: Date.now() });
+  }
 
   async function detectImageTimestamp(file) {
     if (!file) return null;
@@ -1157,11 +1264,8 @@
 
   // Tap the preview image to re-open camera
   document.getElementById('capture-zone').addEventListener('click', function(e) {
-    if (capturedFile) {
-      document.getElementById('input-camera').click();
-    } else {
-      document.getElementById('input-camera').click();
-    }
+    if (cameraStream) captureCameraFrame();
+    else openCamera();
   });
 
   // ---- Tag selection ----
@@ -1510,6 +1614,7 @@
   function resetForm() {
     capturedFile = null;
     capturedDataURL = null;
+    stopCamera();
     setReportTimestamp(new Date(), 'current');
     selectedTags = [];
     gpsCoords = null;
