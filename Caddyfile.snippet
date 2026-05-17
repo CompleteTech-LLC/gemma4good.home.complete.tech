@@ -18,3 +18,37 @@ gemma4good.home.complete.tech:443 {
         }
     }
 }
+
+frymatic-gemma4good.home.complete.tech:443 {
+    tls /certs/fullchain.pem /certs/privkey.pem
+
+    handle / {
+        redir * /menu/fieldreport/ 302
+    }
+
+    handle /menu/fieldreport {
+        redir * /menu/fieldreport/ 308
+    }
+
+    handle /menu/missioncontrol {
+        redir * /menu/missioncontrol/ 308
+    }
+
+    handle /menu/fieldreport/* {
+        root * /draw-imports/gemma4good-public
+        file_server
+    }
+
+    handle /menu/missioncontrol/* {
+        root * /draw-imports/gemma4good-public
+        file_server
+    }
+
+    handle /api/fieldreport/* {
+        reverse_proxy gemma4good-api-home-complete-tech:3000
+    }
+
+    handle {
+        respond "Not found." 404
+    }
+}

@@ -109,3 +109,10 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
   - `https://gemma4good.home.complete.tech/api/fieldreport/health` returned HTTP `200`.
   - `POST https://gemma4good.home.complete.tech/api/fieldreport/analyze` with `api/fixtures/sample-fieldreport-request.json` returned HTTP `200` and structured Gemma4 triage JSON.
   - `https://gemma4good.home.complete.tech/menu/fieldreport/`, `/menu/missioncontrol/`, and `/` still returned HTTP `200`.
+
+2026-05-17 Frymatic project-only URL:
+- Hostname: `frymatic-gemma4good.home.complete.tech`.
+- Router DNS maps `frymatic-gemma4good.home.complete.tech -> 192.168.1.146`.
+- Access boundary: redirect `/` to `/menu/fieldreport/`; serve only `/menu/fieldreport/*`, `/menu/missioncontrol/*`, and `/api/fieldreport/*`; deny all other paths with `404`.
+- This hostname is for Gemma4Good demo/report access only and does not proxy to `gemma4good-home-complete-tech:8080` code-server.
+- Verification after Caddy reload: `/` returned HTTP `302` to `/menu/fieldreport/`, both project pages returned HTTP `200`, `/api/fieldreport/health` returned HTTP `200`, and `/some-code-server-path` returned HTTP `404`.
