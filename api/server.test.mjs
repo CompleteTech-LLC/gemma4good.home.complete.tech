@@ -216,7 +216,7 @@ test('reports endpoint returns submitted reports without image payloads', async 
         city: 'Mogadishu',
         note: 'Discolored water near a queue.',
         capturedAt: '2026-05-17T12:34:56.000Z',
-        capturedAtSource: 'current',
+        capturedAtSource: 'file',
         lat: '2.0469',
         lon: '45.3182',
         analysis: {
@@ -240,7 +240,7 @@ test('reports endpoint returns submitted reports without image payloads', async 
     assert.equal(body.reports[0].district, 'Hodan');
     assert.deepEqual(body.reports[0].tags, ['water_quality', 'health_risk']);
     assert.equal(body.reports[0].capturedAt, '2026-05-17T12:34:56.000Z');
-    assert.equal(body.reports[0].capturedAtSource, 'current');
+    assert.equal(body.reports[0].capturedAtSource, 'file');
     assert.equal(body.reports[0].analysis.severity, 'high');
     assert.equal(body.reports[0].imageDataUrl, undefined);
   } finally {
