@@ -445,6 +445,36 @@
   input.field-input::placeholder { color: var(--muted); }
   input.field-input:focus { border-color: rgba(0,194,255,0.5); }
 
+  .time-fields {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 12px 16px 16px;
+    align-items: end;
+  }
+
+  input.field-input[type="datetime-local"] {
+    min-height: 43px;
+    color-scheme: dark;
+  }
+
+  .btn-time-now {
+    min-height: 43px;
+    border: 1px solid rgba(0,194,255,0.26);
+    background: rgba(0,194,255,0.06);
+    color: var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 0 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .btn-time-now:active { transform: scale(0.97); }
+
   .location-fallbacks {
     display: none;
     grid-template-columns: 1fr 1fr;
@@ -805,6 +835,14 @@
       <span class="gps-btn-label" id="time-source">Time</span>
     </div>
 
+    <div class="time-fields">
+      <div class="field-wrap">
+        <label class="field-label" for="field-captured-at">Report Time</label>
+        <input class="field-input" type="datetime-local" id="field-captured-at" aria-label="Correct report time">
+      </div>
+      <button class="btn-time-now" type="button" onclick="useCurrentReportTime()">Now</button>
+    </div>
+
     <!-- GPS auto-fill -->
     <div class="gps-strip" id="gps-strip" onclick="getGPS()" role="button" tabindex="0">
       <span class="gps-icon">📍</span>
@@ -828,7 +866,7 @@
       <button class="location-fallback-btn" type="button" onclick="focusManualLocation()">Enter Manually</button>
     </div>
 
-    <div class="ai-copy location-copy">Timestamp comes from image metadata when available, otherwise current time. Location is provided by the device or field user.</div>
+    <div class="ai-copy location-copy">Timestamp comes from image metadata when available, otherwise file time or current time. Correct it before submit if needed. Location is provided by the device or field user.</div>
   </div>
 
   <!-- GEMMA4 TRIAGE -->
@@ -1072,13 +1110,30 @@
   function setReportTimestamp(date, source) {
     const validDate = date instanceof Date && !Number.isNaN(date.getTime()) ? date : new Date();
     reportTimestamp = validDate.toISOString();
-    reportTimestampSource = ['image', 'file'].includes(source) ? source : 'current';
+    reportTimestampSource = ['image', 'file', 'manual'].includes(source) ? source : 'current';
     document.getElementById('time-text').innerHTML = `<span class="gps-ok">${escapeHTML(formatReportTimestamp(validDate))}</span>`;
+    document.getElementById('field-captured-at').value = toDateTimeLocalValue(validDate);
     document.getElementById('time-source').textContent = reportTimestampSource === 'image'
       ? 'Image'
       : reportTimestampSource === 'file'
         ? 'File'
-        : 'Now';
+        : reportTimestampSource === 'manual'
+          ? 'Manual'
+          : 'Now';
+  }
+
+  function useCurrentReportTime() {
+    setReportTimestamp(new Date(), 'manual');
+    validate();
+    showToast('Report time updated');
+  }
+
+  function handleReportTimeInput() {
+    const value = document.getElementById('field-captured-at').value;
+    const date = value ? new Date(value) : null;
+    if (!date || Number.isNaN(date.getTime())) return;
+    setReportTimestamp(date, 'manual');
+    validate();
   }
 
   function formatReportTimestamp(date) {
@@ -1089,6 +1144,15 @@
       hour: 'numeric',
       minute: '2-digit',
     }).format(date);
+  }
+
+  function toDateTimeLocalValue(date) {
+    const pad = value => String(value).padStart(2, '0');
+    return [
+      date.getFullYear(),
+      pad(date.getMonth() + 1),
+      pad(date.getDate()),
+    ].join('-') + `T${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 
   // Tap the preview image to re-open camera
@@ -1208,6 +1272,7 @@
   // Location fields auto-validate
   document.getElementById('field-district').addEventListener('input', validate);
   document.getElementById('field-city').addEventListener('input', validate);
+  document.getElementById('field-captured-at').addEventListener('input', handleReportTimeInput);
   document.getElementById('note-field').addEventListener('input', validate);
 
   // ---- Validation ----
@@ -1463,6 +1528,7 @@
     });
     document.getElementById('field-district').value = '';
     document.getElementById('field-city').value = '';
+    document.getElementById('field-captured-at').value = '';
     document.getElementById('note-field').value = '';
     setGpsStatus('Tap to auto-fill GPS coordinates', 'idle');
     document.getElementById('input-camera').value = '';

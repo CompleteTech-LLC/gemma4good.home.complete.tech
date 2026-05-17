@@ -350,11 +350,13 @@ function normalizeCaptureTime(payload, now) {
     ? 'image'
     : payload?.capturedAtSource === 'file'
       ? 'file'
-      : payload?.capturedAtSource === 'current'
-        ? 'current'
-        : hasClientTime
-          ? 'provided'
-          : 'server';
+      : payload?.capturedAtSource === 'manual'
+        ? 'manual'
+        : payload?.capturedAtSource === 'current'
+          ? 'current'
+          : hasClientTime
+            ? 'provided'
+            : 'server';
 
   return {
     capturedAt: new Date(hasClientTime ? parsed : now).toISOString(),
