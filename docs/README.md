@@ -8,4 +8,3 @@ Recommended files as the project takes shape:
 - `deployment.md` for DNS, Caddy, Compose, and validation steps.
 - `promotion.md` for replacing the code-server backend with a final application service if the project evolves.
 - `fieldreport-gemma4-wiring-plan.md` for the planned field report to Gemma4 integration.
-- `frymatic-tailscale-access.md` for least-privilege Tailscale sharing instructions.
