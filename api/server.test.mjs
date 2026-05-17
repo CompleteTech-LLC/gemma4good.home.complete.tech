@@ -66,6 +66,8 @@ test('analyze returns normalized model JSON', async () => {
       district: 'Hodan',
       city: 'Mogadishu',
       note: 'Pipe damage near queue.',
+      capturedAt: '2026-05-17T11:22:33.000Z',
+      capturedAtSource: 'image',
     });
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -74,6 +76,7 @@ test('analyze returns normalized model JSON', async () => {
     assert.equal(body.needsEscalation, true);
     assert.equal(body.model, 'test-model');
     assert.match(modelRequest.messages[1].content[0].text, /Issue tag\(s\): infrastructure, sanitation/);
+    assert.match(modelRequest.messages[1].content[0].text, /Captured time: 2026-05-17T11:22:33.000Z/);
   } finally {
     await close();
   }
@@ -165,6 +168,8 @@ test('submit stores a reviewed draft report', async () => {
         district: 'Hodan',
         city: 'Mogadishu',
         note: 'Damaged pipe near a long queue.',
+        capturedAt: '2026-05-17T11:22:33.000Z',
+        capturedAtSource: 'image',
         analysis: {
           summary: 'Damaged pipe near a long queue.',
           severity: 'high',
@@ -185,6 +190,8 @@ test('submit stores a reviewed draft report', async () => {
     const stored = JSON.parse((await readFile(reportStorePath, 'utf8')).trim());
     assert.equal(stored.tag, 'infrastructure');
     assert.deepEqual(stored.tags, ['infrastructure', 'sanitation']);
+    assert.equal(stored.capturedAt, '2026-05-17T11:22:33.000Z');
+    assert.equal(stored.capturedAtSource, 'image');
     assert.equal(stored.analysis.severity, 'high');
   } finally {
     await close();
@@ -208,6 +215,8 @@ test('reports endpoint returns submitted reports without image payloads', async 
         district: 'Hodan',
         city: 'Mogadishu',
         note: 'Discolored water near a queue.',
+        capturedAt: '2026-05-17T12:34:56.000Z',
+        capturedAtSource: 'current',
         lat: '2.0469',
         lon: '45.3182',
         analysis: {
@@ -230,8 +239,38 @@ test('reports endpoint returns submitted reports without image payloads', async 
     assert.equal(body.reports.length, 1);
     assert.equal(body.reports[0].district, 'Hodan');
     assert.deepEqual(body.reports[0].tags, ['water_quality', 'health_risk']);
+    assert.equal(body.reports[0].capturedAt, '2026-05-17T12:34:56.000Z');
+    assert.equal(body.reports[0].capturedAtSource, 'current');
     assert.equal(body.reports[0].analysis.severity, 'high');
     assert.equal(body.reports[0].imageDataUrl, undefined);
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('submit falls back to server current time when capture time is absent', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-report-time-'));
+  const reportStorePath = join(dir, 'reports.jsonl');
+  const now = () => Date.parse('2026-05-17T13:00:00.000Z');
+  const { baseUrl, close } = await startTestServer({ reportStorePath, now });
+
+  try {
+    const res = await fetch(`${baseUrl}/api/fieldreport/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageDataUrl,
+        tag: 'water_quality',
+        district: 'Hodan',
+        note: 'Water point needs review.',
+      }),
+    });
+    assert.equal(res.status, 202);
+
+    const stored = JSON.parse((await readFile(reportStorePath, 'utf8')).trim());
+    assert.equal(stored.capturedAt, '2026-05-17T13:00:00.000Z');
+    assert.equal(stored.capturedAtSource, 'server');
   } finally {
     await close();
     await rm(dir, { recursive: true, force: true });
@@ -243,6 +282,7 @@ async function startTestServer(options = {}) {
     model: 'test-model',
     reportStorePath: options.reportStorePath,
     fetchImpl: options.fetchImpl || (async () => new Response('{}', { status: 500 })),
+    now: options.now,
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();

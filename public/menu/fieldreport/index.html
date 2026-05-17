@@ -702,23 +702,26 @@
     margin: 0 16px;
   }
 
-  /* GPS strip */
-  .gps-strip {
+  /* Time and GPS strips */
+  .gps-strip,
+  .time-strip {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
     background: rgba(0,194,255,0.04);
     border-bottom: 1px solid var(--border);
-    cursor: pointer;
     transition: background 0.15s;
   }
 
+  .gps-strip { cursor: pointer; }
+  .time-strip { cursor: default; }
   .gps-strip:active { background: rgba(0,194,255,0.1); }
 
   .gps-strip.is-detecting { background: rgba(0,194,255,0.08); }
   .gps-strip.is-ready { background: rgba(0,255,157,0.08); }
   .gps-strip.is-error { background: rgba(255,107,53,0.08); }
+  .time-strip.is-ready { background: rgba(0,255,157,0.06); }
 
   .gps-icon { font-size: 13px; }
 
@@ -789,11 +792,17 @@
     <input type="file" id="input-album" accept="image/*">
   </div>
 
-  <!-- LOCATION -->
+  <!-- TIME AND LOCATION -->
   <div class="card">
     <div class="card-header">
       <span class="step-num">02</span>
-      <span class="card-title">Location</span>
+      <span class="card-title">Time and Location</span>
+    </div>
+
+    <div class="time-strip is-ready" id="time-strip">
+      <span class="gps-icon">⏱</span>
+      <span class="gps-text" id="time-text" aria-live="polite">Time will be set when the image is added</span>
+      <span class="gps-btn-label" id="time-source">Time</span>
     </div>
 
     <!-- GPS auto-fill -->
@@ -819,7 +828,7 @@
       <button class="location-fallback-btn" type="button" onclick="focusManualLocation()">Enter Manually</button>
     </div>
 
-    <div class="ai-copy location-copy">Location is provided by the device or field user. Gemma should not invent it.</div>
+    <div class="ai-copy location-copy">Timestamp comes from image metadata when available, otherwise current time. Location is provided by the device or field user.</div>
   </div>
 
   <!-- GEMMA4 TRIAGE -->
@@ -888,7 +897,7 @@
     <!-- Validation chips -->
     <div class="hint-row">
       <div class="hint-chip" id="chip-img"><span class="chip-dot"></span>Image</div>
-      <div class="hint-chip" id="chip-location"><span class="chip-dot"></span>Location</div>
+      <div class="hint-chip" id="chip-location"><span class="chip-dot"></span>Time + Location</div>
       <div class="hint-chip" id="chip-review"><span class="chip-dot"></span>Review</div>
     </div>
 
@@ -913,6 +922,8 @@
   let selectedTags = [];
   let capturedFile = null;
   let capturedDataURL = null;
+  let reportTimestamp = null;
+  let reportTimestampSource = 'current';
   let gpsCoords = null;
   let gpsDetecting = false;
   let analysisStatus = 'idle';
@@ -925,6 +936,21 @@
   function handleImageFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
     capturedFile = file;
+    const fallbackTimestamp = new Date();
+    setReportTimestamp(fallbackTimestamp, 'current');
+
+    detectImageTimestamp(file)
+      .then(timestamp => {
+        if (capturedFile !== file) return;
+        setReportTimestamp(timestamp || fallbackTimestamp, timestamp ? 'image' : 'current');
+        validate();
+      })
+      .catch(() => {
+        if (capturedFile !== file) return;
+        setReportTimestamp(fallbackTimestamp, 'current');
+        validate();
+      });
+
     const reader = new FileReader();
     reader.onload = e => {
       capturedDataURL = e.target.result;
@@ -941,6 +967,111 @@
 
   document.getElementById('input-camera').addEventListener('change', e => handleImageFile(e.target.files[0]));
   document.getElementById('input-album').addEventListener('change',  e => handleImageFile(e.target.files[0]));
+
+  async function detectImageTimestamp(file) {
+    if (!file || !/jpe?g$/i.test(file.type) && !/\.jpe?g$/i.test(file.name || '')) return null;
+    const buffer = await file.arrayBuffer();
+    return readExifTimestamp(buffer);
+  }
+
+  function readExifTimestamp(buffer) {
+    const view = new DataView(buffer);
+    if (view.byteLength < 4 || view.getUint16(0, false) !== 0xffd8) return null;
+
+    let offset = 2;
+    while (offset + 4 < view.byteLength) {
+      if (view.getUint8(offset) !== 0xff) return null;
+      const marker = view.getUint8(offset + 1);
+      const size = view.getUint16(offset + 2, false);
+      if (size < 2 || offset + 2 + size > view.byteLength) return null;
+
+      if (marker === 0xe1) {
+        const dataStart = offset + 4;
+        if (readAscii(view, dataStart, 6) === 'Exif\u0000\u0000') {
+          const timestamp = readExifTiffTimestamp(view, dataStart + 6, dataStart + size - 2);
+          if (timestamp) return timestamp;
+        }
+      }
+      offset += 2 + size;
+    }
+    return null;
+  }
+
+  function readExifTiffTimestamp(view, tiffOffset, tiffEnd) {
+    if (tiffOffset + 8 > view.byteLength || tiffOffset >= tiffEnd) return null;
+    const byteOrder = readAscii(view, tiffOffset, 2);
+    const littleEndian = byteOrder === 'II';
+    if (!littleEndian && byteOrder !== 'MM') return null;
+    if (view.getUint16(tiffOffset + 2, littleEndian) !== 42) return null;
+
+    const ifd0Offset = tiffOffset + view.getUint32(tiffOffset + 4, littleEndian);
+    const ifd0 = readExifIfd(view, tiffOffset, tiffEnd, ifd0Offset, littleEndian);
+    const exifIfdOffset = ifd0.pointer ? tiffOffset + ifd0.pointer : null;
+    const exifIfd = exifIfdOffset ? readExifIfd(view, tiffOffset, tiffEnd, exifIfdOffset, littleEndian) : {};
+    return parseExifDate(exifIfd.dateOriginal || exifIfd.dateDigitized || ifd0.dateTime);
+  }
+
+  function readExifIfd(view, tiffOffset, tiffEnd, ifdOffset, littleEndian) {
+    const values = {};
+    if (!ifdOffset || ifdOffset + 2 > view.byteLength || ifdOffset >= tiffEnd) return values;
+    const count = view.getUint16(ifdOffset, littleEndian);
+
+    for (let i = 0; i < count; i += 1) {
+      const entry = ifdOffset + 2 + i * 12;
+      if (entry + 12 > view.byteLength || entry + 12 > tiffEnd) break;
+      const tag = view.getUint16(entry, littleEndian);
+      const type = view.getUint16(entry + 2, littleEndian);
+      const length = view.getUint32(entry + 4, littleEndian);
+      const valueOffset = view.getUint32(entry + 8, littleEndian);
+      const value = readExifAsciiValue(view, tiffOffset, tiffEnd, entry + 8, valueOffset, type, length);
+
+      if (tag === 0x0132) values.dateTime = value;
+      if (tag === 0x8769) values.pointer = valueOffset;
+      if (tag === 0x9003) values.dateOriginal = value;
+      if (tag === 0x9004) values.dateDigitized = value;
+    }
+    return values;
+  }
+
+  function readExifAsciiValue(view, tiffOffset, tiffEnd, inlineOffset, valueOffset, type, length) {
+    if (type !== 2 || !length) return '';
+    const start = length <= 4 ? inlineOffset : tiffOffset + valueOffset;
+    if (start < tiffOffset || start + length > view.byteLength || start + length > tiffEnd) return '';
+    return readAscii(view, start, length).replace(/\0/g, '').trim();
+  }
+
+  function readAscii(view, offset, length) {
+    if (offset < 0 || offset + length > view.byteLength) return '';
+    let text = '';
+    for (let i = 0; i < length; i += 1) text += String.fromCharCode(view.getUint8(offset + i));
+    return text;
+  }
+
+  function parseExifDate(value) {
+    const match = String(value || '').match(/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/);
+    if (!match) return null;
+    const [, year, month, day, hour, minute, second] = match.map(Number);
+    const date = new Date(year, month - 1, day, hour, minute, second);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function setReportTimestamp(date, source) {
+    const validDate = date instanceof Date && !Number.isNaN(date.getTime()) ? date : new Date();
+    reportTimestamp = validDate.toISOString();
+    reportTimestampSource = source === 'image' ? 'image' : 'current';
+    document.getElementById('time-text').innerHTML = `<span class="gps-ok">${escapeHTML(formatReportTimestamp(validDate))}</span>`;
+    document.getElementById('time-source').textContent = reportTimestampSource === 'image' ? 'Image' : 'Now';
+  }
+
+  function formatReportTimestamp(date) {
+    return new Intl.DateTimeFormat(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    }).format(date);
+  }
 
   // Tap the preview image to re-open camera
   document.getElementById('capture-zone').addEventListener('click', function(e) {
@@ -1067,13 +1198,14 @@
     const hasLocation = document.getElementById('field-district').value.trim() ||
                         document.getElementById('field-city').value.trim() ||
                         gpsCoords;
+    const hasTime = !!reportTimestamp;
     const hasReview = selectedTags.length > 0 && !!document.getElementById('note-field').value.trim();
 
     setChip('chip-img', hasImg);
-    setChip('chip-location', !!hasLocation);
+    setChip('chip-location', !!hasLocation && hasTime);
     setChip('chip-review', hasReview);
 
-    const analysisReady = hasImg && hasLocation;
+    const analysisReady = hasImg && hasLocation && hasTime;
     const submitReady = analysisReady && hasReview;
     document.getElementById('btn-submit').disabled = !submitReady;
     document.getElementById('btn-analyze').disabled = !analysisReady || analysisStatus === 'loading';
@@ -1110,6 +1242,8 @@
           district,
           city,
           note,
+          capturedAt: reportTimestamp,
+          capturedAtSource: reportTimestampSource,
           lat: gpsCoords ? gpsCoords.lat : '',
           lon: gpsCoords ? gpsCoords.lon : '',
         }),
@@ -1268,6 +1402,8 @@
           district,
           city,
           note,
+          capturedAt: reportTimestamp,
+          capturedAtSource: reportTimestampSource,
           lat: gpsCoords ? gpsCoords.lat : '',
           lon: gpsCoords ? gpsCoords.lon : '',
           analysis: analysisResult,
@@ -1291,6 +1427,7 @@
   function resetForm() {
     capturedFile = null;
     capturedDataURL = null;
+    setReportTimestamp(new Date(), 'current');
     selectedTags = [];
     gpsCoords = null;
     analysisStatus = 'idle';

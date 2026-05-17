@@ -100,6 +100,8 @@ async function readReviewedReports(config) {
     .map((report) => ({
       id: report.id,
       createdAt: report.createdAt,
+      capturedAt: report.capturedAt,
+      capturedAtSource: report.capturedAtSource,
       tag: report.tag,
       tags: Array.isArray(report.tags) ? report.tags : normalizeTags(report),
       district: report.district,
@@ -123,9 +125,12 @@ async function readReviewedReports(config) {
 
 async function storeReviewedReport(payload, config) {
   const tags = normalizeTags(payload);
+  const captureTime = normalizeCaptureTime(payload, config.now());
   const report = {
     id: randomUUID(),
     createdAt: new Date(config.now()).toISOString(),
+    capturedAt: captureTime.capturedAt,
+    capturedAtSource: captureTime.capturedAtSource,
     tag: tags[0],
     tags,
     district: truncateText(payload.district, 120),
@@ -180,6 +185,7 @@ async function callGemma(payload, config, maxTokens) {
     `District: ${payload.district || 'unknown'}`,
     `City: ${payload.city || 'unknown'}`,
     `GPS: ${payload.lat && payload.lon ? `${payload.lat}, ${payload.lon}` : 'not provided'}`,
+    `Captured time: ${payload.capturedAt || 'not provided'}`,
     `Field note: ${payload.note || 'none'}`,
   ].join('\n');
 
@@ -335,6 +341,23 @@ function normalizeTags(payload) {
   return candidates.filter((tag, index) =>
     ALLOWED_TAGS.has(tag) && candidates.indexOf(tag) === index
   );
+}
+
+function normalizeCaptureTime(payload, now) {
+  const parsed = Date.parse(payload?.capturedAt || '');
+  const hasClientTime = Number.isFinite(parsed);
+  const source = payload?.capturedAtSource === 'image'
+    ? 'image'
+    : payload?.capturedAtSource === 'current'
+      ? 'current'
+      : hasClientTime
+        ? 'provided'
+        : 'server';
+
+  return {
+    capturedAt: new Date(hasClientTime ? parsed : now).toISOString(),
+    capturedAtSource: source,
+  };
 }
 
 function isDataImage(value) {
