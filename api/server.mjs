@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { readFileSync } from 'node:fs';
-import { appendFile } from 'node:fs/promises';
+import { appendFile, readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -32,6 +32,11 @@ export function createServer(options = {}) {
     try {
       if (req.method === 'GET' && isHealthPath(req.url)) {
         return sendJson(res, 200, { ok: true, service: 'gemma4good-fieldreport-api' });
+      }
+
+      if (req.method === 'GET' && isReportsPath(req.url)) {
+        const reports = await readReviewedReports(config);
+        return sendJson(res, 200, { ok: true, reports });
       }
 
       if (req.method === 'POST' && isAnalyzePath(req.url)) {
@@ -68,6 +73,51 @@ export function createServer(options = {}) {
       return sendJson(res, status, { error: code, detail: status >= 500 ? undefined : error.message });
     }
   });
+}
+
+async function readReviewedReports(config) {
+  let text = '';
+  try {
+    text = await readFile(config.reportStorePath, 'utf8');
+  } catch (error) {
+    if (error && error.code === 'ENOENT') return [];
+    throw error;
+  }
+
+  return text
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean)
+    .slice(-50)
+    .reverse()
+    .map((report) => ({
+      id: report.id,
+      createdAt: report.createdAt,
+      tag: report.tag,
+      district: report.district,
+      city: report.city,
+      note: report.note,
+      lat: report.lat,
+      lon: report.lon,
+      analysis: report.analysis
+        ? {
+            summary: report.analysis.summary,
+            severity: report.analysis.severity,
+            category: report.analysis.category,
+            observedIssues: report.analysis.observedIssues,
+            recommendedActions: report.analysis.recommendedActions,
+            needsEscalation: report.analysis.needsEscalation,
+            confidence: report.analysis.confidence,
+          }
+        : null,
+    }));
 }
 
 async function storeReviewedReport(payload, config) {
@@ -297,6 +347,10 @@ function sendJson(res, status, payload) {
 function isHealthPath(url) {
   const path = new URL(url, 'http://local').pathname;
   return path === '/health' || path === '/api/fieldreport/health';
+}
+
+function isReportsPath(url) {
+  return new URL(url, 'http://local').pathname === '/api/fieldreport/reports';
 }
 
 function isAnalyzePath(url) {

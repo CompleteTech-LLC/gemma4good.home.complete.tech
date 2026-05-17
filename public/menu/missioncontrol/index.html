@@ -398,6 +398,9 @@ const TRIAGE=[
   {id:'#1283',loc:'Maidureyno',     type:'Contaminated',  sev:'SLR',age:'3.0h',status:'Raw',     team:'Team A'},
   {id:'#1265',loc:'Kismayo',        type:'Alt Maker',     sev:'LOW',age:'4.6h',status:'Review',  team:'Team B'},
 ];
+const REPORTS_ENDPOINT='/api/fieldreport/reports';
+let imageReports=[...IMG_REPORTS];
+let triageRows=[...TRIAGE];
 const ALERTS_SEED=[
   {sev:'crit',msg:'High incident — Mogadishu (Hodan): 12 unresolved in 1h',src:'WATCHDOG',ts:'07:55'},
   {sev:'warn',msg:'Low stock: Orange Jugs in Bay Region. Quality monitoring',src:'INVENTORY',ts:'07:32'},
@@ -458,6 +461,7 @@ let liveAlerts=[...ALERTS_SEED];
 // ── CLOCK ──────────────────────────────────────────────────────
 const pad=n=>String(n).padStart(2,'0');
 setInterval(()=>{const n=new Date();document.getElementById('clock').textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;},1000);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
 // ── SPARKLINES ─────────────────────────────────────────────────
 function drawSpark(id,data,col){
@@ -640,27 +644,75 @@ function buildDet(){
 }
 // ── IMAGE REPORTS ──────────────────────────────────────────────
 function buildImgReports(){
-  document.getElementById('imgList').innerHTML=IMG_REPORTS.map(r=>`
+  document.getElementById('imgList').innerHTML=imageReports.map(r=>`
     <div class="ir-item">
-      <div class="ir-th">${r.ico}</div>
+      <div class="ir-th">${esc(r.ico)}</div>
       <div>
-        <div class="ir-loc">${r.loc}</div>
-        <div class="ir-desc">${r.desc}</div>
-        <div class="ir-meta"><span class="ir-sev ${r.sev}">${r.sev.toUpperCase()}</span><span>Today · ${r.time}</span><span>📍 ${r.dist}</span></div>
+        <div class="ir-loc">${esc(r.loc)}</div>
+        <div class="ir-desc">${esc(r.desc)}</div>
+        <div class="ir-meta"><span class="ir-sev ${esc(r.sev)}">${esc(r.sev).toUpperCase()}</span><span>${esc(r.time)}</span><span>📍 ${esc(r.dist)}</span></div>
       </div>
     </div>`).join('');
+  const liveCount=Math.max(0,imageReports.length-IMG_REPORTS.length);
+  document.getElementById('img-cnt').textContent=liveCount?`Submitted (${liveCount})`:`New (${imageReports.length})`;
 }
 // ── TRIAGE ─────────────────────────────────────────────────────
 function buildTriage(){
-  document.getElementById('triageList').innerHTML=TRIAGE.map(r=>`
+  document.getElementById('triageList').innerHTML=triageRows.map(r=>`
     <div class="tr-row">
-      <div class="tr-id">${r.id}</div>
-      <div style="font-size:10px;font-weight:500">${r.loc}</div>
-      <div style="color:var(--text-dim);font-size:9px">${r.type}</div>
-      <div><span class="sev-p ${r.sev}">${r.sev}</span></div>
-      <div style="color:var(--text-dim);font-size:8px;text-align:center">${r.age}</div>
-      <div style="font-size:9px;color:${r.status==='New'?'var(--red)':r.status==='Review'?'var(--orange)':'var(--cyan)'}">${r.status} → ${r.team}</div>
+      <div class="tr-id">${esc(r.id)}</div>
+      <div style="font-size:10px;font-weight:500">${esc(r.loc)}</div>
+      <div style="color:var(--text-dim);font-size:9px">${esc(r.type)}</div>
+      <div><span class="sev-p ${esc(r.sev)}">${esc(r.sev)}</span></div>
+      <div style="color:var(--text-dim);font-size:8px;text-align:center">${esc(r.age)}</div>
+      <div style="font-size:9px;color:${r.status==='New'?'var(--red)':r.status==='Review'?'var(--orange)':'var(--cyan)'}">${esc(r.status)} → ${esc(r.team)}</div>
     </div>`).join('');
+}
+// ── SUBMITTED REPORTS ─────────────────────────────────────────
+async function loadSubmittedReports(){
+  try{
+    const res=await fetch(REPORTS_ENDPOINT,{cache:'no-store'});
+    if(!res.ok)throw new Error(`reports_${res.status}`);
+    const body=await res.json();
+    const reports=Array.isArray(body.reports)?body.reports:[];
+    const mapped=reports.map(mapSubmittedReport);
+    imageReports=[...mapped.map(r=>r.img),...IMG_REPORTS].slice(0,12);
+    triageRows=[...mapped.map(r=>r.triage),...TRIAGE].slice(0,12);
+    buildImgReports();
+    buildTriage();
+    updateReportMetrics(mapped);
+    document.getElementById('syncTime').textContent='Just now';
+  }catch(err){
+    document.getElementById('syncTime').textContent='Report sync failed';
+  }
+}
+function mapSubmittedReport(report){
+  const severity=report.analysis?.severity||'medium';
+  const category=report.analysis?.category||report.tag||'field report';
+  const loc=[report.district,report.city].filter(Boolean).join(', ')||'Manual location';
+  const created=report.createdAt?new Date(report.createdAt):new Date();
+  const time=Number.isNaN(created.getTime())?'Submitted':`${pad(created.getHours())}:${pad(created.getMinutes())}`;
+  const shortId=`#${String(report.id||'FIELD').slice(0,4).toUpperCase()}`;
+  const desc=report.analysis?.summary||report.note||'Reviewed field report submitted';
+  return{
+    img:{loc,desc,time:`Submitted · ${time}`,dist:report.lat&&report.lon?`${report.lat}, ${report.lon}`:'manual',sev:imageSeverity(severity),ico:'📸'},
+    triage:{id:shortId,loc,type:category.replaceAll('_',' '),sev:triageSeverity(severity),age:'now',status:report.analysis?.needsEscalation?'New':'Review',team:'Ops'}
+  };
+}
+function imageSeverity(severity){
+  if(severity==='critical'||severity==='high')return'hi';
+  if(severity==='low')return'lo';
+  return'md';
+}
+function triageSeverity(severity){
+  if(severity==='critical'||severity==='high')return'SLR';
+  if(severity==='low')return'LOW';
+  return'MED';
+}
+function updateReportMetrics(mapped){
+  const submitted=mapped.length;
+  document.getElementById('h-rep').textContent=(128+submitted).toLocaleString();
+  document.getElementById('hs-cnt').textContent=String(mapped.filter(r=>r.triage.sev==='SLR').length+3);
 }
 // ── ALERTS ─────────────────────────────────────────────────────
 function renderAlerts(){
@@ -727,6 +779,7 @@ function toggleAct(id){const a=ACTIONS.find(x=>x.id===id);if(a){a.done=!a.done;r
 function triggerSync(){
   const i=document.getElementById('sico');i.classList.add('spin');
   document.getElementById('syncTime').textContent='Syncing...';
+  loadSubmittedReports();
   setTimeout(()=>{
     i.classList.remove('spin');
     document.getElementById('syncTime').textContent='Just now';
@@ -766,6 +819,7 @@ function loop(ts){
 function init(){
   buildGauges();buildInv();buildDist();buildDet();buildImgReports();
   buildTriage();buildTeams();buildQA();buildNotes();renderAlerts();renderActions();
+  loadSubmittedReports();
   setTimeout(()=>{
     SP_DATA.forEach((d,i)=>drawSpark('sp'+i,d,SP_COLS[i]));
     GAUGES_DEF.forEach(drawGauge);

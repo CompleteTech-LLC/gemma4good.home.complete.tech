@@ -185,6 +185,50 @@ test('submit stores a reviewed draft report', async () => {
   }
 });
 
+test('reports endpoint returns submitted reports without image payloads', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-report-list-'));
+  const reportStorePath = join(dir, 'reports.jsonl');
+  const { baseUrl, close } = await startTestServer({ reportStorePath });
+
+  try {
+    const submitRes = await fetch(`${baseUrl}/api/fieldreport/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageDataUrl,
+        tag: 'water_quality',
+        district: 'Hodan',
+        city: 'Mogadishu',
+        note: 'Discolored water near a queue.',
+        lat: '2.0469',
+        lon: '45.3182',
+        analysis: {
+          summary: 'Discolored water near a queue.',
+          severity: 'high',
+          category: 'water_quality',
+          observedIssues: ['Discolored water'],
+          recommendedActions: ['Test water quality'],
+          needsEscalation: true,
+          confidence: 0.7,
+        },
+      }),
+    });
+    assert.equal(submitRes.status, 202);
+
+    const reportsRes = await fetch(`${baseUrl}/api/fieldreport/reports`);
+    assert.equal(reportsRes.status, 200);
+    const body = await reportsRes.json();
+    assert.equal(body.ok, true);
+    assert.equal(body.reports.length, 1);
+    assert.equal(body.reports[0].district, 'Hodan');
+    assert.equal(body.reports[0].analysis.severity, 'high');
+    assert.equal(body.reports[0].imageDataUrl, undefined);
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
 async function startTestServer(options = {}) {
   const server = createServer({
     model: 'test-model',
