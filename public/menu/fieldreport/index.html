@@ -445,6 +445,30 @@
   input.field-input::placeholder { color: var(--muted); }
   input.field-input:focus { border-color: rgba(0,194,255,0.5); }
 
+  .location-fallbacks {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 16px 16px;
+  }
+
+  .location-fallbacks.visible { display: grid; }
+
+  .location-fallback-btn {
+    border: 1px solid rgba(0,194,255,0.26);
+    background: rgba(0,194,255,0.06);
+    color: var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .location-fallback-btn:active { background: rgba(0,194,255,0.12); }
+
   /* Submit */
   .submit-wrap {
     padding: 0 16px;
@@ -790,6 +814,11 @@
       </div>
     </div>
 
+    <div class="location-fallbacks" id="location-fallbacks">
+      <button class="location-fallback-btn" type="button" onclick="useManualLocation('Hodan', 'Mogadishu')">Use Hodan Demo</button>
+      <button class="location-fallback-btn" type="button" onclick="focusManualLocation()">Enter Manually</button>
+    </div>
+
     <div class="ai-copy location-copy">Location is provided by the device or field user. Gemma should not invent it.</div>
   </div>
 
@@ -975,9 +1004,11 @@
   function setGpsStatus(message, state) {
     const strip = document.getElementById('gps-strip');
     const text = document.getElementById('gps-text');
+    const fallbacks = document.getElementById('location-fallbacks');
     strip.classList.toggle('is-ready', state === 'ready');
     strip.classList.toggle('is-error', state === 'error');
     strip.classList.toggle('is-detecting', state === 'detecting');
+    fallbacks.classList.toggle('visible', state === 'error');
 
     if (state === 'ready') {
       text.innerHTML = `<span class="gps-ok">${escapeHTML(message)}</span>`;
@@ -1007,6 +1038,19 @@
       getGPS();
     }
   });
+
+  function useManualLocation(district, city) {
+    document.getElementById('field-district').value = district;
+    document.getElementById('field-city').value = city;
+    gpsCoords = null;
+    setGpsStatus(`Manual location: ${district}, ${city}`, 'ready');
+    validate();
+    showToast('Manual location set');
+  }
+
+  function focusManualLocation() {
+    document.getElementById('field-district').focus();
+  }
 
   // Location fields auto-validate
   document.getElementById('field-district').addEventListener('input', validate);
