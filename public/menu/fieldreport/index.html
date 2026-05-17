@@ -692,6 +692,10 @@
 
   .gps-strip:active { background: rgba(0,194,255,0.1); }
 
+  .gps-strip.is-detecting { background: rgba(0,194,255,0.08); }
+  .gps-strip.is-ready { background: rgba(0,255,157,0.08); }
+  .gps-strip.is-error { background: rgba(255,107,53,0.08); }
+
   .gps-icon { font-size: 13px; }
 
   .gps-text {
@@ -703,6 +707,8 @@
   }
 
   .gps-text span { color: var(--accent); }
+  .gps-text .gps-ok { color: var(--accent2); }
+  .gps-text .gps-error { color: var(--warn); }
 
   .gps-btn-label {
     font-family: 'Space Mono', monospace;
@@ -767,9 +773,9 @@
     </div>
 
     <!-- GPS auto-fill -->
-    <div class="gps-strip" id="gps-strip" onclick="getGPS()">
+    <div class="gps-strip" id="gps-strip" onclick="getGPS()" role="button" tabindex="0">
       <span class="gps-icon">📍</span>
-      <span class="gps-text" id="gps-text">Tap to auto-fill GPS coordinates</span>
+      <span class="gps-text" id="gps-text" aria-live="polite">Tap to auto-fill GPS coordinates</span>
       <span class="gps-btn-label">Detect</span>
     </div>
 
@@ -879,6 +885,7 @@
   let capturedFile = null;
   let capturedDataURL = null;
   let gpsCoords = null;
+  let gpsDetecting = false;
   let analysisStatus = 'idle';
   let analysisResult = null;
 
@@ -929,26 +936,77 @@
 
   // ---- GPS ----
   function getGPS() {
+    if (gpsDetecting) return;
     const strip = document.getElementById('gps-strip');
-    const text = document.getElementById('gps-text');
-    text.innerHTML = 'Detecting location…';
     if (!navigator.geolocation) {
-      text.innerHTML = 'GPS not available on this device';
+      setGpsStatus('GPS is not available in this browser. Enter district or city manually.', 'error');
       return;
     }
-    navigator.geolocation.getCurrentPosition(
-      pos => {
+
+    gpsDetecting = true;
+    strip.classList.add('is-detecting');
+    setGpsStatus('Detecting location...', 'detecting');
+
+    requestPosition({ enableHighAccuracy: true, timeout: 8000, maximumAge: 0 })
+      .catch(() => requestPosition({ enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }))
+      .then(pos => {
         gpsCoords = { lat: pos.coords.latitude.toFixed(4), lon: pos.coords.longitude.toFixed(4) };
-        text.innerHTML = `<span>${gpsCoords.lat}, ${gpsCoords.lon}</span>`;
+        setGpsStatus(`${gpsCoords.lat}, ${gpsCoords.lon}`, 'ready');
         validate();
-        showToast('📍 Location captured');
-      },
-      err => {
-        text.innerHTML = 'Could not get location — enter manually';
-      },
-      { enableHighAccuracy: true, timeout: 8000 }
-    );
+        showToast('Location captured');
+      })
+      .catch(err => {
+        gpsCoords = null;
+        setGpsStatus(locationErrorMessage(err), 'error');
+        validate();
+      })
+      .finally(() => {
+        gpsDetecting = false;
+        strip.classList.remove('is-detecting');
+      });
   }
+
+  function requestPosition(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  }
+
+  function setGpsStatus(message, state) {
+    const strip = document.getElementById('gps-strip');
+    const text = document.getElementById('gps-text');
+    strip.classList.toggle('is-ready', state === 'ready');
+    strip.classList.toggle('is-error', state === 'error');
+    strip.classList.toggle('is-detecting', state === 'detecting');
+
+    if (state === 'ready') {
+      text.innerHTML = `<span class="gps-ok">${escapeHTML(message)}</span>`;
+    } else if (state === 'error') {
+      text.innerHTML = `<span class="gps-error">${escapeHTML(message)}</span>`;
+    } else {
+      text.textContent = message;
+    }
+  }
+
+  function locationErrorMessage(err) {
+    if (err && err.code === 1) {
+      return 'Location permission is blocked. Allow location in the browser, or enter district/city manually.';
+    }
+    if (err && err.code === 2) {
+      return 'Device location is unavailable. Enter district or city manually.';
+    }
+    if (err && err.code === 3) {
+      return 'Location timed out. Move outside, retry, or enter district/city manually.';
+    }
+    return 'Could not get location. Enter district or city manually.';
+  }
+
+  document.getElementById('gps-strip').addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      getGPS();
+    }
+  });
 
   // Location fields auto-validate
   document.getElementById('field-district').addEventListener('input', validate);
@@ -1194,7 +1252,7 @@
     document.getElementById('field-district').value = '';
     document.getElementById('field-city').value = '';
     document.getElementById('note-field').value = '';
-    document.getElementById('gps-text').innerHTML = 'Tap to auto-fill GPS coordinates';
+    setGpsStatus('Tap to auto-fill GPS coordinates', 'idle');
     document.getElementById('input-camera').value = '';
     document.getElementById('input-album').value = '';
     document.getElementById('btn-analyze-text').textContent = 'Analyze with Gemma4';
