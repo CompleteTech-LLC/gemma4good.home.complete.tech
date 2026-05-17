@@ -60,6 +60,17 @@ The code-server terminal PATH prepends:
 /home/coder/project/.tools/node_modules/.bin
 ```
 
+## Field Report Triage
+
+The field report page is wired to the local Gemma4 model through a same-origin API:
+
+```text
+https://gemma4good.home.complete.tech/menu/fieldreport/
+https://gemma4good.home.complete.tech/api/fieldreport/analyze
+```
+
+The browser page sends captured image, issue tag, location, and note data to the API. The API validates the request and forwards it to the private Gemma4 service on the Podman network.
+
 ## Remote Commands
 
 From PowerShell:

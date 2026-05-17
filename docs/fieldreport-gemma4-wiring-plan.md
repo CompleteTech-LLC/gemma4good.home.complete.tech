@@ -4,6 +4,16 @@
 
 Wire `https://gemma4good.home.complete.tech/menu/fieldreport/` to the Gemma4 model already running on `train.home.complete.tech`, so field users can capture a report and receive model-assisted triage from the same page.
 
+## Implementation Status
+
+Implemented on 2026-05-16.
+
+- Added `api/` Node 22 service.
+- Added `gemma4good-api` to the shared Compose stack.
+- Added Caddy route for `/api/fieldreport/*`.
+- Updated the field report page with a `Gemma4 Triage` card and explicit `Analyze with Gemma4` button.
+- Verified same-origin API health and live analysis through `https://gemma4good.home.complete.tech/api/fieldreport/analyze`.
+
 ## Current State Evidence
 
 - Field report page is live at `https://gemma4good.home.complete.tech/menu/fieldreport/`.

@@ -491,6 +491,127 @@
 
   .btn-submit:disabled::before { display: none; }
 
+  /* Gemma4 triage */
+  .ai-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .ai-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .btn-analyze {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent2);
+    color: #00140c;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-analyze:active { transform: scale(0.98); background: #00d985; }
+
+  .btn-analyze:disabled {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .ai-result {
+    border: 1px solid rgba(0,255,157,0.24);
+    background: rgba(0,255,157,0.04);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-result.visible { display: flex; }
+
+  .ai-result.error {
+    border-color: rgba(255,107,53,0.45);
+    background: rgba(255,107,53,0.06);
+  }
+
+  .ai-result-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .ai-result-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--accent2);
+    text-transform: uppercase;
+  }
+
+  .severity-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 20px;
+  }
+
+  .severity-pill.high,
+  .severity-pill.critical {
+    border-color: var(--warn);
+    color: var(--warn);
+  }
+
+  .ai-summary {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #fff;
+  }
+
+  .ai-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding-left: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .ai-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
   /* Validation hints */
   .hint-row {
     display: flex;
@@ -697,6 +818,25 @@
     </div>
   </div>
 
+  <!-- GEMMA4 TRIAGE -->
+  <div class="card ai-card">
+    <div class="card-header">
+      <span class="step-num">04</span>
+      <span class="card-title">Gemma4 Triage</span>
+    </div>
+
+    <div class="ai-body">
+      <p class="ai-copy">
+        Run local Gemma4 analysis after image, tag, and location are ready.
+      </p>
+      <button class="btn-analyze" id="btn-analyze" onclick="handleAnalyze()">
+        <span id="btn-analyze-text">Analyze with Gemma4</span>
+        <span>◆</span>
+      </button>
+      <div class="ai-result" id="ai-result"></div>
+    </div>
+  </div>
+
   <!-- SUBMIT -->
   <div class="card" style="background: transparent; border: none;">
 
@@ -729,6 +869,10 @@
   let capturedFile = null;
   let capturedDataURL = null;
   let gpsCoords = null;
+  let analysisStatus = 'idle';
+  let analysisResult = null;
+
+  const ANALYZE_ENDPOINT = '/api/fieldreport/analyze';
 
   // ---- Google Form config (update these) ----
   const FORM_ACTION = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
@@ -826,6 +970,7 @@
 
     const ready = hasImg && hasTag && hasLocation;
     document.getElementById('btn-submit').disabled = !ready;
+    document.getElementById('btn-analyze').disabled = !ready || analysisStatus === 'loading';
     return ready;
   }
 
@@ -836,6 +981,141 @@
 
   // initial state
   validate();
+
+  // ---- Gemma4 Analysis ----
+  async function handleAnalyze() {
+    if (!validate() || analysisStatus === 'loading') return;
+
+    setAnalysisLoading();
+
+    try {
+      const district = document.getElementById('field-district').value.trim();
+      const city = document.getElementById('field-city').value.trim();
+      const note = document.getElementById('note-field').value.trim();
+      const imageDataUrl = await resizeImageForAnalysis(capturedFile);
+
+      const response = await fetch(ANALYZE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageDataUrl,
+          tag: selectedTag,
+          district,
+          city,
+          note,
+          lat: gpsCoords ? gpsCoords.lat : '',
+          lon: gpsCoords ? gpsCoords.lon : '',
+        }),
+      });
+
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(body.error || 'analysis_failed');
+      }
+
+      analysisStatus = 'done';
+      analysisResult = body;
+      renderAnalysis(body);
+      showToast('Gemma4 triage ready');
+    } catch (error) {
+      analysisStatus = 'error';
+      renderAnalysisError(error.message || 'analysis_failed');
+      showToast('Gemma4 analysis failed');
+    } finally {
+      validate();
+    }
+  }
+
+  function setAnalysisLoading() {
+    analysisStatus = 'loading';
+    document.getElementById('btn-analyze-text').textContent = 'Analyzing...';
+    const result = document.getElementById('ai-result');
+    result.className = 'ai-result visible';
+    result.innerHTML = '<div class="ai-meta">Gemma4 is reviewing the field report...</div>';
+    validate();
+  }
+
+  function renderAnalysis(data) {
+    document.getElementById('btn-analyze-text').textContent = 'Analyze Again';
+    const severity = escapeHTML(data.severity || 'medium');
+    const observed = listHTML(data.observedIssues);
+    const actions = listHTML(data.recommendedActions);
+    const confidence = Number.isFinite(Number(data.confidence))
+      ? `${Math.round(Number(data.confidence) * 100)}%`
+      : 'n/a';
+
+    const result = document.getElementById('ai-result');
+    result.className = 'ai-result visible';
+    result.innerHTML = `
+      <div class="ai-result-top">
+        <span class="ai-result-label">Local Gemma4 Triage</span>
+        <span class="severity-pill ${severity}">${severity}</span>
+      </div>
+      <div class="ai-summary">${escapeHTML(data.summary || 'No summary returned.')}</div>
+      <div class="ai-meta">Observed</div>
+      <ul class="ai-list">${observed}</ul>
+      <div class="ai-meta">Recommended Actions</div>
+      <ul class="ai-list">${actions}</ul>
+      <div class="ai-meta">
+        Escalation: ${data.needsEscalation ? 'yes' : 'no'} · Confidence: ${confidence}
+      </div>
+    `;
+  }
+
+  function renderAnalysisError(code) {
+    document.getElementById('btn-analyze-text').textContent = 'Retry Gemma4 Analysis';
+    const result = document.getElementById('ai-result');
+    result.className = 'ai-result visible error';
+    result.innerHTML = `
+      <div class="ai-result-top">
+        <span class="ai-result-label">Analysis Error</span>
+        <span class="severity-pill high">Retry</span>
+      </div>
+      <div class="ai-summary">Gemma4 could not analyze this report yet.</div>
+      <div class="ai-meta">${escapeHTML(code)}</div>
+    `;
+  }
+
+  function listHTML(items) {
+    const list = Array.isArray(items) ? items : [];
+    const safe = list.slice(0, 5).map(item => `<li>${escapeHTML(item)}</li>`);
+    return safe.length ? safe.join('') : '<li>Review report manually.</li>';
+  }
+
+  function escapeHTML(value) {
+    return String(value || '').replace(/[&<>"']/g, char => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+    }[char]));
+  }
+
+  function resizeImageForAnalysis(file) {
+    return new Promise((resolve) => {
+      if (!file || !capturedDataURL) {
+        resolve(capturedDataURL);
+        return;
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        const maxSide = 1024;
+        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const width = Math.max(1, Math.round(img.width * scale));
+        const height = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = () => resolve(capturedDataURL);
+      img.src = capturedDataURL;
+    });
+  }
 
   // ---- Submit ----
   function handleSubmit() {
@@ -882,6 +1162,8 @@
     capturedDataURL = null;
     selectedTag = null;
     gpsCoords = null;
+    analysisStatus = 'idle';
+    analysisResult = null;
 
     const img = document.getElementById('preview-img');
     img.src = '';
@@ -896,6 +1178,9 @@
     document.getElementById('gps-text').innerHTML = 'Tap to auto-fill GPS coordinates';
     document.getElementById('input-camera').value = '';
     document.getElementById('input-album').value = '';
+    document.getElementById('btn-analyze-text').textContent = 'Analyze with Gemma4';
+    document.getElementById('ai-result').className = 'ai-result';
+    document.getElementById('ai-result').innerHTML = '';
     validate();
   }
 

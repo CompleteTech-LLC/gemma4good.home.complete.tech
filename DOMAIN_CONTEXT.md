@@ -84,3 +84,26 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
 - Current field report page is static HTML with image/tag/location/note capture and placeholder Google Forms submit IDs.
 - Verified Gemma4 model service on `train`: `http://172.30.88.4:18084/health` returned `{"status":"ok"}` and `/v1/models` listed `ggml-org/gemma-4-26b-a4b-it-GGUF:Q4_K_M` with `completion` and `multimodal` capabilities.
 - Plan recommends a narrow same-origin `/api/fieldreport/analyze` backend service rather than exposing the raw model endpoint directly to browser JavaScript.
+
+2026-05-16 Gemma4 field report implementation:
+- Added dependency-free Node 22 API service under `api/`.
+- Runtime service: `gemma4good-api`; container: `gemma4good-api-home-complete-tech`; static IP: `172.30.88.46`; host path: `/srv/openclaw/gemma4good/api`; container path: `/app`.
+- API routes:
+  - `GET /api/fieldreport/health`
+  - `POST /api/fieldreport/analyze`
+- Caddy now routes `/api/fieldreport/*` to `gemma4good-api-home-complete-tech:3000`.
+- Field report UI now has a `Gemma4 Triage` card with explicit `Analyze with Gemma4` action. The browser resizes the captured image before posting it to the same-origin API.
+- Updated files were synced to:
+  - `/srv/openclaw/gemma4good/api`
+  - `/srv/openclaw/gemma4good/public`
+  - `/srv/openclaw/draw-imports/gemma4good-public`
+- Remote backups:
+  - `/srv/openclaw/deploy/docker-compose.yml.bak-gemma4good-api-20260516-222715`
+  - `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-api-20260516-222833`
+- Validation:
+  - `npm test` in `api/` passed 4 tests.
+  - `podman compose -f docker-compose.yml config` passed on `train`.
+  - Caddy validation passed for `/etc/caddy/Caddyfile` and `/tmp/Caddyfile.gemma4good-api`.
+  - `https://gemma4good.home.complete.tech/api/fieldreport/health` returned HTTP `200`.
+  - `POST https://gemma4good.home.complete.tech/api/fieldreport/analyze` with `api/fixtures/sample-fieldreport-request.json` returned HTTP `200` and structured Gemma4 triage JSON.
+  - `https://gemma4good.home.complete.tech/menu/fieldreport/`, `/menu/missioncontrol/`, and `/` still returned HTTP `200`.

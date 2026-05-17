@@ -6,6 +6,10 @@ gemma4good.home.complete.tech:443 {
         file_server
     }
 
+    handle /api/fieldreport/* {
+        reverse_proxy gemma4good-api-home-complete-tech:3000
+    }
+
     handle {
         reverse_proxy gemma4good-home-complete-tech:8080 {
             header_up X-Forwarded-For {remote_host}

@@ -41,6 +41,9 @@ Implemented values:
 - Browser theme: `Default Dark Modern`
 - Project-local tools: `/srv/openclaw/gemma4good/.tools`
 - Static report mirror: `/srv/openclaw/draw-imports/gemma4good-public`
+- Field report API service: `gemma4good-api`
+- Field report API container: `gemma4good-api-home-complete-tech`
+- Field report API address: `172.30.88.46:3000`
 
 Healthcheck:
 
@@ -70,6 +73,8 @@ Remote backups created during setup:
 - `/srv/openclaw/deploy/docker-compose.yml.bak-gemma4good-20260516-164200`
 - `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-20260516-164200`
 - `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-menu-20260516-193757`
+- `/srv/openclaw/deploy/docker-compose.yml.bak-gemma4good-api-20260516-222715`
+- `/srv/openclaw/deploy/Caddyfile.bak-gemma4good-api-20260516-222833`
 
 ## Report Pages
 
@@ -86,4 +91,31 @@ After editing `/srv/openclaw/deploy/Caddyfile`, reload the rootful proxy:
 
 ```powershell
 ssh train.home.complete.tech "sudo podman exec home-complete-tech-domain-proxy caddy reload --config /etc/caddy/Caddyfile"
+```
+
+## Field Report API
+
+The field report page calls a same-origin API instead of calling Gemma4 directly from the browser:
+
+```text
+POST https://gemma4good.home.complete.tech/api/fieldreport/analyze
+```
+
+Runtime path:
+
+```text
+/srv/openclaw/gemma4good/api
+```
+
+The API forwards validated reports to the private Gemma4 endpoint:
+
+```text
+http://172.30.88.4:18084/v1/chat/completions
+```
+
+Validation commands:
+
+```powershell
+curl.exe -k https://gemma4good.home.complete.tech/api/fieldreport/health
+curl.exe -k -X POST https://gemma4good.home.complete.tech/api/fieldreport/analyze -H "Content-Type: application/json" --data-binary "@api/fixtures/sample-fieldreport-request.json"
 ```
