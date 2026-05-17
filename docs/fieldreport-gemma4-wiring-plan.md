@@ -13,6 +13,7 @@ Implemented on 2026-05-16.
 - Added Caddy route for `/api/fieldreport/*`.
 - Updated the field report page with an image-first `Gemma4 Triage` flow and explicit `Analyze with Gemma4` button.
 - Updated the workflow so image plus location are enough to analyze. Gemma4 suggests issue type, field description, severity, observed issues, actions, and escalation; the user reviews or corrects the draft before submit.
+- Added same-origin `POST /api/fieldreport/submit` for reviewed draft report acceptance.
 - Verified same-origin API health and live analysis through `https://gemma4good.home.complete.tech/api/fieldreport/analyze`.
 
 ## Current State Evidence
@@ -191,6 +192,7 @@ Update `public/menu/fieldreport/index.html`:
    - render summary, severity, recommended actions, and escalation flag,
    - preselect the inferred issue type and draft the editable field note.
 5. Keep manual submit gated on user review of the AI draft.
+6. Submit the reviewed draft to `/api/fieldreport/submit` for report-backend acceptance.
 6. Add hidden fields for analysis output only after the final reporting destination is chosen.
 
 Do not call analysis automatically on every field edit. The model is a single-parallel-slot local service, so explicit user action avoids accidental load.

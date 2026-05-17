@@ -883,19 +883,7 @@
   let analysisResult = null;
 
   const ANALYZE_ENDPOINT = '/api/fieldreport/analyze';
-
-  // ---- Google Form config (update these) ----
-  const FORM_ACTION = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
-  // Field names will look like: entry.123456789
-  // Add your entry IDs here once you have them:
-  const FIELDS = {
-    district:  'entry.DISTRICT_ID',
-    city:      'entry.CITY_ID',
-    note:      'entry.NOTE_ID',
-    tag:       'entry.TAG_ID',
-    lat:       'entry.LAT_ID',
-    lon:       'entry.LON_ID',
-  };
+  const SUBMIT_ENDPOINT = '/api/fieldreport/submit';
 
   // ---- Image Capture ----
   function handleImageFile(file) {
@@ -1145,44 +1133,47 @@
   }
 
   // ---- Submit ----
-  function handleSubmit() {
+  async function handleSubmit() {
     validate();
     if (document.getElementById('btn-submit').disabled) return;
 
     const district = document.getElementById('field-district').value.trim();
     const city = document.getElementById('field-city').value.trim();
     const note = document.getElementById('note-field').value.trim();
+    const submitButton = document.getElementById('btn-submit');
+    const originalHTML = submitButton.innerHTML;
 
-    // Build hidden form and submit to Google Forms
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = FORM_ACTION;
-    form.target = '_blank'; // opens confirmation in new tab; change to hidden iframe if you prefer silent submit
+    try {
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span>Submitting...</span><span>→</span>';
+      const imageDataUrl = await resizeImageForAnalysis(capturedFile);
+      const response = await fetch(SUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageDataUrl,
+          tag: selectedTag,
+          district,
+          city,
+          note,
+          lat: gpsCoords ? gpsCoords.lat : '',
+          lon: gpsCoords ? gpsCoords.lon : '',
+          analysis: analysisResult,
+        }),
+      });
 
-    const fields = {
-      [FIELDS.tag]:      selectedTag,
-      [FIELDS.district]: district,
-      [FIELDS.city]:     city,
-      [FIELDS.note]:     note,
-      [FIELDS.lat]:      gpsCoords ? gpsCoords.lat : '',
-      [FIELDS.lon]:      gpsCoords ? gpsCoords.lon : '',
-    };
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(body.error || 'submit_failed');
+      }
 
-    for (const [name, value] of Object.entries(fields)) {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = name;
-      input.value = value;
-      form.appendChild(input);
+      showToast(`Report submitted: ${body.reportId ? body.reportId.slice(0, 8) : 'accepted'}`);
+    } catch (error) {
+      showToast(`Submit failed: ${error.message || 'try again'}`);
+    } finally {
+      submitButton.innerHTML = originalHTML;
+      validate();
     }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    showToast('✅ Report submitted');
-    // Optionally reset after a delay:
-    // setTimeout(resetForm, 2000);
   }
 
   function resetForm() {

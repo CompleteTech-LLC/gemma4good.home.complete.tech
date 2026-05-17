@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { test } from 'node:test';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createServer } from './server.mjs';
 
 const imageDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=';
@@ -141,9 +144,51 @@ test('falls back when model content is empty', async () => {
   }
 });
 
+test('submit stores a reviewed draft report', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-report-'));
+  const reportStorePath = join(dir, 'reports.jsonl');
+  const { baseUrl, close } = await startTestServer({ reportStorePath });
+
+  try {
+    const res = await fetch(`${baseUrl}/api/fieldreport/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageDataUrl,
+        tag: 'infrastructure',
+        district: 'Hodan',
+        city: 'Mogadishu',
+        note: 'Damaged pipe near a long queue.',
+        analysis: {
+          summary: 'Damaged pipe near a long queue.',
+          severity: 'high',
+          category: 'infrastructure',
+          observedIssues: ['Damaged pipe'],
+          recommendedActions: ['Inspect pipe'],
+          needsEscalation: true,
+          confidence: 0.75,
+        },
+      }),
+    });
+
+    assert.equal(res.status, 202);
+    const body = await res.json();
+    assert.equal(body.ok, true);
+    assert.match(body.reportId, /^[0-9a-f-]+$/);
+
+    const stored = JSON.parse((await readFile(reportStorePath, 'utf8')).trim());
+    assert.equal(stored.tag, 'infrastructure');
+    assert.equal(stored.analysis.severity, 'high');
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
 async function startTestServer(options = {}) {
   const server = createServer({
     model: 'test-model',
+    reportStorePath: options.reportStorePath,
     fetchImpl: options.fetchImpl || (async () => new Response('{}', { status: 500 })),
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));

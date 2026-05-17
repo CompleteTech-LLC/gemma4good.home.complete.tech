@@ -1,5 +1,7 @@
 import http from 'node:http';
 import { readFileSync } from 'node:fs';
+import { appendFile } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,6 +21,7 @@ export function createServer(options = {}) {
     model: process.env.GEMMA4_MODEL || options.model || DEFAULT_MODEL,
     maxBodyBytes: Number(process.env.MAX_BODY_BYTES || options.maxBodyBytes || 6 * 1024 * 1024),
     requestTimeoutMs: Number(process.env.GEMMA4_TIMEOUT_MS || options.requestTimeoutMs || 90000),
+    reportStorePath: process.env.REPORT_STORE_PATH || options.reportStorePath || '/tmp/gemma4good-fieldreports.jsonl',
     fetchImpl: options.fetchImpl || fetch,
     now: options.now || Date.now,
   };
@@ -47,6 +50,17 @@ export function createServer(options = {}) {
         return sendJson(res, 200, analysis);
       }
 
+      if (req.method === 'POST' && isSubmitPath(req.url)) {
+        const payload = await readJsonBody(req, config.maxBodyBytes);
+        const validation = validateSubmissionPayload(payload);
+        if (!validation.ok) {
+          return sendJson(res, 400, { error: validation.error });
+        }
+
+        const report = await storeReviewedReport(payload, config);
+        return sendJson(res, 202, report);
+      }
+
       return sendJson(res, 404, { error: 'not_found' });
     } catch (error) {
       const status = error.statusCode || 500;
@@ -54,6 +68,28 @@ export function createServer(options = {}) {
       return sendJson(res, status, { error: code, detail: status >= 500 ? undefined : error.message });
     }
   });
+}
+
+async function storeReviewedReport(payload, config) {
+  const report = {
+    id: randomUUID(),
+    createdAt: new Date(config.now()).toISOString(),
+    tag: payload.tag,
+    district: truncateText(payload.district, 120),
+    city: truncateText(payload.city, 120),
+    note: truncateText(payload.note, 500),
+    lat: truncateText(payload.lat, 40),
+    lon: truncateText(payload.lon, 40),
+    imageDataUrl: payload.imageDataUrl,
+    analysis: payload.analysis && typeof payload.analysis === 'object' ? normalizeAnalysis(payload.analysis, config.model) : null,
+  };
+
+  await appendFile(config.reportStorePath, `${JSON.stringify(report)}\n`, 'utf8');
+  return {
+    ok: true,
+    reportId: report.id,
+    stored: true,
+  };
 }
 
 export async function analyzeFieldReport(payload, config) {
@@ -211,6 +247,17 @@ function validatePayload(payload) {
   return { ok: true };
 }
 
+function validateSubmissionPayload(payload) {
+  if (!payload || typeof payload !== 'object') return { ok: false, error: 'invalid_json' };
+  if (!isDataImage(payload.imageDataUrl)) return { ok: false, error: 'image_required' };
+  if (!ALLOWED_TAGS.has(payload.tag)) return { ok: false, error: 'tag_required' };
+  if (!truncateText(payload.note, 500)) return { ok: false, error: 'note_required' };
+  if (!payload.district && !payload.city && !(payload.lat && payload.lon)) {
+    return { ok: false, error: 'location_required' };
+  }
+  return { ok: true };
+}
+
 function isDataImage(value) {
   return typeof value === 'string' && /^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+/=\s]+$/i.test(value);
 }
@@ -254,6 +301,10 @@ function isHealthPath(url) {
 
 function isAnalyzePath(url) {
   return new URL(url, 'http://local').pathname === '/api/fieldreport/analyze';
+}
+
+function isSubmitPath(url) {
+  return new URL(url, 'http://local').pathname === '/api/fieldreport/submit';
 }
 
 function getClientIp(req) {
