@@ -26,5 +26,41 @@
     "sanitation": 7,
     "infrastructure": 6
   },
-  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+  "generated_from": "ComfyUI v1-5-pruned-emaonly.ckpt direct JSON prompt regeneration at 2026-05-18T08:34:48.952Z",
+  "prompt": {
+    "prompt_version": "v2-direct-photo",
+    "scene": "A direct photorealistic smartphone field-report photo from Bardera, Bardera, Gedo, Somalia, captured in natural daylight during a 2024 humanitarian water and sanitation report. The image should look like one practical mobile upload from a field user, not a collage or presentation graphic.",
+    "required_visuals": [
+      "turbid brown water visible in a jerrycan, bucket, shallow basin, well opening, or public tap flow",
+      "sediment, cloudiness, oily sheen, or suspended particles visible without adding labels or text",
+      "water source framed as the main evidence in a practical field-report photo",
+      "standing wastewater, poor drainage, scattered litter, muddy runoff, or blocked channel near the water point",
+      "non-graphic environmental sanitation issue visible in the surrounding ground and access path",
+      "wet mud, plastic debris, and drainage flow shown as context rather than as a staged disaster scene",
+      "leaking pipe, broken tap, damaged valve, cracked storage tank, or broken hand pump",
+      "wet ground or pooling water caused by a water-system failure",
+      "damaged hardware shown clearly enough for a field coordinator to understand the repair need",
+      "specific visible anchor: a shallow metal basin holding cloudy water with visible sediment",
+      "specific visible anchor: scattered plastic waste caught along a shallow drainage channel",
+      "specific visible anchor: a patched storage tank valve dripping into a shallow puddle",
+      "severity reads as high: serious visible concern that should be prioritized",
+      "location context: Bardera, Gedo with dry rural settlement or roadside setting with scrub, dust, and simple water infrastructure",
+      "field note to visualize: Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground."
+    ],
+    "composition": "slightly downward phone angle from a standing field user, close enough to inspect the issue. One single realistic photo containing only these issue categories: water quality, sanitation, infrastructure. Do not use a contact sheet or separate panels.",
+    "style": "Photorealistic-natural documentary mobile photo, natural daylight, imperfect handheld framing, realistic scale and materials, believable shadows, normal phone-camera sharpness, no artificial polish.",
+    "avoid": [
+      "text inside the image, labels, captions, UI, logos, watermarks, branded products",
+      "cartoon style, illustration, CGI, cinematic color grading, dramatic disaster staging",
+      "gore, injury, visible disease symptoms, medical treatment scenes",
+      "identifiable faces, identifiable children, posed portraits",
+      "political, military, weapons, uniforms, flags, or conflict imagery",
+      "extra issue categories that are not listed in the JSON categories"
+    ],
+    "generation_status": "approved",
+    "quality_status": "approved"
+  },
+  "prompt_version": "v2-direct-photo",
+  "generation_status": "approved",
+  "quality_status": "approved"
 }

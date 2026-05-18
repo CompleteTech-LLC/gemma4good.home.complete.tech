@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gemma4good.home.complete.tech/schemas/reviewed-fieldreport.schema.json",
+  "title": "Gemma4Good Reviewed Field Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "createdAt",
+    "capturedAt",
+    "capturedAtSource",
+    "tag",
+    "tags",
+    "district",
+    "city",
+    "note",
+    "lat",
+    "lon",
+    "analysis"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "createdAt": {
+      "description": "Server storage time.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "capturedAt": {
+      "description": "User-reviewed report capture time.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "capturedAtSource": {
+      "type": "string",
+      "enum": ["image", "file", "current", "manual", "provided", "server"]
+    },
+    "tag": {
+      "description": "Primary user-reviewed category for backward compatibility.",
+      "$ref": "fieldreport-analysis.schema.json#/$defs/category"
+    },
+    "tags": {
+      "description": "Final human-reviewed categories selected in the UI.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "fieldreport-analysis.schema.json#/$defs/category"
+      }
+    },
+    "district": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "city": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "lat": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "lon": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "imageDataUrl": {
+      "description": "Stored only in the private JSONL store; omitted from report list responses.",
+      "type": "string",
+      "pattern": "^data:image/(png|jpe?g|webp);base64,"
+    },
+    "analysis": {
+      "$ref": "fieldreport-analysis.schema.json"
+    }
+  }
+}

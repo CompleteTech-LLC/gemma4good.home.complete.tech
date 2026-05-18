@@ -1,0 +1,23 @@
+{
+  "summary": "Highly turbid standing water is visible near a public access area, with sanitation and health-risk concerns.",
+  "severity": "high",
+  "category": "water_quality",
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "health_risk"
+  ],
+  "observedIssues": [
+    "Water appears highly turbid or discolored.",
+    "Standing water may indicate poor drainage or contamination risk.",
+    "Scene may affect people collecting or using nearby water."
+  ],
+  "recommendedActions": [
+    "Mark the report for same-day field review.",
+    "Collect a water quality sample if safe and available.",
+    "Check whether sanitation runoff or drainage is entering the water source.",
+    "Advise local users not to drink untreated water until reviewed."
+  ],
+  "needsEscalation": true,
+  "confidence": 0.78
+}

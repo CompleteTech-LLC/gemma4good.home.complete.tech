@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "complete": true,
+  "counts": {
+    "json": 300,
+    "images": 300,
+    "uniquePrompts": 300,
+    "variations": {
+      "health_risk": 20,
+      "infrastructure+health_risk": 20,
+      "infrastructure": 20,
+      "sanitation+health_risk": 20,
+      "sanitation+infrastructure+health_risk": 20,
+      "sanitation+infrastructure": 20,
+      "sanitation": 20,
+      "water_quality+health_risk": 20,
+      "water_quality+infrastructure+health_risk": 20,
+      "water_quality+infrastructure": 20,
+      "water_quality+sanitation+health_risk": 20,
+      "water_quality+sanitation+infrastructure+health_risk": 20,
+      "water_quality+sanitation+infrastructure": 20,
+      "water_quality+sanitation": 20,
+      "water_quality": 20
+    },
+    "generationStatus": {
+      "approved": 300
+    },
+    "qualityStatus": {
+      "approved": 300
+    }
+  },
+  "requiredPromptFields": [
+    "prompt_version",
+    "scene",
+    "required_visuals",
+    "composition",
+    "style",
+    "avoid",
+    "generation_status",
+    "quality_status"
+  ],
+  "qaStatuses": [
+    "needs_review",
+    "approved",
+    "rejected"
+  ],
+  "generationStatuses": [
+    "pending_regeneration",
+    "generated",
+    "regenerated",
+    "approved"
+  ],
+  "warnings": [],
+  "completionErrors": [],
+  "errors": [],
+  "generatedAt": "2026-05-18T09:03:31.016Z"
+}

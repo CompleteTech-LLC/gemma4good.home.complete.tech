@@ -29,6 +29,11 @@ pnpm-debug.log*
 # Dependencies and build output
 node_modules/
 .tools/
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+*.venv/
 dist/
 build/
 .cache/
@@ -39,3 +44,6 @@ coverage/
 # Local artifacts
 artifacts/
 tmp/
+*.gguf
+submission-notebook/model-files/
+UserstimotDocumentsprojectsai-modelsstable-diffusionstable-diffusionComfyUI.venv-timot/

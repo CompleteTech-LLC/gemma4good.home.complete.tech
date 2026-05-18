@@ -2,7 +2,7 @@ import http from 'node:http';
 import { createReadStream, readFileSync } from 'node:fs';
 import { appendFile, readFile, readdir, stat } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { basename, dirname, extname, join, normalize, relative, resolve } from 'node:path';
+import { basename, dirname, extname, isAbsolute, join, normalize, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -18,6 +18,17 @@ const CATEGORY_LABELS = {
   health_risk: 'Health Risk',
 };
 const DEMO_CACHE_MS = 60000;
+const QA_RANK = {
+  approved: 3,
+  needs_review: 1,
+  rejected: 0,
+};
+const GENERATION_RANK = {
+  approved: 3,
+  regenerated: 2,
+  generated: 1,
+  pending_regeneration: 0,
+};
 
 const systemPrompt = readFileSync(join(__dirname, 'prompts', 'fieldreport-system.md'), 'utf8');
 let demoDatasetCache = null;
@@ -101,7 +112,7 @@ async function buildMissionControlData(config, limit) {
   ]);
   const reports = [...submittedReports.map(mapSubmittedToMissionReport), ...demoReports]
     .filter(Boolean)
-    .sort((a, b) => Date.parse(b.capturedAt || b.createdAt || 0) - Date.parse(a.capturedAt || a.createdAt || 0))
+    .sort(compareMissionReports)
     .slice(0, limit);
 
   const severityCounts = countBy(reports, (report) => report.severity);
@@ -186,6 +197,7 @@ async function walkJsonFiles(dir) {
 
 function mapDemoMetadataToMissionReport(meta, file, root) {
   if (!meta || typeof meta !== 'object') return null;
+  if (meta.quality_status === 'rejected') return null;
   const categories = normalizeCategories(meta.categories);
   if (!categories.length) return null;
   const severity = ALLOWED_SEVERITY.has(meta.severity) ? meta.severity : 'medium';
@@ -215,6 +227,8 @@ function mapDemoMetadataToMissionReport(meta, file, root) {
     note: truncateText(meta.short_note, 220) || `${formatCategoryList(categories)} field report.`,
     summary: truncateText(meta.short_note, 220) || `${formatCategoryList(categories)} field report.`,
     imageUrl: `/api/fieldreport/demo-image/${encodeURIComponent(imagePath)}`,
+    generationStatus: normalizeGenerationStatus(meta.generation_status),
+    qualityStatus: normalizeQualityStatus(meta.quality_status),
   };
 }
 
@@ -243,7 +257,29 @@ function mapSubmittedToMissionReport(report) {
     note: truncateText(report.note, 220),
     summary: truncateText(report.analysis?.summary, 220) || truncateText(report.note, 220) || 'Reviewed field report submitted.',
     imageUrl: null,
+    generationStatus: 'submitted',
+    qualityStatus: 'approved',
   };
+}
+
+function compareMissionReports(a, b) {
+  if (a.source === 'demo-images' && b.source === 'demo-images') {
+    const qualityDelta = (QA_RANK[b.qualityStatus] || 0) - (QA_RANK[a.qualityStatus] || 0);
+    if (qualityDelta) return qualityDelta;
+    const generationDelta = (GENERATION_RANK[b.generationStatus] || 0) - (GENERATION_RANK[a.generationStatus] || 0);
+    if (generationDelta) return generationDelta;
+  }
+
+  return Date.parse(b.capturedAt || b.createdAt || 0) - Date.parse(a.capturedAt || a.createdAt || 0);
+}
+
+function normalizeQualityStatus(value) {
+  return value === 'approved' || value === 'rejected' ? value : 'needs_review';
+}
+
+function normalizeGenerationStatus(value) {
+  if (value === 'approved' || value === 'regenerated' || value === 'generated') return value;
+  return 'pending_regeneration';
 }
 
 async function serveDemoImage(req, res, config) {
@@ -252,7 +288,13 @@ async function serveDemoImage(req, res, config) {
   const relativeImagePath = decodeURIComponent(encoded || '');
   const root = resolve(config.demoImagesDir);
   const target = resolve(root, normalize(relativeImagePath));
-  if (!target.startsWith(`${root}/`) || !['.jpg', '.jpeg', '.png', '.webp'].includes(extname(target).toLowerCase())) {
+  const relativeTarget = relative(root, target);
+  if (
+    !relativeImagePath ||
+    relativeTarget.startsWith('..') ||
+    isAbsolute(relativeTarget) ||
+    !['.jpg', '.jpeg', '.png', '.webp'].includes(extname(target).toLowerCase())
+  ) {
     return sendJson(res, 404, { error: 'not_found' });
   }
 
