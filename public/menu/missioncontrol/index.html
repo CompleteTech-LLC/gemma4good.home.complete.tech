@@ -111,11 +111,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ir-sev.hi{background:rgba(255,45,85,.2);color:var(--red);border:1px solid var(--red-dim)}
 .ir-sev.md{background:rgba(255,122,0,.2);color:var(--orange);border:1px solid var(--orange-dim)}
 .ir-sev.lo{background:rgba(0,255,136,.15);color:var(--green);border:1px solid var(--green-dim)}
+.ir-q{padding:1px 4px;font-size:8px;font-weight:700;letter-spacing:1px;border:1px solid var(--border-hi);color:var(--text-dim);background:rgba(74,96,112,.08)}
+.ir-q.ok{color:var(--green);border-color:var(--green-dim);background:rgba(0,255,136,.12)}
+.ir-q.review{color:var(--orange);border-color:var(--orange-dim);background:rgba(255,122,0,.12)}
+.ir-q.bad{color:var(--red);border-color:var(--red-dim);background:rgba(255,45,85,.12)}
 .ir-item.on{background:rgba(0,212,255,0.08);box-shadow:inset 2px 0 0 var(--cyan)}
 .rd{display:grid;grid-template-columns:84px 1fr;gap:8px;padding:8px 10px;border-top:1px solid var(--border);background:#0a0e14;min-height:104px}
 .rd-img{width:84px;height:84px;border:1px solid var(--border-hi);background:var(--panel2);object-fit:cover}
 .rd-t{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--text-hi);letter-spacing:.5px}
 .rd-s{font-size:9px;color:var(--text-dim);line-height:1.35;margin-top:2px}
+.rd-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
 .rd-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 8px;margin-top:5px}
 .rd-k{font-size:7px;color:var(--text-dim);letter-spacing:1.5px}
 .rd-v{font-size:9px;color:var(--cyan);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -623,7 +628,7 @@ function buildImgReports(){
       <div>
         <div class="ir-loc">${esc(r.loc)}</div>
         <div class="ir-desc">${esc(r.desc)}</div>
-        <div class="ir-meta"><span class="ir-sev ${esc(r.sev)}">${esc(r.sev).toUpperCase()}</span><span>${esc(r.time)}</span><span>📍 ${esc(r.dist)}</span></div>
+        <div class="ir-meta"><span class="ir-sev ${esc(r.sev)}">${esc(r.sev).toUpperCase()}</span><span class="ir-q ${esc(r.qaClass)}">${esc(r.qaLabel)}</span><span>${esc(r.time)}</span><span>📍 ${esc(r.dist)}</span></div>
       </div>
     </div>`).join('');
   document.getElementById('img-cnt').textContent=`Loaded (${imageReports.length})`;
@@ -645,6 +650,7 @@ function buildReportDetail(){
     <div>
       <div class="rd-t">${esc(r.title)}</div>
       <div class="rd-s">${esc(r.desc)}</div>
+      <div class="rd-badges"><span class="ir-q ${esc(r.qaClass)}">${esc(r.qaLabel)}</span><span class="ir-q ${esc(r.genClass)}">${esc(r.genLabel)}</span></div>
       <div class="rd-grid">
         <div><div class="rd-k">SEVERITY</div><div class="rd-v">${esc(r.severityLabel)}</div></div>
         <div><div class="rd-k">SOURCE</div><div class="rd-v">${esc(r.sourceLabel)}</div></div>
@@ -699,10 +705,18 @@ function mapMissionReport(report){
   const shortId=`#${String(report.id||'FIELD').slice(0,4).toUpperCase()}`;
   const desc=report.summary||report.note||'Reviewed field report submitted';
   const coord=Number.isFinite(location.lat)&&Number.isFinite(location.lon)?`${location.lat.toFixed(3)}, ${location.lon.toFixed(3)}`:'manual';
+  const qa=statusMeta(report.qualityStatus,report.source==='demo-images'?'approved':'approved','QA');
+  const gen=statusMeta(report.generationStatus,report.source==='demo-images'?'approved':'submitted','GEN');
   return{
-    img:{loc,desc,time:`${timeLabel} · ${time}`,dist:coord,sev:imageSeverity(severity),ico:'📸',imageUrl:report.imageUrl,title:category,severityLabel:severity.toUpperCase(),sourceLabel:report.source==='submitted'?'Submitted report':'Demo dataset'},
+    img:{loc,desc,time:`${timeLabel} · ${time}`,dist:coord,sev:imageSeverity(severity),ico:'📸',imageUrl:report.imageUrl,title:category,severityLabel:severity.toUpperCase(),sourceLabel:report.source==='submitted'?'Submitted report':'Demo dataset',qaLabel:qa.label,qaClass:qa.cls,genLabel:gen.label,genClass:gen.cls},
     triage:{id:shortId,loc,type:category,sev:triageSeverity(severity),age:ageLabel(created),status:(severity==='critical'||severity==='high')?'New':'Review',team:report.source==='submitted'?'Ops':'Demo'}
   };
+}
+function statusMeta(value,fallback,prefix){
+  const normalized=String(value||fallback||'pending').toLowerCase();
+  const cls=normalized==='approved'||normalized==='submitted'?'ok':normalized==='rejected'?'bad':normalized.includes('review')||normalized.includes('pending')?'review':'';
+  const label=normalized.replaceAll('_',' ').toUpperCase();
+  return{label:`${prefix} ${label}`,cls};
 }
 function imageSeverity(severity){
   if(severity==='critical'||severity==='high')return'hi';
