@@ -293,6 +293,42 @@ test('missioncontrol endpoint returns demo-image records instead of mock data', 
   }
 });
 
+test('missioncontrol endpoint accepts a trailing slash', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-demo-images-slash-'));
+  const variationDir = join(dir, 'health_risk');
+  await mkdir(variationDir, { recursive: true });
+  await writeFile(join(variationDir, 'demo.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+  await writeFile(join(variationDir, 'demo.json'), JSON.stringify({
+    id: 'slash-demo-report',
+    image_file: 'demo.jpg',
+    variation: 'health_risk',
+    timestamp: '2024-07-01T08:00:00Z',
+    location: {
+      city: 'Garowe',
+      district: 'Garowe',
+      region: 'Nugaal',
+      country: 'Somalia',
+      lat: 8.4054,
+      lon: 48.4845,
+    },
+    categories: ['health_risk'],
+    severity: 'high',
+    short_note: 'Unsafe access near a water point.',
+  }));
+
+  const { baseUrl, close } = await startTestServer({ demoImagesDir: dir });
+  try {
+    const res = await fetch(`${baseUrl}/api/fieldreport/missioncontrol/?limit=5`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.ok, true);
+    assert.equal(body.reports[0].id, 'slash-demo-report');
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
 test('demo image endpoint serves mounted demo images', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'gemma4good-demo-image-route-'));
   const variationDir = join(dir, 'water_quality');

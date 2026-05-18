@@ -709,16 +709,16 @@ function sendJson(res, status, payload) {
 }
 
 function isHealthPath(url) {
-  const path = new URL(url, 'http://local').pathname;
+  const path = normalizedPath(url);
   return path === '/health' || path === '/api/fieldreport/health';
 }
 
 function isReportsPath(url) {
-  return new URL(url, 'http://local').pathname === '/api/fieldreport/reports';
+  return normalizedPath(url) === '/api/fieldreport/reports';
 }
 
 function isMissionControlPath(url) {
-  return new URL(url, 'http://local').pathname === '/api/fieldreport/missioncontrol';
+  return normalizedPath(url) === '/api/fieldreport/missioncontrol';
 }
 
 function isDemoImagePath(url) {
@@ -731,11 +731,16 @@ function getLimit(url, fallback) {
 }
 
 function isAnalyzePath(url) {
-  return new URL(url, 'http://local').pathname === '/api/fieldreport/analyze';
+  return normalizedPath(url) === '/api/fieldreport/analyze';
 }
 
 function isSubmitPath(url) {
-  return new URL(url, 'http://local').pathname === '/api/fieldreport/submit';
+  return normalizedPath(url) === '/api/fieldreport/submit';
+}
+
+function normalizedPath(url) {
+  const path = new URL(url, 'http://local').pathname;
+  return path.length > 1 ? path.replace(/\/+$/, '') : path;
 }
 
 function getClientIp(req) {
