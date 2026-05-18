@@ -17,6 +17,7 @@ Primary links:
 - Team size: up to 5.
 - Each team may submit one final Kaggle Writeup. Draft/unsubmitted writeups are not considered.
 - Kaggle currently reports required writeup assets: video, project links, and a cover/card image.
+- Each participant must use one Kaggle account only, and team membership must stay within Kaggle's team rules.
 
 ## Valid Submission Requirements
 
@@ -43,6 +44,16 @@ Code requirements:
 - Well documented.
 - Clearly shows the Gemma 4 implementation.
 - Enough architecture, training/inference, and environment detail for judges to verify the demo is backed by real engineering.
+
+## Rules Compliance Items
+
+- Winner license type is CC-BY 4.0 for the winning submission and source code used to generate it.
+- Any external data or external models used for development/testing must be publicly available and equally accessible to participants at no cost, or otherwise meet Kaggle's reasonableness criteria.
+- Do not privately share competition code or data outside the official Kaggle team. Public sharing is allowed only when it does not violate third-party IP rights and is shared for all participants through Kaggle competition forums/notebooks.
+- Open source code used in the submission must use licenses that do not limit commercial use of the code or a model containing/depending on that code.
+- If selected as a winner, be ready to provide reproducible documentation: architecture, preprocessing, loss function/training details if applicable, hyperparameters, runtime resources, inference code, and complete setup instructions.
+- Do not use hand labels or human predictions for validation/test records.
+- The submission must be original work and must not infringe third-party rights.
 
 ## Judging Rubric
 
