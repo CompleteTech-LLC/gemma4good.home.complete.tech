@@ -97,6 +97,24 @@ Use the VS Code task runner for common checks:
 - `remote: dev service container`
 - `check: dev URL headers`
 
+## Maintenance
+
+Keep local maintenance work outside OneDrive. On this machine, prefer:
+
+```powershell
+C:\Users\Admin\src\gemma4good.home.complete.tech
+```
+
+Run the dependency-free maintainer toolkit from the repo root:
+
+```powershell
+node scripts/maintain.mjs doctor
+node scripts/maintain.mjs demo-data
+node scripts/maintain.mjs api-test
+```
+
+See `docs/maintenance.md` for the full maintainer playbook and remote-health boundaries.
+
 ## Current Status
 
 This workspace is wired to a development code-server backend.

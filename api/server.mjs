@@ -2,7 +2,7 @@ import http from 'node:http';
 import { createReadStream, readFileSync } from 'node:fs';
 import { appendFile, readFile, readdir, stat } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { basename, dirname, extname, join, normalize, relative, resolve } from 'node:path';
+import { basename, dirname, extname, isAbsolute, join, normalize, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -252,7 +252,12 @@ async function serveDemoImage(req, res, config) {
   const relativeImagePath = decodeURIComponent(encoded || '');
   const root = resolve(config.demoImagesDir);
   const target = resolve(root, normalize(relativeImagePath));
-  if (!target.startsWith(`${root}/`) || !['.jpg', '.jpeg', '.png', '.webp'].includes(extname(target).toLowerCase())) {
+  const targetRelative = relative(root, target);
+  if (
+    targetRelative.startsWith('..')
+    || isAbsolute(targetRelative)
+    || !['.jpg', '.jpeg', '.png', '.webp'].includes(extname(target).toLowerCase())
+  ) {
     return sendJson(res, 404, { error: 'not_found' });
   }
 

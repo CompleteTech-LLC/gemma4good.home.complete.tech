@@ -2,6 +2,46 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "maintain: doctor",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}\\scripts\\maintain.mjs",
+        "doctor"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "maintain: demo data",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}\\scripts\\maintain.mjs",
+        "demo-data"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "maintain: api tests",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}\\scripts\\maintain.mjs",
+        "api-test"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "maintain: remote health",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}\\scripts\\maintain.mjs",
+        "remote-health"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "remote: pwd",
       "type": "shell",
       "command": "powershell.exe",
