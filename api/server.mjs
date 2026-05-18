@@ -726,7 +726,9 @@ function isDemoImagePath(url) {
 }
 
 function getLimit(url, fallback) {
-  const limit = Number(new URL(url, 'http://local').searchParams.get('limit'));
+  const rawLimit = new URL(url, 'http://local').searchParams.get('limit');
+  if (rawLimit === null || rawLimit === '') return fallback;
+  const limit = Number(rawLimit);
   return Number.isFinite(limit) ? Math.max(1, Math.min(300, Math.floor(limit))) : fallback;
 }
 

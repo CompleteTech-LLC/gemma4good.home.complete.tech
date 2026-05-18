@@ -110,6 +110,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ir-sev.hi{background:rgba(255,45,85,.2);color:var(--red);border:1px solid var(--red-dim)}
 .ir-sev.md{background:rgba(255,122,0,.2);color:var(--orange);border:1px solid var(--orange-dim)}
 .ir-sev.lo{background:rgba(0,255,136,.15);color:var(--green);border:1px solid var(--green-dim)}
+.ir-item.on{background:rgba(0,212,255,0.08);box-shadow:inset 2px 0 0 var(--cyan)}
+.rd{display:grid;grid-template-columns:84px 1fr;gap:8px;padding:8px 10px;border-top:1px solid var(--border);background:#0a0e14;min-height:104px}
+.rd-img{width:84px;height:84px;border:1px solid var(--border-hi);background:var(--panel2);object-fit:cover}
+.rd-t{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--text-hi);letter-spacing:.5px}
+.rd-s{font-size:9px;color:var(--text-dim);line-height:1.35;margin-top:2px}
+.rd-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 8px;margin-top:5px}
+.rd-k{font-size:7px;color:var(--text-dim);letter-spacing:1.5px}
+.rd-v{font-size:9px;color:var(--cyan);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* TRIAGE */
 .tr-row{display:grid;grid-template-columns:26px 58px 1fr 42px 42px 66px;gap:3px;align-items:center;padding:4px 9px;border-bottom:1px solid var(--border);font-size:9px;cursor:pointer;transition:background .15s}
 .tr-row:hover{background:rgba(0,212,255,0.04)}
@@ -301,7 +309,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div style="display:flex;gap:5px"><span style="font-size:9px;color:var(--text-dim)" id="img-cnt">New (20)</span><span class="pb in">VIEW ALL</span></div>
         </div>
         <div class="scroll-y f1" id="imgList"></div>
-        <div style="padding:4px 9px;border-top:1px solid var(--border);background:#0a0e14;font-size:9px;color:var(--cyan);cursor:pointer;text-align:center">+ 16 MORE REPORTS</div>
+        <div id="reportDetail" class="rd"></div>
       </div>
     </div>
 
@@ -389,6 +397,7 @@ const TRIAGE=[];
 const REPORTS_ENDPOINT='/api/fieldreport/missioncontrol?limit=80';
 let imageReports=[...IMG_REPORTS];
 let triageRows=[...TRIAGE];
+let selectedReportIndex=0;
 let reportMetricBase=0;
 let ALERTS_SEED=[];
 const ALERT_POOL=[];
@@ -606,7 +615,7 @@ function buildDet(){
 // ── IMAGE REPORTS ──────────────────────────────────────────────
 function buildImgReports(){
   document.getElementById('imgList').innerHTML=imageReports.map(r=>`
-    <div class="ir-item">
+    <div class="ir-item ${r.index===selectedReportIndex?'on':''}" onclick="selectReport(${r.index})">
       <div class="ir-th">${r.imageUrl?`<img src="${esc(r.imageUrl)}" alt="">`:esc(r.ico||'📸')}</div>
       <div>
         <div class="ir-loc">${esc(r.loc)}</div>
@@ -615,6 +624,31 @@ function buildImgReports(){
       </div>
     </div>`).join('');
   document.getElementById('img-cnt').textContent=`Loaded (${imageReports.length})`;
+  buildReportDetail();
+}
+function selectReport(index){
+  selectedReportIndex=index;
+  buildImgReports();
+}
+function buildReportDetail(){
+  const r=imageReports.find(item=>item.index===selectedReportIndex)||imageReports[0];
+  const el=document.getElementById('reportDetail');
+  if(!r){
+    el.innerHTML='<div class="rd-s">No report loaded yet.</div>';
+    return;
+  }
+  el.innerHTML=`
+    ${r.imageUrl?`<img class="rd-img" src="${esc(r.imageUrl)}" alt="">`:`<div class="rd-img" style="display:flex;align-items:center;justify-content:center">${esc(r.ico||'📸')}</div>`}
+    <div>
+      <div class="rd-t">${esc(r.title)}</div>
+      <div class="rd-s">${esc(r.desc)}</div>
+      <div class="rd-grid">
+        <div><div class="rd-k">SEVERITY</div><div class="rd-v">${esc(r.severityLabel)}</div></div>
+        <div><div class="rd-k">SOURCE</div><div class="rd-v">${esc(r.sourceLabel)}</div></div>
+        <div><div class="rd-k">TIME</div><div class="rd-v">${esc(r.time)}</div></div>
+        <div><div class="rd-k">COORDS</div><div class="rd-v">${esc(r.dist)}</div></div>
+      </div>
+    </div>`;
 }
 // ── TRIAGE ─────────────────────────────────────────────────────
 function buildTriage(){
@@ -636,8 +670,9 @@ async function loadSubmittedReports(){
     const body=await res.json();
     const reports=Array.isArray(body.reports)?body.reports:[];
     const mapped=reports.map(mapMissionReport);
-    imageReports=mapped.map(r=>r.img).slice(0,12);
+    imageReports=mapped.map((r,index)=>({...r.img,index})).slice(0,12);
     triageRows=mapped.map(r=>r.triage).slice(0,12);
+    selectedReportIndex=imageReports[0]?.index||0;
     DISTS=Array.isArray(body.distributions)?body.distributions:[];
     DETS=Array.isArray(body.detections)?body.detections:[];
     liveAlerts=Array.isArray(body.alerts)?body.alerts:[];
@@ -662,7 +697,7 @@ function mapMissionReport(report){
   const desc=report.summary||report.note||'Reviewed field report submitted';
   const coord=Number.isFinite(location.lat)&&Number.isFinite(location.lon)?`${location.lat.toFixed(3)}, ${location.lon.toFixed(3)}`:'manual';
   return{
-    img:{loc,desc,time:`${timeLabel} · ${time}`,dist:coord,sev:imageSeverity(severity),ico:'📸',imageUrl:report.imageUrl},
+    img:{loc,desc,time:`${timeLabel} · ${time}`,dist:coord,sev:imageSeverity(severity),ico:'📸',imageUrl:report.imageUrl,title:category,severityLabel:severity.toUpperCase(),sourceLabel:report.source==='submitted'?'Submitted report':'Demo dataset'},
     triage:{id:shortId,loc,type:category,sev:triageSeverity(severity),age:ageLabel(created),status:(severity==='critical'||severity==='high')?'New':'Review',team:report.source==='submitted'?'Ops':'Demo'}
   };
 }

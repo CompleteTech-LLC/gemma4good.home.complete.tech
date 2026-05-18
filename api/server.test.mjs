@@ -329,6 +329,44 @@ test('missioncontrol endpoint accepts a trailing slash', async () => {
   }
 });
 
+test('missioncontrol endpoint uses fallback limit when limit is omitted', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-demo-images-default-limit-'));
+  for (const id of ['one', 'two']) {
+    const variationDir = join(dir, id === 'one' ? 'water_quality' : 'sanitation');
+    await mkdir(variationDir, { recursive: true });
+    await writeFile(join(variationDir, `${id}.jpg`), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+    await writeFile(join(variationDir, `${id}.json`), JSON.stringify({
+      id,
+      image_file: `${id}.jpg`,
+      variation: id === 'one' ? 'water_quality' : 'sanitation',
+      timestamp: id === 'one' ? '2024-08-01T08:00:00Z' : '2024-08-02T08:00:00Z',
+      location: {
+        city: 'Mogadishu',
+        district: 'Hodan',
+        region: 'Banaadir',
+        country: 'Somalia',
+        lat: 2.0469,
+        lon: 45.3182,
+      },
+      categories: [id === 'one' ? 'water_quality' : 'sanitation'],
+      severity: 'medium',
+      short_note: 'Dataset report.',
+    }));
+  }
+
+  const { baseUrl, close } = await startTestServer({ demoImagesDir: dir });
+  try {
+    const res = await fetch(`${baseUrl}/api/fieldreport/missioncontrol`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.reports.length, 2);
+    assert.equal(body.source.demoReports, 2);
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
 test('demo image endpoint serves mounted demo images', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'gemma4good-demo-image-route-'));
   const variationDir = join(dir, 'water_quality');
