@@ -1,6 +1,10 @@
 gemma4good.home.complete.tech:443 {
     tls /certs/fullchain.pem /certs/privkey.pem
 
+    handle /menu {
+        redir * /menu/ 308
+    }
+
     handle /menu/* {
         root * /draw-imports/gemma4good-public
         file_server
@@ -24,6 +28,15 @@ frymatic-gemma4good.home.complete.tech:443 {
 
     handle / {
         redir * /menu/fieldreport/ 302
+    }
+
+    handle /menu {
+        redir * /menu/ 308
+    }
+
+    handle /menu/ {
+        root * /draw-imports/gemma4good-public
+        file_server
     }
 
     handle /menu/fieldreport {

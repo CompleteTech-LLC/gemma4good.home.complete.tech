@@ -53,6 +53,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .sb-ni{display:flex;align-items:center;gap:7px;padding:5px 7px;font-size:10px;letter-spacing:1px;font-weight:500;cursor:pointer;transition:all .15s;position:relative}
 .sb-ni:hover{background:rgba(0,212,255,0.06);color:var(--cyan)}
 .sb-ni.on{background:rgba(0,212,255,0.1);color:var(--cyan)}
+.sb-ni:focus-visible,.qa-i:focus-visible,.pb[role="button"]:focus-visible{outline:1px solid var(--cyan);outline-offset:-1px}
 .sb-ni.on::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
 .sb-ni-ico{width:15px;text-align:center;font-size:11px;opacity:.7}
 .sb-cnt{margin-left:auto;font-size:8px;background:rgba(255,45,85,0.2);color:var(--red);padding:1px 3px;border:1px solid var(--red-dim)}
@@ -183,6 +184,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .scroll-y::-webkit-scrollbar-thumb{background:#1e2d3d}
 .f1{flex:1;overflow:hidden}
 .fc{display:flex;flex-direction:column;overflow:hidden}
+.panel-focus{animation:panelFlash .8s ease}
+@keyframes panelFlash{0%{box-shadow:inset 0 0 0 1px var(--cyan),0 0 18px rgba(0,212,255,.25)}100%{box-shadow:none}}
 </style>
 </head>
 <body>
@@ -226,15 +229,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div id="sb">
     <div class="sb-s">
       <div class="sb-st">NAVIGATION <span class="sb-badge">SOMALIA</span></div>
-      <div class="sb-ni on"><span class="sb-ni-ico">⬡</span>Overview</div>
-      <div class="sb-ni"><span class="sb-ni-ico">📋</span>Reports <span class="sb-cnt">33</span></div>
-      <div class="sb-ni"><span class="sb-ni-ico">🗺</span>Map</div>
-      <div class="sb-ni"><span class="sb-ni-ico">⚠</span>Incidents <span class="sb-cnt">2</span></div>
-      <div class="sb-ni"><span class="sb-ni-ico">📦</span>Inventory</div>
-      <div class="sb-ni"><span class="sb-ni-ico">📊</span>Analytics</div>
-      <div class="sb-ni"><span class="sb-ni-ico">🔔</span>Alerts <span class="sb-cnt">2</span></div>
-      <div class="sb-ni"><span class="sb-ni-ico">👥</span>Teams</div>
-      <div class="sb-ni"><span class="sb-ni-ico">⚙</span>Settings</div>
+      <div class="sb-ni on" role="button" tabindex="0" data-menu-target="overview"><span class="sb-ni-ico">⬡</span>Overview</div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="reports"><span class="sb-ni-ico">📋</span>Reports <span class="sb-cnt">33</span></div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="map"><span class="sb-ni-ico">🗺</span>Map</div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="incidents"><span class="sb-ni-ico">⚠</span>Incidents <span class="sb-cnt">2</span></div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="inventory"><span class="sb-ni-ico">📦</span>Inventory</div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="analytics"><span class="sb-ni-ico">📊</span>Analytics</div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="alerts"><span class="sb-ni-ico">🔔</span>Alerts <span class="sb-cnt">2</span></div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="teams"><span class="sb-ni-ico">👥</span>Teams</div>
+      <div class="sb-ni" role="button" tabindex="0" data-menu-target="settings"><span class="sb-ni-ico">⚙</span>Settings</div>
     </div>
     <div class="sb-s">
       <div class="sb-st">FOCUS AREAS</div>
@@ -277,7 +280,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div id="ctr">
     <!-- KPI STRIP -->
     <div id="kpi-strip">
-      <div class="kc cy"><div class="kc-l">OPEN REPORTS</div><div class="kc-v">220</div><div class="kc-d" style="color:var(--red)">▲ 280 reported</div><canvas class="kc-sp" id="sp0"></canvas></div>
+      <div class="kc cy" id="panel-overview"><div class="kc-l">OPEN REPORTS</div><div class="kc-v">220</div><div class="kc-d" style="color:var(--red)">▲ 280 reported</div><canvas class="kc-sp" id="sp0"></canvas></div>
       <div class="kc or"><div class="kc-l">RESOLVED</div><div class="kc-v">198</div><div class="kc-d" style="color:var(--green)">▲ 155 this week</div><canvas class="kc-sp" id="sp1"></canvas></div>
       <div class="kc gr"><div class="kc-l">WATER POINTS ACTIVE</div><div class="kc-v">342</div><div class="kc-d" style="color:var(--green)">▲ 12 vs last wk</div><canvas class="kc-sp" id="sp2"></canvas></div>
       <div class="kc re"><div class="kc-l">HIGH SEVERITY</div><div class="kc-v" id="hs-cnt">3</div><div class="kc-d" style="color:var(--red)">▲ 2 new today</div><canvas class="kc-sp" id="sp3"></canvas></div>
@@ -287,7 +290,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <!-- MAP + IMAGE REPORTS -->
     <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
       <!-- MAP -->
-      <div class="fc" style="border-right:1px solid var(--border)">
+      <div class="fc" id="panel-map" style="border-right:1px solid var(--border)">
         <div class="ph">
           <div class="pt">INCIDENT HEATMAP — SOMALIA</div>
           <div style="display:flex;gap:5px;align-items:center">
@@ -303,10 +306,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <canvas id="mapCanvas" style="flex:1;width:100%"></canvas>
       </div>
       <!-- IMAGE REPORTS -->
-      <div class="fc">
+      <div class="fc" id="panel-reports">
         <div class="ph">
           <div class="pt">INCOMING IMAGE REPORTS</div>
-          <div style="display:flex;gap:5px"><span style="font-size:9px;color:var(--text-dim)" id="img-cnt">New (20)</span><span class="pb in">VIEW ALL</span></div>
+          <div style="display:flex;gap:5px"><span style="font-size:9px;color:var(--text-dim)" id="img-cnt">New (20)</span><span class="pb in" role="button" tabindex="0" data-menu-target="reports">VIEW ALL</span></div>
         </div>
         <div class="scroll-y f1" id="imgList"></div>
         <div id="reportDetail" class="rd"></div>
@@ -315,11 +318,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     <!-- BOTTOM: Triage + Alerts -->
     <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border);max-height:175px;overflow:hidden">
-      <div class="fc" style="border-right:1px solid var(--border)">
-        <div class="ph"><div class="pt">SEVERITY / TRIAGE QUEUE</div><span class="pb wn">VIEW ALL</span></div>
+      <div class="fc" id="panel-triage" style="border-right:1px solid var(--border)">
+        <div class="ph"><div class="pt">SEVERITY / TRIAGE QUEUE</div><span class="pb wn" role="button" tabindex="0" data-menu-target="incidents">VIEW ALL</span></div>
         <div class="scroll-y f1" id="triageList"></div>
       </div>
-      <div class="fc">
+      <div class="fc" id="panel-alerts">
         <div class="ph"><div class="pt">ALERT PIPELINE</div><span class="pb ct" id="alertBadge">2 CRITICAL</span></div>
         <div class="scroll-y f1" id="alertList"></div>
       </div>
@@ -327,7 +330,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
 
   <!-- ── RIGHT COL ── -->
-  <div class="fc" style="border-right:1px solid var(--border)">
+  <div class="fc" id="panel-inventory" style="border-right:1px solid var(--border)">
     <div class="ph"><div class="pt">SYSTEM VITALS</div><span class="pb lv" id="vbadge">OPTIMAL</span></div>
     <div id="gauge-row" style="background:var(--panel);flex-shrink:0"></div>
 
@@ -337,16 +340,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="ph"><div class="pt">RECENT DISTRIBUTIONS</div></div>
     <div class="scroll-y" style="flex:1" id="distTable"></div>
 
-    <div class="ph" style="border-top:1px solid var(--border)"><div class="pt">AUTO OBJECT DETECTION</div><span class="pb in" id="detBadge">CONF K2.5</span></div>
+    <div class="ph" id="panel-analytics" style="border-top:1px solid var(--border)"><div class="pt">AUTO OBJECT DETECTION</div><span class="pb in" id="detBadge">CONF K2.5</span></div>
     <div id="detPanel" style="padding:7px 9px;display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0"></div>
   </div>
 
   <!-- ── FAR RIGHT ── -->
   <div class="fc">
-    <div class="ph"><div class="pt">TEAM ACTIVITY (LAST 24H)</div></div>
+    <div class="ph" id="panel-teams"><div class="pt">TEAM ACTIVITY (LAST 24H)</div></div>
     <div id="teamPanel" style="flex-shrink:0"></div>
 
-    <div class="ph" style="border-top:1px solid var(--border)"><div class="pt">QUICK ACTIONS</div></div>
+    <div class="ph" id="panel-settings" style="border-top:1px solid var(--border)"><div class="pt">QUICK ACTIONS</div></div>
     <div id="qaPanel" style="flex-shrink:0"></div>
 
     <div class="ph" style="border-top:1px solid var(--border)"><div class="pt">NOTES / QUESTIONS</div></div>
@@ -786,9 +789,16 @@ function buildTeams(){
 }
 // ── QUICK ACTIONS ──────────────────────────────────────────────
 function buildQA(){
-  const items=[{ico:'📝',lbl:'New Report',key:'N'},{ico:'🗺',lbl:'Map View',key:'M'},{ico:'👥',lbl:'Team Report',key:'T'},{ico:'📤',lbl:'Export Data',key:'E'},{ico:'↻',lbl:'Sync Now',key:'S'}];
+  const items=[
+    {ico:'📝',lbl:'New Report',key:'N',action:'new-report'},
+    {ico:'🗺',lbl:'Map View',key:'M',action:'map'},
+    {ico:'👥',lbl:'Team Report',key:'T',action:'teams'},
+    {ico:'📤',lbl:'Export Data',key:'E',action:'export'},
+    {ico:'↻',lbl:'Sync Now',key:'S',action:'sync'}
+  ];
   document.getElementById('qaPanel').innerHTML=items.map(i=>`
-    <div class="qa-i"><div class="qa-ico">${i.ico}</div><div style="font-size:11px;font-weight:500;flex:1">${i.lbl}</div><div class="qa-key">[${i.key}]</div></div>`).join('');
+    <div class="qa-i" role="button" tabindex="0" data-quick-action="${i.action}"><div class="qa-ico">${i.ico}</div><div style="font-size:11px;font-weight:500;flex:1">${i.lbl}</div><div class="qa-key">[${i.key}]</div></div>`).join('');
+  setupQuickActions();
 }
 // ── NOTES ──────────────────────────────────────────────────────
 function buildNotes(){
@@ -809,6 +819,62 @@ function renderActions(){
   ab.className=pend>2?'pb wn':'pb lv';
 }
 function toggleAct(id){const a=ACTIONS.find(x=>x.id===id);if(a){a.done=!a.done;renderActions();}}
+// ── MENU ACTIONS ───────────────────────────────────────────────
+const MENU_TARGETS={
+  overview:'panel-overview',
+  reports:'panel-reports',
+  map:'panel-map',
+  incidents:'panel-triage',
+  inventory:'panel-inventory',
+  analytics:'panel-analytics',
+  alerts:'panel-alerts',
+  teams:'panel-teams',
+  settings:'panel-settings'
+};
+function setupNavigation(){
+  document.querySelectorAll('[data-menu-target]').forEach(el=>{
+    el.addEventListener('click',()=>openMenuTarget(el.dataset.menuTarget));
+    el.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openMenuTarget(el.dataset.menuTarget);}
+    });
+  });
+}
+function setupQuickActions(){
+  document.querySelectorAll('[data-quick-action]').forEach(el=>{
+    el.addEventListener('click',()=>runQuickAction(el.dataset.quickAction));
+    el.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();runQuickAction(el.dataset.quickAction);}
+    });
+  });
+}
+function openMenuTarget(target){
+  if(target==='incidents')target='triage';
+  document.querySelectorAll('.sb-ni').forEach(el=>el.classList.toggle('on',el.dataset.menuTarget===target||el.dataset.menuTarget==='incidents'&&target==='triage'));
+  const id=MENU_TARGETS[target]||MENU_TARGETS.overview;
+  const panel=document.getElementById(id);
+  if(!panel)return;
+  panel.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
+  panel.classList.remove('panel-focus');
+  void panel.offsetWidth;
+  panel.classList.add('panel-focus');
+}
+function runQuickAction(action){
+  if(action==='new-report'){window.location.href='/menu/fieldreport/';return;}
+  if(action==='sync'){triggerSync();return;}
+  if(action==='export'){exportMissionData();return;}
+  openMenuTarget(action);
+}
+async function exportMissionData(){
+  const res=await fetch('/api/fieldreport/missioncontrol/?limit=300',{cache:'no-store'});
+  if(!res.ok){document.getElementById('syncTime').textContent='Export failed';return;}
+  const blob=new Blob([JSON.stringify(await res.json(),null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='gemma4good-missioncontrol.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 // ── SYNC ───────────────────────────────────────────────────────
 function triggerSync(){
   const i=document.getElementById('sico');i.classList.add('spin');
@@ -853,6 +919,7 @@ function loop(ts){
 function init(){
   buildGauges();buildInv();buildDist();buildDet();buildImgReports();
   buildTriage();buildTeams();buildQA();buildNotes();renderAlerts();renderActions();
+  setupNavigation();
   loadSubmittedReports();
   setTimeout(()=>{
     SP_DATA.forEach((d,i)=>drawSpark('sp'+i,d,SP_COLS[i]));

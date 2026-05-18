@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemma4Good Menu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@500;700;800&display=swap');
+  :root {
+    --bg: #0a0e14;
+    --surface: #121820;
+    --surface2: #1a2330;
+    --border: #1e2d3d;
+    --accent: #00c2ff;
+    --green: #00ff9d;
+    --text: #d4e8f0;
+    --muted: #5f7688;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Syne, system-ui, sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,194,255,.018) 2px, rgba(0,194,255,.018) 4px);
+    pointer-events: none;
+  }
+  main {
+    width: min(760px, 100%);
+  }
+  .eyebrow {
+    font: 700 11px "Space Mono", monospace;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  h1 {
+    margin: 8px 0 6px;
+    font-size: clamp(34px, 8vw, 64px);
+    line-height: .95;
+    letter-spacing: 0;
+  }
+  .lede {
+    margin: 0 0 24px;
+    color: var(--muted);
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  a.card {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: inherit;
+    text-decoration: none;
+    background: linear-gradient(180deg, var(--surface), #0d1219);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  a.card:hover,
+  a.card:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(0,194,255,.18), 0 12px 40px rgba(0,0,0,.24);
+  }
+  .num {
+    width: fit-content;
+    font: 700 11px "Space Mono", monospace;
+    color: var(--accent);
+    border: 1px solid rgba(0,194,255,.35);
+    border-radius: 4px;
+    padding: 3px 7px;
+    background: rgba(0,194,255,.08);
+  }
+  .title {
+    margin-top: 18px;
+    font-size: 24px;
+    font-weight: 800;
+  }
+  .desc {
+    margin-top: 8px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .status {
+    margin-top: 18px;
+    font: 700 10px "Space Mono", monospace;
+    letter-spacing: .12em;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+  @media (max-width: 640px) {
+    body { padding: 18px; place-items: start center; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Gemma4Good Somalia Water Triage</div>
+  <h1>Project Menu</h1>
+  <p class="lede">Use the field report workflow to submit image-first reports, then review the live report feed in Mission Control.</p>
+  <div class="grid">
+    <a class="card" href="/menu/fieldreport/">
+      <div>
+        <div class="num">01</div>
+        <div class="title">Field Report</div>
+        <div class="desc">Capture or upload an image, confirm time and location, review Gemma4 triage, and submit the report.</div>
+      </div>
+      <div class="status">Live workflow</div>
+    </a>
+    <a class="card" href="/menu/missioncontrol/">
+      <div>
+        <div class="num">02</div>
+        <div class="title">Mission Control</div>
+        <div class="desc">Inspect submitted and demo-image reports, map points, severity, category counts, and selected report details.</div>
+      </div>
+      <div class="status">Live dashboard</div>
+    </a>
+  </div>
+</main>
+</body>
+</html>
