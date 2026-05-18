@@ -101,6 +101,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ir-item{display:grid;grid-template-columns:46px 1fr;gap:7px;padding:7px 10px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
 .ir-item:hover{background:rgba(0,212,255,0.04)}
 .ir-th{width:46px;height:36px;background:var(--panel2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;position:relative;overflow:hidden}
+.ir-th img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9) contrast(1.05)}
 .ir-th::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.1),transparent)}
 .ir-loc{font-size:11px;font-weight:600;color:var(--text-hi)}
 .ir-desc{font-size:9px;color:var(--text-dim);margin-top:1px;line-height:1.3}
@@ -383,56 +384,21 @@ const GAUGES_DEF=[
   {id:'cover',label:'COVERAGE',unit:'%',  color:'#00d4ff',val:61,max:100},
   {id:'res',  label:'RESOLVE', unit:'h',  color:'#ff2d55',val:18.6,max:48},
 ];
-const IMG_REPORTS=[
-  {loc:'Hodan District, Mogadishu',desc:'Broken keg — field photo received',time:'08:22 AM',dist:'2.2 km',sev:'hi',ico:'📸'},
-  {loc:'Garowe, Nugaal',          desc:'Leaking storage — community report',time:'06:33 AM',dist:'2.2 km',sev:'md',ico:'💧'},
-  {loc:'Bardax, Bay',             desc:'Low water pressure at distribution',time:'06:43 AM',dist:'2.2 km',sev:'md',ico:'🚰'},
-  {loc:'Beletweyne, Marane',      desc:'Contaminated vessel — urgent review',time:'07:43 AM',dist:'4.7 km',sev:'hi',ico:'⚠️'},
-  {loc:'Kismayo, Jubbaland',      desc:'Water point functional — routine check',time:'05:12 AM',dist:'3.1 km',sev:'lo',ico:'✅'},
-  {loc:'Baidoa, Bay',             desc:'Queue overflow at distribution well',time:'07:55 AM',dist:'5.0 km',sev:'md',ico:'👥'},
-];
-const TRIAGE=[
-  {id:'#1293',loc:'Hodan, Mogadishu',type:'Orange Bag',   sev:'SLR',age:'1.8h',status:'New',     team:'Team B'},
-  {id:'#1395',loc:'Garowe, Nugaal', type:'Loading Jugs',  sev:'SLR',age:'1.6h',status:'Review',  team:'Team B'},
-  {id:'#1203',loc:'Berlaw, Bay',    type:'Low Pressure',  sev:'MED',age:'2.9h',status:'Assigned',team:'Team C'},
-  {id:'#1283',loc:'Maidureyno',     type:'Contaminated',  sev:'SLR',age:'3.0h',status:'Raw',     team:'Team A'},
-  {id:'#1265',loc:'Kismayo',        type:'Alt Maker',     sev:'LOW',age:'4.6h',status:'Review',  team:'Team B'},
-];
-const REPORTS_ENDPOINT='/api/fieldreport/reports';
+const IMG_REPORTS=[];
+const TRIAGE=[];
+const REPORTS_ENDPOINT='/api/fieldreport/missioncontrol?limit=80';
 let imageReports=[...IMG_REPORTS];
 let triageRows=[...TRIAGE];
-const ALERTS_SEED=[
-  {sev:'crit',msg:'High incident — Mogadishu (Hodan): 12 unresolved in 1h',src:'WATCHDOG',ts:'07:55'},
-  {sev:'warn',msg:'Low stock: Orange Jugs in Bay Region. Quality monitoring',src:'INVENTORY',ts:'07:32'},
-  {sev:'crit',msg:'Multiple quality reports from Beledharre — urgent',src:'QUALITY',ts:'06:44'},
-  {sev:'info',msg:'Data sync completed — 128 records updated',src:'SYNC',ts:'06:00'},
-  {sev:'ok',  msg:'Team B resolved 18 water point issues overnight',src:'TEAMS',ts:'05:30'},
-];
-const ALERT_POOL=[
-  {sev:'warn',msg:'Water point offline — Hodan District',src:'FIELD'},
-  {sev:'info',msg:'Image report processed — Garowe sector',src:'AI-DETECT'},
-  {sev:'crit',msg:'Supply chain gap detected — Bay Region',src:'LOGISTICS'},
-  {sev:'ok',  msg:'Distribution completed — Mogadishu South',src:'TEAMS'},
-  {sev:'warn',msg:'Weather alert: Flooding risk in Jubbaland',src:'WEATHER'},
-];
+let reportMetricBase=0;
+let ALERTS_SEED=[];
+const ALERT_POOL=[];
 const TEAMS=[
   {name:'Pragma', role:'Field Lead',pts:128,res:98,fund:118,col:'#00d4ff'},
   {name:'Kayflow',role:'Support',   pts:98, res:98,fund:98, col:'#00ff88'},
   {name:'Tongoa', role:'Quality',   pts:98, res:98,fund:98, col:'#ff7a00'},
 ];
-const DISTS=[
-  {loc:'Mogadishu, Maden',type:'Orange Jugs',    cnt:100,date:'Today'},
-  {loc:'Garowe, Hagrist', type:'Cup + Lid Kits', cnt:360,date:'Today'},
-  {loc:'Baidoa, Bag',     type:'Orange Jugs',    cnt:120,date:'Yesterday'},
-  {loc:'Kismayo',         type:'Cup + Lid Kits', cnt:220,date:'Yesterday'},
-];
-const DETS=[
-  {label:'Orange Jug',   cnt:5,col:'#ff7a00'},
-  {label:'Cup+Lid Kit',  cnt:2,col:'#00d4ff'},
-  {label:'Water Point',  cnt:3,col:'#00ff88'},
-  {label:'Person',       cnt:2,col:'#c8dde8'},
-  {label:'Pipe',         cnt:1,col:'#ff2d55'},
-];
+let DISTS=[];
+let DETS=[];
 const ACTIONS=[
   {id:1,text:'Verify failover — secondary cluster',pri:'P1',done:false},
   {id:2,text:'Acknowledge jitter spike — Bay Region stock',pri:'P1',done:false},
@@ -482,16 +448,8 @@ function drawSpark(id,data,col){
   ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.shadowColor=col;ctx.shadowBlur=5;ctx.stroke();
 }
 // ── MAP ─────────────────────────────────────────────────────────
-const CITIES=[
-  {name:'Mogadishu',x:.72,y:.65,sev:'high',sz:8},
-  {name:'Bosaso',   x:.75,y:.08,sev:'med', sz:6},
-  {name:'Hargesa',  x:.22,y:.12,sev:'low', sz:5},
-  {name:'Garowe',   x:.62,y:.28,sev:'med', sz:6},
-  {name:'Kismayo',  x:.60,y:.88,sev:'med', sz:5},
-  {name:'Baidoa',   x:.38,y:.65,sev:'high',sz:7},
-  {name:'Beldensia',x:.30,y:.45,sev:'low', sz:4},
-];
-const WPS=[{x:.55,y:.50},{x:.65,y:.40},{x:.45,y:.70},{x:.70,y:.75},{x:.30,y:.60},{x:.50,y:.30},{x:.40,y:.20},{x:.60,y:.60},{x:.25,y:.35},{x:.80,y:.45},{x:.55,y:.80}];
+let CITIES=[];
+let WPS=[];
 const OUTLINE=[[.13,0],[.55,0],[.72,.05],[.88,.15],[1,.30],[.98,.50],[.95,.65],[.82,.75],[.72,.88],[.65,1],[.40,1],[.22,.85],[.10,.70],[.05,.55],[.08,.35],[.13,0]];
 let mapPh=0;
 function drawMap(){
@@ -526,10 +484,10 @@ function drawMap(){
     ctx.strokeStyle='#00ff88';ctx.lineWidth=1;ctx.stroke();
   });
   // Cities
-  const sc={high:'#ff2d55',med:'#ff7a00',low:'#00d4ff'};
+  const sc={critical:'#ff2d55',high:'#ff2d55',medium:'#ff7a00',med:'#ff7a00',low:'#00d4ff'};
   CITIES.forEach(c=>{
-    const x=c.x*W,y=c.y*H,col=sc[c.sev];
-    if(c.sev==='high'){
+    const x=c.x*W,y=c.y*H,col=sc[c.sev]||'#00d4ff';
+    if(c.sev==='high'||c.sev==='critical'){
       const pr=c.sz+5+Math.sin(mapPh)*3;
       ctx.beginPath();ctx.arc(x,y,pr,0,Math.PI*2);
       ctx.strokeStyle=col+'55';ctx.lineWidth=1.5;ctx.stroke();
@@ -635,26 +593,28 @@ function buildDist(){
 }
 // ── DETECTIONS ─────────────────────────────────────────────────
 function buildDet(){
-  document.getElementById('detPanel').innerHTML=DETS.map(d=>
-    `<div style="display:flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(0,0,0,.3);border:1px solid ${d.col}33">
-      <div style="width:5px;height:5px;background:${d.col};border-radius:50%"></div>
-      <span style="font-size:9px;color:${d.col}">${d.label}</span>
-      <span style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:${d.col};margin-left:2px">${d.cnt}</span>
-    </div>`).join('');
+  document.getElementById('detPanel').innerHTML=DETS.map(d=>{
+    const col=d.col||categoryColor(d.category);
+    return `
+    <div style="display:flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(0,0,0,.3);border:1px solid ${col}33">
+      <div style="width:5px;height:5px;background:${col};border-radius:50%"></div>
+      <span style="font-size:9px;color:${col}">${esc(d.label)}</span>
+      <span style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:${col};margin-left:2px">${esc(d.cnt)}</span>
+    </div>`;
+  }).join('');
 }
 // ── IMAGE REPORTS ──────────────────────────────────────────────
 function buildImgReports(){
   document.getElementById('imgList').innerHTML=imageReports.map(r=>`
     <div class="ir-item">
-      <div class="ir-th">${esc(r.ico)}</div>
+      <div class="ir-th">${r.imageUrl?`<img src="${esc(r.imageUrl)}" alt="">`:esc(r.ico||'📸')}</div>
       <div>
         <div class="ir-loc">${esc(r.loc)}</div>
         <div class="ir-desc">${esc(r.desc)}</div>
         <div class="ir-meta"><span class="ir-sev ${esc(r.sev)}">${esc(r.sev).toUpperCase()}</span><span>${esc(r.time)}</span><span>📍 ${esc(r.dist)}</span></div>
       </div>
     </div>`).join('');
-  const liveCount=Math.max(0,imageReports.length-IMG_REPORTS.length);
-  document.getElementById('img-cnt').textContent=liveCount?`Submitted (${liveCount})`:`New (${imageReports.length})`;
+  document.getElementById('img-cnt').textContent=`Loaded (${imageReports.length})`;
 }
 // ── TRIAGE ─────────────────────────────────────────────────────
 function buildTriage(){
@@ -668,37 +628,42 @@ function buildTriage(){
       <div style="font-size:9px;color:${r.status==='New'?'var(--red)':r.status==='Review'?'var(--orange)':'var(--cyan)'}">${esc(r.status)} → ${esc(r.team)}</div>
     </div>`).join('');
 }
-// ── SUBMITTED REPORTS ─────────────────────────────────────────
+// ── MISSION DATA ──────────────────────────────────────────────
 async function loadSubmittedReports(){
   try{
     const res=await fetch(REPORTS_ENDPOINT,{cache:'no-store'});
-    if(!res.ok)throw new Error(`reports_${res.status}`);
+    if(!res.ok)throw new Error(`mission_${res.status}`);
     const body=await res.json();
     const reports=Array.isArray(body.reports)?body.reports:[];
-    const mapped=reports.map(mapSubmittedReport);
-    imageReports=[...mapped.map(r=>r.img),...IMG_REPORTS].slice(0,12);
-    triageRows=[...mapped.map(r=>r.triage),...TRIAGE].slice(0,12);
-    buildImgReports();
-    buildTriage();
-    updateReportMetrics(mapped);
+    const mapped=reports.map(mapMissionReport);
+    imageReports=mapped.map(r=>r.img).slice(0,12);
+    triageRows=mapped.map(r=>r.triage).slice(0,12);
+    DISTS=Array.isArray(body.distributions)?body.distributions:[];
+    DETS=Array.isArray(body.detections)?body.detections:[];
+    liveAlerts=Array.isArray(body.alerts)?body.alerts:[];
+    applyMissionMap(Array.isArray(body.mapPoints)?body.mapPoints:[]);
+    buildImgReports();buildTriage();buildDist();buildDet();renderAlerts();
+    applyMissionMetrics(body.metrics||{},body.source||{});
     document.getElementById('syncTime').textContent='Just now';
   }catch(err){
     document.getElementById('syncTime').textContent='Report sync failed';
   }
 }
-function mapSubmittedReport(report){
-  const severity=report.analysis?.severity||'medium';
-  const tags=Array.isArray(report.tags)&&report.tags.length?report.tags:(report.tag?[report.tag]:[]);
-  const category=tags.length?tags.map(t=>String(t).replaceAll('_',' ')).join(' + '):(report.analysis?.category||'field report').replaceAll('_',' ');
-  const loc=[report.district,report.city].filter(Boolean).join(', ')||'Manual location';
+function mapMissionReport(report){
+  const severity=report.severity||'medium';
+  const tags=Array.isArray(report.categories)?report.categories:[];
+  const category=tags.length?tags.map(categoryLabel).join(' + '):'Field report';
+  const location=report.location||{};
+  const loc=[location.district,location.city,location.region].filter(Boolean).join(', ')||'Somalia field report';
   const created=report.capturedAt?new Date(report.capturedAt):(report.createdAt?new Date(report.createdAt):new Date());
-  const time=Number.isNaN(created.getTime())?'Submitted':`${pad(created.getHours())}:${pad(created.getMinutes())}`;
-  const timeLabel=report.capturedAt?'Captured':'Submitted';
+  const time=Number.isNaN(created.getTime())?'Submitted':`${pad(created.getUTCHours())}:${pad(created.getUTCMinutes())} UTC`;
+  const timeLabel=report.capturedAtSource==='demo'?'Demo':report.capturedAt?'Captured':'Submitted';
   const shortId=`#${String(report.id||'FIELD').slice(0,4).toUpperCase()}`;
-  const desc=report.analysis?.summary||report.note||'Reviewed field report submitted';
+  const desc=report.summary||report.note||'Reviewed field report submitted';
+  const coord=Number.isFinite(location.lat)&&Number.isFinite(location.lon)?`${location.lat.toFixed(3)}, ${location.lon.toFixed(3)}`:'manual';
   return{
-    img:{loc,desc,time:`${timeLabel} · ${time}`,dist:report.lat&&report.lon?`${report.lat}, ${report.lon}`:'manual',sev:imageSeverity(severity),ico:'📸'},
-    triage:{id:shortId,loc,type:category,sev:triageSeverity(severity),age:'now',status:report.analysis?.needsEscalation?'New':'Review',team:'Ops'}
+    img:{loc,desc,time:`${timeLabel} · ${time}`,dist:coord,sev:imageSeverity(severity),ico:'📸',imageUrl:report.imageUrl},
+    triage:{id:shortId,loc,type:category,sev:triageSeverity(severity),age:ageLabel(created),status:(severity==='critical'||severity==='high')?'New':'Review',team:report.source==='submitted'?'Ops':'Demo'}
   };
 }
 function imageSeverity(severity){
@@ -712,9 +677,41 @@ function triageSeverity(severity){
   return'MED';
 }
 function updateReportMetrics(mapped){
-  const submitted=mapped.length;
-  document.getElementById('h-rep').textContent=(128+submitted).toLocaleString();
-  document.getElementById('hs-cnt').textContent=String(mapped.filter(r=>r.triage.sev==='SLR').length+3);
+  document.getElementById('h-rep').textContent=mapped.length.toLocaleString();
+  document.getElementById('hs-cnt').textContent=String(mapped.filter(r=>r.triage.sev==='SLR').length);
+}
+function applyMissionMetrics(metrics,source){
+  reportMetricBase=Number(metrics.reportsToday)||0;
+  document.getElementById('h-rep').textContent=reportMetricBase.toLocaleString();
+  document.getElementById('h-wpt').textContent=(Number(metrics.waterPointsActive)||0).toLocaleString();
+  document.getElementById('h-jug').textContent=(Number(metrics.inventory?.jugs)||0).toLocaleString();
+  document.getElementById('h-kit').textContent=(Number(metrics.inventory?.kits)||0).toLocaleString();
+  document.getElementById('h-res').innerHTML=`${Number(metrics.avgResolutionHours||0).toFixed(1)}<span style="font-size:10px">h</span>`;
+  document.getElementById('hs-cnt').textContent=String(metrics.highSeverity||0);
+  const reportNav=document.querySelector('.sb-ni .sb-cnt');
+  if(reportNav)reportNav.textContent=String(reportMetricBase);
+  const submitted=Number(source.submittedReports)||0;
+  document.getElementById('img-cnt').textContent=submitted?`Live + demo (${reportMetricBase})`:`Demo data (${reportMetricBase})`;
+}
+function applyMissionMap(points){
+  const projected=points.map(p=>({...p,...projectSomalia(p.lat,p.lon)})).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+  CITIES=projected.slice(0,24).map(p=>({name:p.name||'Report',x:p.x,y:p.y,sev:p.severity,sz:p.severity==='critical'?8:p.severity==='high'?7:p.severity==='medium'?6:5}));
+  WPS=projected.filter(p=>p.severity==='low'||p.categories?.includes('water_quality')).slice(0,30).map(p=>({x:p.x,y:p.y}));
+}
+function projectSomalia(lat,lon){
+  const minLon=40.8,maxLon=51.5,minLat=-1.7,maxLat=12.1;
+  return{x:Math.max(.03,Math.min(.97,(Number(lon)-minLon)/(maxLon-minLon))),y:Math.max(.03,Math.min(.97,1-((Number(lat)-minLat)/(maxLat-minLat))))};
+}
+function categoryLabel(value){
+  return ({water_quality:'Water quality',sanitation:'Sanitation',infrastructure:'Infrastructure',health_risk:'Health risk'}[value]||String(value).replaceAll('_',' '));
+}
+function categoryColor(value){
+  return ({water_quality:'#00d4ff',sanitation:'#ff7a00',infrastructure:'#00ff88',health_risk:'#ff2d55'}[value]||'#c8dde8');
+}
+function ageLabel(date){
+  if(Number.isNaN(date.getTime()))return'--';
+  const days=Math.max(0,Math.round((Date.UTC(2024,11,31)-date.getTime())/86400000));
+  return days?`${days}d`:'now';
 }
 // ── ALERTS ─────────────────────────────────────────────────────
 function renderAlerts(){
@@ -801,14 +798,14 @@ function simulate(){
   const vb=document.getElementById('vbadge');
   vb.textContent=ov>2?'DEGRADED':ov>0?'WATCH':'OPTIMAL';
   vb.className=ov>2?'pb ct':ov>0?'pb wn':'pb lv';
-  if(tick%12===0){
+  if(tick%12===0&&ALERT_POOL.length){
     const a=ALERT_POOL[Math.floor(Math.random()*ALERT_POOL.length)];
     const n=new Date(),ts=`${pad(n.getHours())}:${pad(n.getMinutes())}`;
     liveAlerts.unshift({...a,ts});
     if(liveAlerts.length>20)liveAlerts.pop();
     renderAlerts();
   }
-  document.getElementById('h-rep').textContent=(128+Math.floor(tick/8)).toLocaleString();
+  document.getElementById('h-rep').textContent=(reportMetricBase||imageReports.length||0).toLocaleString();
 }
 // ── RENDER LOOP ─────────────────────────────────────────────────
 let lm=0,ls=0;

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { test } from 'node:test';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createServer } from './server.mjs';
@@ -249,6 +249,68 @@ test('reports endpoint returns submitted reports without image payloads', async 
   }
 });
 
+test('missioncontrol endpoint returns demo-image records instead of mock data', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-demo-images-'));
+  const variationDir = join(dir, 'water_quality+sanitation');
+  await mkdir(variationDir, { recursive: true });
+  await writeFile(join(variationDir, 'demo.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+  await writeFile(join(variationDir, 'demo.json'), JSON.stringify({
+    id: 'demo-report',
+    image_file: 'demo.jpg',
+    variation: 'water_quality+sanitation',
+    timestamp: '2024-06-01T12:30:00Z',
+    location: {
+      city: 'Mogadishu',
+      district: 'Hodan',
+      region: 'Banaadir',
+      country: 'Somalia',
+      lat: 2.0469,
+      lon: 45.3182,
+    },
+    categories: ['water_quality', 'sanitation'],
+    severity: 'critical',
+    short_note: 'Turbid water near poor drainage.',
+  }));
+
+  const { baseUrl, close } = await startTestServer({ demoImagesDir: dir });
+  try {
+    const res = await fetch(`${baseUrl}/api/fieldreport/missioncontrol?limit=5`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.ok, true);
+    assert.equal(body.source.usingMockData, false);
+    assert.equal(body.source.demoReports, 1);
+    assert.equal(body.reports.length, 1);
+    assert.equal(body.reports[0].id, 'demo-report');
+    assert.deepEqual(body.reports[0].categories, ['water_quality', 'sanitation']);
+    assert.equal(body.metrics.highSeverity, 1);
+    assert.equal(body.categoryCounts.water_quality, 1);
+    assert.equal(body.mapPoints.length, 1);
+    assert.match(body.reports[0].imageUrl, /^\/api\/fieldreport\/demo-image\//);
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('demo image endpoint serves mounted demo images', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'gemma4good-demo-image-route-'));
+  const variationDir = join(dir, 'water_quality');
+  await mkdir(variationDir, { recursive: true });
+  await writeFile(join(variationDir, 'demo.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+
+  const { baseUrl, close } = await startTestServer({ demoImagesDir: dir });
+  try {
+    const res = await fetch(`${baseUrl}/api/fieldreport/demo-image/${encodeURIComponent('water_quality/demo.jpg')}`);
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('content-type'), 'image/jpeg');
+    assert.equal((await res.arrayBuffer()).byteLength, 4);
+  } finally {
+    await close();
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
 test('submit falls back to server current time when capture time is absent', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'gemma4good-report-time-'));
   const reportStorePath = join(dir, 'reports.jsonl');
@@ -281,6 +343,7 @@ async function startTestServer(options = {}) {
   const server = createServer({
     model: 'test-model',
     reportStorePath: options.reportStorePath,
+    demoImagesDir: options.demoImagesDir,
     fetchImpl: options.fetchImpl || (async () => new Response('{}', { status: 500 })),
     now: options.now,
   });

@@ -103,6 +103,7 @@ The field report page calls a same-origin API instead of calling Gemma4 directly
 ```text
 POST https://gemma4good.home.complete.tech/api/fieldreport/analyze
 POST https://gemma4good.home.complete.tech/api/fieldreport/submit
+GET  https://gemma4good.home.complete.tech/api/fieldreport/missioncontrol
 ```
 
 Runtime path:
@@ -112,6 +113,8 @@ Runtime path:
 ```
 
 The browser sends image plus user/device location to the API. A user-selected issue tag is optional before analysis; Gemma4 can infer the category, severity, summary, observed issues, recommended actions, and escalation flag. The page then requires user review of the draft before submit. Reviewed submits are accepted by `/api/fieldreport/submit` and written as JSONL records to `/tmp/gemma4good-fieldreports.jsonl` in the API container by default.
+
+The mission control page calls `/api/fieldreport/missioncontrol?limit=80`. The API combines reviewed submissions with the generated `/demo-images` sidecar metadata and returns dashboard-ready reports, map points, detections, distributions, alerts, and metrics with `source.usingMockData:false`. The API container mounts the dataset read-only at `/demo-images`.
 
 The API forwards validated reports to the private Gemma4 endpoint:
 

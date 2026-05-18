@@ -116,3 +116,11 @@ ssh train.home.complete.tech "sudo podman inspect gemma4good-home-complete-tech 
 - Access boundary: redirect `/` to `/menu/fieldreport/`; serve only `/menu/fieldreport/*`, `/menu/missioncontrol/*`, and `/api/fieldreport/*`; deny all other paths with `404`.
 - This hostname is for Gemma4Good demo/report access only and does not proxy to `gemma4good-home-complete-tech:8080` code-server.
 - Verification after Caddy reload: `/` returned HTTP `302` to `/menu/fieldreport/`, both project pages returned HTTP `200`, `/api/fieldreport/health` returned HTTP `200`, and `/some-code-server-path` returned HTTP `404`.
+
+2026-05-17 mission control dataset wiring:
+- `/menu/missioncontrol/` now calls same-origin `GET /api/fieldreport/missioncontrol?limit=80` instead of rendering the old mock report/triage arrays.
+- The API combines reviewed `/api/fieldreport/submit` records with the generated `demo-images/` sidecar JSON metadata and returns dashboard-ready reports, map points, detections, distributions, alerts, and metrics with `source.usingMockData:false`.
+- Demo thumbnails are served through `GET`/`HEAD /api/fieldreport/demo-image/<encoded relative image path>` so the browser does not need direct filesystem access.
+- Runtime compose change: `gemma4good-api` now has `DEMO_IMAGES_DIR=/demo-images` and a read-only mount `/srv/openclaw/gemma4good/demo-images:/demo-images:ro`. Backup before the compose edit: `/srv/openclaw/deploy/docker-compose.yml.bak-gemma4good-mission-demo-*`.
+- Synced updated API files to `/srv/openclaw/gemma4good/api`, synced mission control HTML to `/srv/openclaw/gemma4good/public/menu/missioncontrol/index.html` and `/srv/openclaw/draw-imports/gemma4good-public/menu/missioncontrol/index.html`, and recreated/restarted `gemma4good-api-home-complete-tech`.
+- Verification: local `npm test` passed 10 tests, the embedded mission control script passed `node --check`, the live API container was healthy, `/api/fieldreport/missioncontrol?limit=5` returned HTTP `200` with `demoReports:300` and `usingMockData:false`, demo-image `GET` returned HTTP `200 image/jpeg`, and `/menu/missioncontrol/` returned HTTP `200` with the new mission-control endpoint reference.
