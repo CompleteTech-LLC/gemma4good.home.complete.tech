@@ -48,9 +48,11 @@ Code requirements:
 ## Rules Compliance Items
 
 - Winner license type is CC-BY 4.0 for the winning submission and source code used to generate it.
+- This repository now includes a repo-level `LICENSE` file declaring CC-BY-4.0 for the Gemma4Good Kaggle submission materials unless a file states otherwise.
 - Any external data or external models used for development/testing must be publicly available and equally accessible to participants at no cost, or otherwise meet Kaggle's reasonableness criteria.
 - Do not privately share competition code or data outside the official Kaggle team. Public sharing is allowed only when it does not violate third-party IP rights and is shared for all participants through Kaggle competition forums/notebooks.
 - Open source code used in the submission must use licenses that do not limit commercial use of the code or a model containing/depending on that code.
+- Third-party tools, runtimes, models, and datasets remain under their own licenses and must be listed in the writeup/notebook if they are part of the final submission.
 - If selected as a winner, be ready to provide reproducible documentation: architecture, preprocessing, loss function/training details if applicable, hyperparameters, runtime resources, inference code, and complete setup instructions.
 - Do not use hand labels or human predictions for validation/test records.
 - The submission must be original work and must not infringe third-party rights.
