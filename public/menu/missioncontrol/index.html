@@ -43,7 +43,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .s-pip.w{background:var(--orange);box-shadow:0 0 6px var(--orange)}
 @keyframes pip{0%,100%{opacity:1}50%{opacity:.2}}
 /* BODY */
-#body{flex:1;display:grid;grid-template-columns:190px 1fr 268px 210px;overflow:hidden}
+#body{flex:1;display:grid;grid-template-columns:1fr 210px;overflow:hidden}
 /* SIDEBAR */
 #sb{background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 #sb::-webkit-scrollbar{display:none}
@@ -200,93 +200,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
   <div class="hdr-ver">v0.2</div>
   <div class="hdr-sep"></div>
-  <div class="hdr-kpi" style="border-left:none">
-    <div><div class="hdr-kv" style="color:var(--cyan)" id="h-rep">128</div><div class="hdr-kl">REPORTS TODAY</div></div>
-  </div>
-  <div class="hdr-kpi">
-    <div><div class="hdr-kv" style="color:var(--green)" id="h-wpt">342</div><div class="hdr-kl">WATER POINTS ACTIVE</div></div>
-  </div>
-  <div class="hdr-kpi">
-    <div><div class="hdr-kv" style="color:var(--orange)" id="h-jug">1,254</div><div class="hdr-kl">ORANGE JUG INVENTORY</div></div>
-  </div>
-  <div class="hdr-kpi">
-    <div><div class="hdr-kv" style="color:var(--cyan)" id="h-kit">6,842</div><div class="hdr-kl">CUP+LID KITS DIST.</div></div>
-  </div>
-  <div class="hdr-kpi">
-    <div><div class="hdr-kv" style="color:var(--red)" id="h-res">18.6<span style="font-size:10px">h</span></div><div class="hdr-kl">AVG RESOLUTION</div></div>
-  </div>
-  <div id="clock">--:--:--</div>
-  <div class="sys-status">
-    <div class="s-pip w" id="sysDot"></div>
-    <span id="sysLbl" style="color:var(--orange)">WARNING</span>
-  </div>
 </div>
 
 <!-- ════ BODY ════ -->
 <div id="body">
 
-  <!-- ── SIDEBAR ── -->
-  <div id="sb">
-    <div class="sb-s">
-      <div class="sb-st">NAVIGATION <span class="sb-badge">SOMALIA</span></div>
-      <div class="sb-ni on" role="button" tabindex="0" data-menu-target="overview"><span class="sb-ni-ico">⬡</span>Overview</div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="reports"><span class="sb-ni-ico">📋</span>Reports <span class="sb-cnt">33</span></div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="map"><span class="sb-ni-ico">🗺</span>Map</div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="incidents"><span class="sb-ni-ico">⚠</span>Incidents <span class="sb-cnt">2</span></div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="inventory"><span class="sb-ni-ico">📦</span>Inventory</div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="analytics"><span class="sb-ni-ico">📊</span>Analytics</div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="alerts"><span class="sb-ni-ico">🔔</span>Alerts <span class="sb-cnt">2</span></div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="teams"><span class="sb-ni-ico">👥</span>Teams</div>
-      <div class="sb-ni" role="button" tabindex="0" data-menu-target="settings"><span class="sb-ni-ico">⚙</span>Settings</div>
-    </div>
-    <div class="sb-s">
-      <div class="sb-st">FOCUS AREAS</div>
-      <div class="sb-fi"><div class="sb-fd w"></div>Water point outages</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Quality stores</div>
-      <div class="sb-fi"><div class="sb-fd w"></div>Access businesses</div>
-      <div class="sb-fi"><div class="sb-fd c"></div>Supply shortages</div>
-      <div class="sb-fi"><div class="sb-fd w"></div>Infrastructure damage</div>
-    </div>
-    <div class="sb-s">
-      <div class="sb-st">ROLL-OUT PLAN</div>
-      <div class="ph-i"><span class="ph-ck">✓</span>Phase 1: Somalia pilot</div>
-      <div class="ph-i"><span class="ph-ck">✓</span>Phase 2: Refine + rescale</div>
-      <div class="ph-i"><span class="ph-pd">○</span>Phase 3: Expand to others</div>
-      <div class="ph-i"><span class="ph-pd">○</span>Phase 4: Multi-severity rollout</div>
-    </div>
-    <div class="sb-s">
-      <div class="sb-st">WHY IMAGE-FIRST</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Works on basic phones</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Low-bandwidth friendly</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Faster reporting</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Better contact</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Stronger evidence</div>
-    </div>
-    <div class="sb-s">
-      <div class="sb-st">NEXT ITERATIONS</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Predictive model</div>
-      <div class="sb-fi"><div class="sb-fd"></div>SMS / IVR reporting</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Water quality results</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Route optimization</div>
-      <div class="sb-fi"><div class="sb-fd"></div>Community feedback</div>
-    </div>
-    <div id="sync-bar">
-      <div><div class="sync-status-l">LAST SYNC</div><div style="font-size:10px;color:var(--cyan)" id="syncTime">2 min ago</div></div>
-      <button class="sync-btn" onclick="triggerSync()"><span class="sync-ico" id="sico">↻</span> SYNC NOW</button>
-    </div>
-  </div>
-
   <!-- ── CENTER ── -->
   <div id="ctr">
-    <!-- KPI STRIP -->
-    <div id="kpi-strip">
-      <div class="kc cy" id="panel-overview"><div class="kc-l">OPEN REPORTS</div><div class="kc-v">220</div><div class="kc-d" style="color:var(--red)">▲ 280 reported</div><canvas class="kc-sp" id="sp0"></canvas></div>
-      <div class="kc or"><div class="kc-l">RESOLVED</div><div class="kc-v">198</div><div class="kc-d" style="color:var(--green)">▲ 155 this week</div><canvas class="kc-sp" id="sp1"></canvas></div>
-      <div class="kc gr"><div class="kc-l">WATER POINTS ACTIVE</div><div class="kc-v">342</div><div class="kc-d" style="color:var(--green)">▲ 12 vs last wk</div><canvas class="kc-sp" id="sp2"></canvas></div>
-      <div class="kc re"><div class="kc-l">HIGH SEVERITY</div><div class="kc-v" id="hs-cnt">3</div><div class="kc-d" style="color:var(--red)">▲ 2 new today</div><canvas class="kc-sp" id="sp3"></canvas></div>
-      <div class="kc cy" style="border-right:none"><div class="kc-l">TEAMS ACTIVE</div><div class="kc-v">5</div><div class="kc-d" style="color:var(--green)">128 pts resolved</div><canvas class="kc-sp" id="sp4"></canvas></div>
-    </div>
-
     <!-- MAP + IMAGE REPORTS -->
     <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
       <!-- MAP -->
@@ -316,47 +236,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
-    <!-- BOTTOM: Triage + Alerts -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border);max-height:175px;overflow:hidden">
-      <div class="fc" id="panel-triage" style="border-right:1px solid var(--border)">
-        <div class="ph"><div class="pt">SEVERITY / TRIAGE QUEUE</div><span class="pb wn" role="button" tabindex="0" data-menu-target="incidents">VIEW ALL</span></div>
-        <div class="scroll-y f1" id="triageList"></div>
-      </div>
-      <div class="fc" id="panel-alerts">
-        <div class="ph"><div class="pt">ALERT PIPELINE</div><span class="pb ct" id="alertBadge">2 CRITICAL</span></div>
-        <div class="scroll-y f1" id="alertList"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── RIGHT COL ── -->
-  <div class="fc" id="panel-inventory" style="border-right:1px solid var(--border)">
-    <div class="ph"><div class="pt">SYSTEM VITALS</div><span class="pb lv" id="vbadge">OPTIMAL</span></div>
-    <div id="gauge-row" style="background:var(--panel);flex-shrink:0"></div>
-
-    <div class="ph"><div class="pt">INVENTORY STATUS</div><span class="pb in">LIVE</span></div>
-    <div id="invPanel" style="flex-shrink:0"></div>
-
-    <div class="ph"><div class="pt">RECENT DISTRIBUTIONS</div></div>
-    <div class="scroll-y" style="flex:1" id="distTable"></div>
-
-    <div class="ph" id="panel-analytics" style="border-top:1px solid var(--border)"><div class="pt">AUTO OBJECT DETECTION</div><span class="pb in" id="detBadge">CONF K2.5</span></div>
-    <div id="detPanel" style="padding:7px 9px;display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0"></div>
   </div>
 
   <!-- ── FAR RIGHT ── -->
   <div class="fc">
-    <div class="ph" id="panel-teams"><div class="pt">TEAM ACTIVITY (LAST 24H)</div></div>
-    <div id="teamPanel" style="flex-shrink:0"></div>
-
     <div class="ph" id="panel-settings" style="border-top:1px solid var(--border)"><div class="pt">QUICK ACTIONS</div></div>
     <div id="qaPanel" style="flex-shrink:0"></div>
 
-    <div class="ph" style="border-top:1px solid var(--border)"><div class="pt">NOTES / QUESTIONS</div></div>
-    <div class="scroll-y" style="max-height:120px;flex-shrink:0" id="notesPanel"></div>
-
-    <div class="ph" style="border-top:1px solid var(--border)"><div class="pt">ACTION ITEMS</div><span class="pb wn" id="actBadge">-- PENDING</span></div>
-    <div class="scroll-y f1" id="actionPanel"></div>
   </div>
 
 </div><!-- /body -->
@@ -438,7 +324,7 @@ const SP_COLS=['#00d4ff','#ff7a00','#00ff88','#ff2d55','#00d4ff'];
 let liveAlerts=[...ALERTS_SEED];
 // ── CLOCK ──────────────────────────────────────────────────────
 const pad=n=>String(n).padStart(2,'0');
-setInterval(()=>{const n=new Date();document.getElementById('clock').textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;},1000);
+setInterval(()=>{const n=new Date(),clock=document.getElementById('clock');if(clock)clock.textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;},1000);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
 // ── SPARKLINES ─────────────────────────────────────────────────
@@ -516,7 +402,9 @@ function drawMap(){
 }
 // ── GAUGES ─────────────────────────────────────────────────────
 function buildGauges(){
-  const row=document.getElementById('gauge-row');row.innerHTML='';
+  const row=document.getElementById('gauge-row');
+  if(!row)return;
+  row.innerHTML='';
   GAUGES_DEF.forEach(g=>{
     const cell=document.createElement('div');cell.className='gc';
     cell.innerHTML=`
@@ -574,6 +462,7 @@ function drawGauge(g){
 // ── INVENTORY ──────────────────────────────────────────────────
 function buildInv(){
   const el=document.getElementById('invPanel');
+  if(!el)return;
   const items=[
     {ico:'🧴',name:'ORANGE JUG STOCK',sub:'Primary field icon',val:1254,prev:1340,max:2000,col:'#ff7a00'},
     {ico:'🥤',name:'CUP + LID KITS',  sub:'Consumer layer',   val:6842,prev:6657,max:10000,col:'#00d4ff'},
@@ -600,12 +489,15 @@ function buildInv(){
 // ── DISTRIBUTIONS ──────────────────────────────────────────────
 function buildDist(){
   const el=document.getElementById('distTable');
+  if(!el)return;
   el.innerHTML=`<div class="dt-r hd"><div>LOCATION</div><div>ITEM</div><div>CNT</div><div>DATE</div></div>`
     +DISTS.map(d=>`<div class="dt-r"><div>${d.loc}</div><div style="color:var(--cyan);font-size:9px">${d.type}</div><div class="dt-cnt">${d.cnt}</div><div style="color:var(--text-dim);font-size:9px">${d.date}</div></div>`).join('');
 }
 // ── DETECTIONS ─────────────────────────────────────────────────
 function buildDet(){
-  document.getElementById('detPanel').innerHTML=DETS.map(d=>{
+  const el=document.getElementById('detPanel');
+  if(!el)return;
+  el.innerHTML=DETS.map(d=>{
     const col=d.col||categoryColor(d.category);
     return `
     <div style="display:flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(0,0,0,.3);border:1px solid ${col}33">
@@ -655,7 +547,9 @@ function buildReportDetail(){
 }
 // ── TRIAGE ─────────────────────────────────────────────────────
 function buildTriage(){
-  document.getElementById('triageList').innerHTML=triageRows.map(r=>`
+  const el=document.getElementById('triageList');
+  if(!el)return;
+  el.innerHTML=triageRows.map(r=>`
     <div class="tr-row">
       <div class="tr-id">${esc(r.id)}</div>
       <div style="font-size:10px;font-weight:500">${esc(r.loc)}</div>
@@ -682,10 +576,14 @@ async function loadSubmittedReports(){
     applyMissionMap(Array.isArray(body.mapPoints)?body.mapPoints:[]);
     buildImgReports();buildTriage();buildDist();buildDet();renderAlerts();
     applyMissionMetrics(body.metrics||{},body.source||{});
-    document.getElementById('syncTime').textContent='Just now';
+    setSyncStatus('Just now');
   }catch(err){
-    document.getElementById('syncTime').textContent='Report sync failed';
+    setSyncStatus('Report sync failed');
   }
+}
+function setSyncStatus(text){
+  const el=document.getElementById('syncTime');
+  if(el)el.textContent=text;
 }
 function mapMissionReport(report){
   const severity=report.severity||'medium';
@@ -715,17 +613,25 @@ function triageSeverity(severity){
   return'MED';
 }
 function updateReportMetrics(mapped){
-  document.getElementById('h-rep').textContent=mapped.length.toLocaleString();
-  document.getElementById('hs-cnt').textContent=String(mapped.filter(r=>r.triage.sev==='SLR').length);
+  const reportCount=document.getElementById('h-rep');
+  if(reportCount)reportCount.textContent=mapped.length.toLocaleString();
+  const highSeverityCount=document.getElementById('hs-cnt');
+  if(highSeverityCount)highSeverityCount.textContent=String(mapped.filter(r=>r.triage.sev==='SLR').length);
 }
 function applyMissionMetrics(metrics,source){
   reportMetricBase=Number(metrics.reportsToday)||0;
-  document.getElementById('h-rep').textContent=reportMetricBase.toLocaleString();
-  document.getElementById('h-wpt').textContent=(Number(metrics.waterPointsActive)||0).toLocaleString();
-  document.getElementById('h-jug').textContent=(Number(metrics.inventory?.jugs)||0).toLocaleString();
-  document.getElementById('h-kit').textContent=(Number(metrics.inventory?.kits)||0).toLocaleString();
-  document.getElementById('h-res').innerHTML=`${Number(metrics.avgResolutionHours||0).toFixed(1)}<span style="font-size:10px">h</span>`;
-  document.getElementById('hs-cnt').textContent=String(metrics.highSeverity||0);
+  const reportCount=document.getElementById('h-rep');
+  if(reportCount)reportCount.textContent=reportMetricBase.toLocaleString();
+  const waterPoints=document.getElementById('h-wpt');
+  if(waterPoints)waterPoints.textContent=(Number(metrics.waterPointsActive)||0).toLocaleString();
+  const jugs=document.getElementById('h-jug');
+  if(jugs)jugs.textContent=(Number(metrics.inventory?.jugs)||0).toLocaleString();
+  const kits=document.getElementById('h-kit');
+  if(kits)kits.textContent=(Number(metrics.inventory?.kits)||0).toLocaleString();
+  const avgResolution=document.getElementById('h-res');
+  if(avgResolution)avgResolution.innerHTML=`${Number(metrics.avgResolutionHours||0).toFixed(1)}<span style="font-size:10px">h</span>`;
+  const highSeverityCount=document.getElementById('hs-cnt');
+  if(highSeverityCount)highSeverityCount.textContent=String(metrics.highSeverity||0);
   const reportNav=document.querySelector('.sb-ni .sb-cnt');
   if(reportNav)reportNav.textContent=String(reportMetricBase);
   const submitted=Number(source.submittedReports)||0;
@@ -753,7 +659,8 @@ function ageLabel(date){
 }
 // ── ALERTS ─────────────────────────────────────────────────────
 function renderAlerts(){
-  document.getElementById('alertList').innerHTML=liveAlerts.slice(0,8).map(a=>`
+  const alertList=document.getElementById('alertList');
+  if(alertList)alertList.innerHTML=liveAlerts.slice(0,8).map(a=>`
     <div class="al-item sev-${a.sev}">
       <div class="al-stripe"></div>
       <div>
@@ -765,17 +672,23 @@ function renderAlerts(){
   const crits=liveAlerts.filter(a=>a.sev==='crit').length;
   const warns=liveAlerts.filter(a=>a.sev==='warn').length;
   const ab=document.getElementById('alertBadge');
-  ab.textContent=crits>0?`${crits} CRITICAL`:warns>0?`${warns} WARNINGS`:'NOMINAL';
-  ab.className=crits>0?'pb ct':warns>0?'pb wn':'pb lv';
+  if(ab){
+    ab.textContent=crits>0?`${crits} CRITICAL`:warns>0?`${warns} WARNINGS`:'NOMINAL';
+    ab.className=crits>0?'pb ct':warns>0?'pb wn':'pb lv';
+  }
   const dot=document.getElementById('sysDot');
-  dot.className=crits>0?'s-pip c':warns>0?'s-pip w':'s-pip';
+  if(dot)dot.className=crits>0?'s-pip c':warns>0?'s-pip w':'s-pip';
   const lbl=document.getElementById('sysLbl');
-  lbl.textContent=crits>0?'CRITICAL':warns>0?'WARNING':'NOMINAL';
-  lbl.style.color=crits>0?'var(--red)':warns>0?'var(--orange)':'var(--green)';
+  if(lbl){
+    lbl.textContent=crits>0?'CRITICAL':warns>0?'WARNING':'NOMINAL';
+    lbl.style.color=crits>0?'var(--red)':warns>0?'var(--orange)':'var(--green)';
+  }
 }
 // ── TEAMS ──────────────────────────────────────────────────────
 function buildTeams(){
-  document.getElementById('teamPanel').innerHTML=`
+  const el=document.getElementById('teamPanel');
+  if(!el)return;
+  el.innerHTML=`
     <div class="tm-r" style="font-size:7px;letter-spacing:2px;color:var(--text-dim);background:#0a0e14">
       <div></div><div>OPERATIVE</div><div style="text-align:center">PTS</div><div style="text-align:center">RES</div><div style="text-align:center">FND</div>
     </div>`
@@ -792,9 +705,7 @@ function buildQA(){
   const items=[
     {ico:'📝',lbl:'New Report',key:'N',action:'new-report'},
     {ico:'🗺',lbl:'Map View',key:'M',action:'map'},
-    {ico:'👥',lbl:'Team Report',key:'T',action:'teams'},
-    {ico:'📤',lbl:'Export Data',key:'E',action:'export'},
-    {ico:'↻',lbl:'Sync Now',key:'S',action:'sync'}
+    {ico:'📤',lbl:'Export Data',key:'E',action:'export'}
   ];
   document.getElementById('qaPanel').innerHTML=items.map(i=>`
     <div class="qa-i" role="button" tabindex="0" data-quick-action="${i.action}"><div class="qa-ico">${i.ico}</div><div style="font-size:11px;font-weight:500;flex:1">${i.lbl}</div><div class="qa-key">[${i.key}]</div></div>`).join('');
@@ -802,12 +713,16 @@ function buildQA(){
 }
 // ── NOTES ──────────────────────────────────────────────────────
 function buildNotes(){
-  document.getElementById('notesPanel').innerHTML=NOTES.map(n=>`<div class="nt-i"><span class="nt-b">›</span>${n}</div>`).join('');
+  const el=document.getElementById('notesPanel');
+  if(!el)return;
+  el.innerHTML=NOTES.map(n=>`<div class="nt-i"><span class="nt-b">›</span>${n}</div>`).join('');
 }
 // ── ACTIONS ────────────────────────────────────────────────────
 function renderActions(){
+  const actionPanel=document.getElementById('actionPanel');
+  if(!actionPanel)return;
   const pc=p=>p==='P1'?'var(--red)':p==='P2'?'var(--orange)':'var(--cyan)';
-  document.getElementById('actionPanel').innerHTML=ACTIONS.map(a=>`
+  actionPanel.innerHTML=ACTIONS.map(a=>`
     <div class="qa-i" onclick="toggleAct(${a.id})" style="${a.done?'opacity:.35':''}">
       <div class="qa-ico" style="${a.done?'color:var(--green);border-color:var(--green)':''}">${a.done?'✓':'○'}</div>
       <div style="font-size:10px;font-weight:500;flex:1;text-decoration:${a.done?'line-through':'none'}">${a.text}</div>
@@ -815,6 +730,7 @@ function renderActions(){
     </div>`).join('');
   const pend=ACTIONS.filter(a=>!a.done).length;
   const ab=document.getElementById('actBadge');
+  if(!ab)return;
   ab.textContent=`${pend} PENDING`;
   ab.className=pend>2?'pb wn':'pb lv';
 }
@@ -866,7 +782,7 @@ function runQuickAction(action){
 }
 async function exportMissionData(){
   const res=await fetch('/api/fieldreport/missioncontrol/?limit=300',{cache:'no-store'});
-  if(!res.ok){document.getElementById('syncTime').textContent='Export failed';return;}
+  if(!res.ok){setSyncStatus('Export failed');return;}
   const blob=new Blob([JSON.stringify(await res.json(),null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -877,12 +793,13 @@ async function exportMissionData(){
 }
 // ── SYNC ───────────────────────────────────────────────────────
 function triggerSync(){
-  const i=document.getElementById('sico');i.classList.add('spin');
-  document.getElementById('syncTime').textContent='Syncing...';
+  const i=document.getElementById('sico');
+  if(i)i.classList.add('spin');
+  setSyncStatus('Syncing...');
   loadSubmittedReports();
   setTimeout(()=>{
-    i.classList.remove('spin');
-    document.getElementById('syncTime').textContent='Just now';
+    if(i)i.classList.remove('spin');
+    setSyncStatus('Just now');
     const n=new Date(),ts=`${pad(n.getHours())}:${pad(n.getMinutes())}`;
     liveAlerts.unshift({sev:'ok',msg:'Manual sync complete — all systems up to date',src:'SYSTEM',ts});
     if(liveAlerts.length>20)liveAlerts.pop();
@@ -897,8 +814,10 @@ function simulate(){
   GAUGES_DEF.forEach(g=>{g.val=noise(g.val,g.max*.05,g.max*.95,g.max*.04);drawGauge(g);});
   const ov=GAUGES_DEF.filter(g=>g.val/g.max>.85).length;
   const vb=document.getElementById('vbadge');
-  vb.textContent=ov>2?'DEGRADED':ov>0?'WATCH':'OPTIMAL';
-  vb.className=ov>2?'pb ct':ov>0?'pb wn':'pb lv';
+  if(vb){
+    vb.textContent=ov>2?'DEGRADED':ov>0?'WATCH':'OPTIMAL';
+    vb.className=ov>2?'pb ct':ov>0?'pb wn':'pb lv';
+  }
   if(tick%12===0&&ALERT_POOL.length){
     const a=ALERT_POOL[Math.floor(Math.random()*ALERT_POOL.length)];
     const n=new Date(),ts=`${pad(n.getHours())}:${pad(n.getMinutes())}`;
@@ -906,7 +825,8 @@ function simulate(){
     if(liveAlerts.length>20)liveAlerts.pop();
     renderAlerts();
   }
-  document.getElementById('h-rep').textContent=(reportMetricBase||imageReports.length||0).toLocaleString();
+  const reportCount=document.getElementById('h-rep');
+  if(reportCount)reportCount.textContent=(reportMetricBase||imageReports.length||0).toLocaleString();
 }
 // ── RENDER LOOP ─────────────────────────────────────────────────
 let lm=0,ls=0;
