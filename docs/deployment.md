@@ -44,6 +44,9 @@ Implemented values:
 - Field report API service: `gemma4good-api`
 - Field report API container: `gemma4good-api-home-complete-tech`
 - Field report API address: `172.30.88.46:3000`
+- Gemma 4 llama.cpp service: `gemma4-26b-a4b`
+- Gemma 4 llama.cpp container: `completetrain-home-complete-tech-llama`
+- Gemma 4 llama.cpp address: `172.30.88.4:18084`
 
 Healthcheck:
 
@@ -114,6 +117,12 @@ The API forwards validated reports to the private Gemma4 endpoint:
 
 ```text
 http://172.30.88.4:18084/v1/chat/completions
+```
+
+The llama.cpp runtime service definition, pinned source checkout, Gemma 4 chat template, and validation runbook live in:
+
+```text
+deploy/llama-cpp/
 ```
 
 Validation commands:
