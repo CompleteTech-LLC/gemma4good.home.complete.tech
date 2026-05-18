@@ -107,6 +107,32 @@
     flex-shrink: 0;
   }
 
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 1px;
+  }
+
+  .header-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 8px;
+    background: rgba(0,194,255,0.04);
+  }
+
+  .header-link:focus-visible,
+  .header-link:hover {
+    border-color: var(--accent);
+    outline: none;
+  }
+
   @keyframes pulse {
     0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,157,0.4); }
     50% { opacity: 0.6; box-shadow: 0 0 0 5px rgba(0,255,157,0); }
@@ -296,6 +322,27 @@
     letter-spacing: 0.04em;
   }
 
+  .btn-capture:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .btn-icon {
+    width: 17px;
+    height: 17px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .btn-icon svg {
+    width: 17px;
+    height: 17px;
+    display: block;
+    stroke: currentColor;
+  }
+
   .btn-camera {
     background: rgba(0,194,255,0.08);
     border-color: rgba(0,194,255,0.4);
@@ -318,8 +365,14 @@
     transform: scale(0.97);
   }
 
-  /* Hidden inputs */
-  #input-camera, #input-album { display: none; }
+  /* File inputs stay in the DOM for mobile picker reliability. */
+  #input-camera, #input-album {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
 
   /* Tag grid */
   .tag-grid {
@@ -797,7 +850,11 @@
     <span class="logo-label">Somalia Water Triage</span>
     <span class="logo-title">💧 Field Report</span>
   </div>
-  <div class="status-dot">LIVE</div>
+  <div class="header-actions">
+    <a class="header-link" href="/menu/">Menu</a>
+    <a class="header-link" href="/menu/missioncontrol/">Mission</a>
+    <div class="status-dot">LIVE</div>
+  </div>
 </header>
 
 <main>
@@ -823,11 +880,24 @@
     </div>
 
     <div class="capture-actions">
-      <button class="btn-capture btn-camera" id="btn-camera" onclick="handleCameraButton()">
-        <span id="btn-camera-label">📷 Camera</span>
+      <button class="btn-capture btn-camera" id="btn-camera" type="button" onclick="handleCameraButton()" aria-label="Open camera or retake photo">
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4l1.5 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2h5z"></path>
+            <circle cx="12" cy="13" r="3.5"></circle>
+          </svg>
+        </span>
+        <span id="btn-camera-label">Camera</span>
       </button>
-      <button class="btn-capture btn-album" onclick="stopCamera(); document.getElementById('input-album').click()">
-        🖼 Album
+      <button class="btn-capture btn-album" id="btn-album" type="button" onclick="handleAlbumButton()" aria-label="Choose image from album">
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <circle cx="8.5" cy="10" r="1.5"></circle>
+            <path d="M21 15l-5-5L5 19"></path>
+          </svg>
+        </span>
+        <span>Album</span>
       </button>
     </div>
 
@@ -981,6 +1051,7 @@
   let gpsDetecting = false;
   let analysisStatus = 'idle';
   let analysisResult = null;
+  let imageVersion = 0;
 
   const ANALYZE_ENDPOINT = '/api/fieldreport/analyze';
   const SUBMIT_ENDPOINT = '/api/fieldreport/submit';
@@ -990,6 +1061,8 @@
     if (!file || !file.type.startsWith('image/')) return;
     stopCamera();
     capturedFile = file;
+    capturedDataURL = null;
+    const version = beginImageChange();
     const fallbackTimestamp = new Date();
     setReportTimestamp(fallbackTimestamp, 'current');
 
@@ -1007,15 +1080,36 @@
 
     const reader = new FileReader();
     reader.onload = e => {
+      if (version !== imageVersion || capturedFile !== file) return;
       capturedDataURL = e.target.result;
       showCapturedImage(capturedDataURL);
       validate();
     };
+    reader.onerror = () => {
+      if (version !== imageVersion || capturedFile !== file) return;
+      capturedFile = null;
+      capturedDataURL = null;
+      validate();
+      showToast('Image could not be loaded');
+    };
     reader.readAsDataURL(file);
   }
 
-  document.getElementById('input-camera').addEventListener('change', e => handleImageFile(e.target.files[0]));
-  document.getElementById('input-album').addEventListener('change',  e => handleImageFile(e.target.files[0]));
+  document.getElementById('input-camera').addEventListener('change', e => {
+    handleImageFile(e.target.files[0]);
+    e.target.value = '';
+  });
+  document.getElementById('input-album').addEventListener('change',  e => {
+    handleImageFile(e.target.files[0]);
+    e.target.value = '';
+  });
+
+  function triggerFileInput(id) {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.value = '';
+    input.click();
+  }
 
   async function handleCameraButton() {
     if (cameraStream) {
@@ -1025,10 +1119,15 @@
     await openCamera();
   }
 
+  function handleAlbumButton() {
+    stopCamera();
+    triggerFileInput('input-album');
+  }
+
   async function openCamera() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       showToast('Camera stream unavailable; using camera picker');
-      document.getElementById('input-camera').click();
+      triggerFileInput('input-camera');
       return;
     }
 
@@ -1051,12 +1150,12 @@
       document.getElementById('img-overlay').classList.remove('visible');
       document.getElementById('capture-placeholder').style.display = 'none';
       document.getElementById('capture-zone').classList.add('has-image');
-      document.getElementById('btn-camera-label').textContent = '✓ Take Photo';
+      setCameraButtonLabel('Take Photo');
       showToast('Camera ready');
     } catch (error) {
       stopCamera();
       showToast('Camera blocked; using camera picker');
-      document.getElementById('input-camera').click();
+      triggerFileInput('input-camera');
     }
   }
 
@@ -1073,6 +1172,7 @@
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+    beginImageChange();
     capturedDataURL = canvas.toDataURL('image/jpeg', 0.9);
     capturedFile = dataUrlToFile(capturedDataURL, `field-camera-${Date.now()}.jpg`);
     setReportTimestamp(new Date(), 'current');
@@ -1080,6 +1180,24 @@
     stopCamera();
     validate();
     showToast('Photo captured');
+  }
+
+  function beginImageChange() {
+    imageVersion += 1;
+    analysisStatus = 'idle';
+    analysisResult = null;
+    selectedTags = [];
+
+    document.querySelectorAll('.tag-btn').forEach(b => {
+      b.classList.remove('selected');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    document.getElementById('note-field').value = '';
+    document.getElementById('btn-analyze-text').textContent = 'Analyze with Gemma4';
+    document.getElementById('ai-result').className = 'ai-result';
+    document.getElementById('ai-result').innerHTML = '';
+    validate();
+    return imageVersion;
   }
 
   function showCapturedImage(dataUrl) {
@@ -1090,6 +1208,7 @@
     document.getElementById('img-overlay').classList.add('visible');
     document.getElementById('capture-placeholder').style.display = 'none';
     document.getElementById('capture-zone').classList.add('has-image');
+    setCameraButtonLabel('Retake');
   }
 
   function stopCamera() {
@@ -1101,7 +1220,12 @@
     video.pause();
     video.srcObject = null;
     video.classList.remove('visible');
-    document.getElementById('btn-camera-label').textContent = '📷 Camera';
+    setCameraButtonLabel(capturedDataURL ? 'Retake' : 'Camera');
+  }
+
+  function setCameraButtonLabel(label) {
+    const el = document.getElementById('btn-camera-label');
+    if (el) el.textContent = label;
   }
 
   function dataUrlToFile(dataUrl, filename) {
@@ -1381,7 +1505,7 @@
 
   // ---- Validation ----
   function validate() {
-    const hasImg = !!capturedFile;
+    const hasImg = !!capturedFile && !!capturedDataURL;
     const hasLocation = document.getElementById('field-district').value.trim() ||
                         document.getElementById('field-city').value.trim() ||
                         gpsCoords;
@@ -1411,13 +1535,15 @@
   async function handleAnalyze() {
     if (!validate() || analysisStatus === 'loading') return;
 
+    const version = imageVersion;
     setAnalysisLoading();
 
     try {
       const district = document.getElementById('field-district').value.trim();
       const city = document.getElementById('field-city').value.trim();
       const note = document.getElementById('note-field').value.trim();
-      const imageDataUrl = await resizeImageForAnalysis(capturedFile);
+      const imageDataUrl = await resizeImageForAnalysis(capturedDataURL);
+      if (version !== imageVersion) return;
 
       const response = await fetch(ANALYZE_ENDPOINT, {
         method: 'POST',
@@ -1440,12 +1566,14 @@
       if (!response.ok) {
         throw new Error(body.error || 'analysis_failed');
       }
+      if (version !== imageVersion) return;
 
       analysisStatus = 'done';
       analysisResult = body;
       renderAnalysis(body);
       showToast('Gemma4 triage ready');
     } catch (error) {
+      if (version !== imageVersion) return;
       analysisStatus = 'error';
       renderAnalysisError(error.message || 'analysis_failed');
       showToast('Gemma4 analysis failed');
@@ -1539,10 +1667,10 @@
     }[char]));
   }
 
-  function resizeImageForAnalysis(file) {
+  function resizeImageForAnalysis(dataUrl) {
     return new Promise((resolve) => {
-      if (!file || !capturedDataURL) {
-        resolve(capturedDataURL);
+      if (!dataUrl) {
+        resolve(null);
         return;
       }
 
@@ -1559,8 +1687,8 @@
         ctx.drawImage(img, 0, 0, width, height);
         resolve(canvas.toDataURL('image/jpeg', 0.82));
       };
-      img.onerror = () => resolve(capturedDataURL);
-      img.src = capturedDataURL;
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
     });
   }
 
@@ -1578,7 +1706,11 @@
     try {
       submitButton.disabled = true;
       submitButton.innerHTML = '<span>Submitting...</span><span>→</span>';
-      const imageDataUrl = await resizeImageForAnalysis(capturedFile);
+      const version = imageVersion;
+      const imageDataUrl = await resizeImageForAnalysis(capturedDataURL);
+      if (version !== imageVersion) {
+        throw new Error('image_changed');
+      }
       const response = await fetch(SUBMIT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1612,6 +1744,7 @@
   }
 
   function resetForm() {
+    imageVersion += 1;
     capturedFile = null;
     capturedDataURL = null;
     stopCamera();
