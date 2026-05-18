@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240305T191600Z_dhobley-dhobley_infrastructure+health_risk_medium_11",
+  "image_file": "g4g_20240305T191600Z_dhobley-dhobley_infrastructure+health_risk_medium_11.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-03-05T19:16:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.420887,
+    "lon": 41.002851
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Visible infrastructure failure at collection point; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 7,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

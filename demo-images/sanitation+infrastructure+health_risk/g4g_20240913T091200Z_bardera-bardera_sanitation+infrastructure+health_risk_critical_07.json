@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240913T091200Z_bardera-bardera_sanitation+infrastructure+health_risk_critical_07",
+  "image_file": "g4g_20240913T091200Z_bardera-bardera_sanitation+infrastructure+health_risk_critical_07.jpg",
+  "variation": "sanitation+infrastructure+health_risk",
+  "timestamp": "2024-09-13T09:12:00Z",
+  "location": {
+    "city": "Bardera",
+    "district": "Bardera",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 2.321429,
+    "lon": 42.300805
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 12,
+    "infrastructure": 4,
+    "health_risk": 16
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

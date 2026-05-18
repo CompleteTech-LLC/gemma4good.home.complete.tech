@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241114T171300Z_marka-marka_water_quality+sanitation_high_18",
+  "image_file": "g4g_20241114T171300Z_marka-marka_water_quality+sanitation_high_18.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-11-14T17:13:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.74833,
+    "lon": 44.747432
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "high",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 18,
+    "sanitation": 1
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

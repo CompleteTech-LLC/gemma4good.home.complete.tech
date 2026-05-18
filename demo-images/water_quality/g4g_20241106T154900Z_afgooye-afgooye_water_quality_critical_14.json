@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20241106T154900Z_afgooye-afgooye_water_quality_critical_14",
+  "image_file": "g4g_20241106T154900Z_afgooye-afgooye_water_quality_critical_14.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-11-06T15:49:00Z",
+  "location": {
+    "city": "Afgooye",
+    "district": "Afgooye",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 2.168999,
+    "lon": 45.11614
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "critical",
+  "short_note": "Sediment-heavy water seen during collection.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 4
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

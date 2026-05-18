@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20241222T130200Z_garowe-garowe_sanitation_low_17",
+  "image_file": "g4g_20241222T130200Z_garowe-garowe_sanitation_low_17.jpg",
+  "variation": "sanitation",
+  "timestamp": "2024-12-22T13:02:00Z",
+  "location": {
+    "city": "Garowe",
+    "district": "Garowe",
+    "region": "Nugaal",
+    "country": "Somalia",
+    "lat": 8.371888,
+    "lon": 48.45427
+  },
+  "categories": [
+    "sanitation"
+  ],
+  "severity": "low",
+  "short_note": "Poor drainage around public collection area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "sanitation": 18
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

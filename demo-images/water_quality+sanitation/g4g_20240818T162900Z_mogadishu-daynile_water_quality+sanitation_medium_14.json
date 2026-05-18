@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240818T162900Z_mogadishu-daynile_water_quality+sanitation_medium_14",
+  "image_file": "g4g_20240818T162900Z_mogadishu-daynile_water_quality+sanitation_medium_14.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-08-18T16:29:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.081043,
+    "lon": 45.252833
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "medium",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 6,
+    "sanitation": 5
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

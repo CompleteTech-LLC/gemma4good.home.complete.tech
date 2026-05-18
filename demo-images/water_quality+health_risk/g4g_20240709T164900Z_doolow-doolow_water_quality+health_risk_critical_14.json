@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240709T164900Z_doolow-doolow_water_quality+health_risk_critical_14",
+  "image_file": "g4g_20240709T164900Z_doolow-doolow_water_quality+health_risk_critical_14.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-07-09T16:49:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.158193,
+    "lon": 42.083983
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Sediment-heavy water seen during collection; unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 6,
+    "health_risk": 15
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

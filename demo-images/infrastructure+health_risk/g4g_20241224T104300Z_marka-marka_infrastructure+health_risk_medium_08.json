@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241224T104300Z_marka-marka_infrastructure+health_risk_medium_08",
+  "image_file": "g4g_20241224T104300Z_marka-marka_infrastructure+health_risk_medium_08.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-12-24T10:43:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.740121,
+    "lon": 44.751201
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 18,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240530T170900Z_hargeisa-hargeisa_sanitation+health_risk_critical_14",
+  "image_file": "g4g_20240530T170900Z_hargeisa-hargeisa_sanitation+health_risk_critical_14.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-05-30T17:09:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.582669,
+    "lon": 44.111308
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Muddy runoff pooling beside access path; unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 11,
+    "health_risk": 15
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

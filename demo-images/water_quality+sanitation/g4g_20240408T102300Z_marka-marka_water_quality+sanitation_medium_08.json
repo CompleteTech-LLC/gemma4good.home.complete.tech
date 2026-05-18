@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240408T102300Z_marka-marka_water_quality+sanitation_medium_08",
+  "image_file": "g4g_20240408T102300Z_marka-marka_water_quality+sanitation_medium_08.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-04-08T10:23:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.694072,
+    "lon": 44.760056
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "medium",
+  "short_note": "Turbid water visible in collection container; poor drainage around public collection area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 8,
+    "sanitation": 1
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

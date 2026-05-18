@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240420T172900Z_bardera-bardera_water_quality+sanitation+infrastructure_high_14",
+  "image_file": "g4g_20240420T172900Z_bardera-bardera_water_quality+sanitation+infrastructure_high_14.jpg",
+  "variation": "water_quality+sanitation+infrastructure",
+  "timestamp": "2024-04-20T17:29:00Z",
+  "location": {
+    "city": "Bardera",
+    "district": "Bardera",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 2.345644,
+    "lon": 42.290764
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 8,
+    "sanitation": 7,
+    "infrastructure": 6
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

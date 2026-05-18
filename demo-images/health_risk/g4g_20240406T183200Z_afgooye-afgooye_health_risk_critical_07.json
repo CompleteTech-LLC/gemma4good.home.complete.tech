@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240406T183200Z_afgooye-afgooye_health_risk_critical_07",
+  "image_file": "g4g_20240406T183200Z_afgooye-afgooye_health_risk_critical_07.jpg",
+  "variation": "health_risk",
+  "timestamp": "2024-04-06T18:32:00Z",
+  "location": {
+    "city": "Afgooye",
+    "district": "Afgooye",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 2.152792,
+    "lon": 45.093995
+  },
+  "categories": [
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "health_risk": 18
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

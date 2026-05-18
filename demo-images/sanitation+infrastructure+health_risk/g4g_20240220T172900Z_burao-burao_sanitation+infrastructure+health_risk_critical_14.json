@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240220T172900Z_burao-burao_sanitation+infrastructure+health_risk_critical_14",
+  "image_file": "g4g_20240220T172900Z_burao-burao_sanitation+infrastructure+health_risk_critical_14.jpg",
+  "variation": "sanitation+infrastructure+health_risk",
+  "timestamp": "2024-02-20T17:29:00Z",
+  "location": {
+    "city": "Burao",
+    "district": "Burao",
+    "region": "Togdheer",
+    "country": "Somalia",
+    "lat": 9.516897,
+    "lon": 45.502378
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Muddy runoff pooling beside access path; visible infrastructure failure at collection point; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 13,
+    "infrastructure": 12,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

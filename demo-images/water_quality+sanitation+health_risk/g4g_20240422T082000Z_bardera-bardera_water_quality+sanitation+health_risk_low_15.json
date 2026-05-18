@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240422T082000Z_bardera-bardera_water_quality+sanitation+health_risk_low_15",
+  "image_file": "g4g_20240422T082000Z_bardera-bardera_water_quality+sanitation+health_risk_low_15.jpg",
+  "variation": "water_quality+sanitation+health_risk",
+  "timestamp": "2024-04-22T08:20:00Z",
+  "location": {
+    "city": "Bardera",
+    "district": "Bardera",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 2.312886,
+    "lon": 42.252898
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Discolored water present in household container; standing wastewater and litter near water point; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 11,
+    "sanitation": 11,
+    "health_risk": 16
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

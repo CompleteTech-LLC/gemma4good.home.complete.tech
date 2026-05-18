@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241202T193200Z_doolow-doolow_infrastructure+health_risk_critical_07",
+  "image_file": "g4g_20241202T193200Z_doolow-doolow_infrastructure+health_risk_critical_07.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-12-02T19:32:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.144328,
+    "lon": 42.038045
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Visible infrastructure failure at collection point; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 15,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

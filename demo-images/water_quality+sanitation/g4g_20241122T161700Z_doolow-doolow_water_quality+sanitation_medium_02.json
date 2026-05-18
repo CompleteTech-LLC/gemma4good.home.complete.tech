@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241122T161700Z_doolow-doolow_water_quality+sanitation_medium_02",
+  "image_file": "g4g_20241122T161700Z_doolow-doolow_water_quality+sanitation_medium_02.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-11-22T16:17:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.186411,
+    "lon": 42.041617
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "medium",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 10,
+    "sanitation": 17
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

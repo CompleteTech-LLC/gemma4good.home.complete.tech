@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20241015T123800Z_beledweyne-beledweyne_water_quality_high_13",
+  "image_file": "g4g_20241015T123800Z_beledweyne-beledweyne_water_quality_high_13.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-10-15T12:38:00Z",
+  "location": {
+    "city": "Beledweyne",
+    "district": "Beledweyne",
+    "region": "Hiraan",
+    "country": "Somalia",
+    "lat": 4.701309,
+    "lon": 45.221957
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "high",
+  "short_note": "Cloudy brown water observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 1
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

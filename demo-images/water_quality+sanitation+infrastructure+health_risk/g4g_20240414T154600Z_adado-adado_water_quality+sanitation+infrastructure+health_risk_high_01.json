@@ -1,0 +1,32 @@
+{
+  "id": "g4g_20240414T154600Z_adado-adado_water_quality+sanitation+infrastructure+health_risk_high_01",
+  "image_file": "g4g_20240414T154600Z_adado-adado_water_quality+sanitation+infrastructure+health_risk_high_01.jpg",
+  "variation": "water_quality+sanitation+infrastructure+health_risk",
+  "timestamp": "2024-04-14T15:46:00Z",
+  "location": {
+    "city": "Adado",
+    "district": "Adado",
+    "region": "Galguduud",
+    "country": "Somalia",
+    "lat": 6.160363,
+    "lon": 46.659469
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Cloudy brown water observed at source; muddy runoff pooling beside access path; visible infrastructure failure at collection point; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "4-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 11,
+    "sanitation": 17,
+    "infrastructure": 3,
+    "health_risk": 9
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

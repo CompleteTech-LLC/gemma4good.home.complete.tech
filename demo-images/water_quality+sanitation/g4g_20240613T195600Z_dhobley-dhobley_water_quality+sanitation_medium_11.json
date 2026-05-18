@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240613T195600Z_dhobley-dhobley_water_quality+sanitation_medium_11",
+  "image_file": "g4g_20240613T195600Z_dhobley-dhobley_water_quality+sanitation_medium_11.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-06-13T19:56:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.398341,
+    "lon": 40.994187
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "medium",
+  "short_note": "Discolored water present in household container; standing wastewater and litter near water point.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 17,
+    "sanitation": 13
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

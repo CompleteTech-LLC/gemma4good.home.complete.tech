@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240812T185600Z_mogadishu-wadajir_sanitation_low_11",
+  "image_file": "g4g_20240812T185600Z_mogadishu-wadajir_sanitation_low_11.jpg",
+  "variation": "sanitation",
+  "timestamp": "2024-08-12T18:56:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Wadajir",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 1.982413,
+    "lon": 45.327329
+  },
+  "categories": [
+    "sanitation"
+  ],
+  "severity": "low",
+  "short_note": "Blocked drainage with stagnant water nearby.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "sanitation": 0
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

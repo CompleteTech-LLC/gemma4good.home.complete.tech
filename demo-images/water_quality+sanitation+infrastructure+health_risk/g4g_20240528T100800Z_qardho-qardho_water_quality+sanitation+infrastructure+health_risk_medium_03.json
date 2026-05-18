@@ -1,0 +1,32 @@
+{
+  "id": "g4g_20240528T100800Z_qardho-qardho_water_quality+sanitation+infrastructure+health_risk_medium_03",
+  "image_file": "g4g_20240528T100800Z_qardho-qardho_water_quality+sanitation+infrastructure+health_risk_medium_03.jpg",
+  "variation": "water_quality+sanitation+infrastructure+health_risk",
+  "timestamp": "2024-05-28T10:08:00Z",
+  "location": {
+    "city": "Qardho",
+    "district": "Qardho",
+    "region": "Bari",
+    "country": "Somalia",
+    "lat": 9.47876,
+    "lon": 49.067181
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Discolored water present in household container; standing wastewater and litter near water point; damaged tap assembly observed at source; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "4-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 17,
+    "sanitation": 5,
+    "infrastructure": 13,
+    "health_risk": 1
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

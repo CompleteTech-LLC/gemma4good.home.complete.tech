@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240414T195600Z_marka-marka_sanitation+infrastructure_medium_11",
+  "image_file": "g4g_20240414T195600Z_marka-marka_sanitation+infrastructure_medium_11.jpg",
+  "variation": "sanitation+infrastructure",
+  "timestamp": "2024-04-14T19:56:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.748653,
+    "lon": 44.78043
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "medium",
+  "short_note": "Blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 2,
+    "infrastructure": 18
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

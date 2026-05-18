@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240222T131000Z_borama-borama_health_risk_low_05",
+  "image_file": "g4g_20240222T131000Z_borama-borama_health_risk_low_05.jpg",
+  "variation": "health_risk",
+  "timestamp": "2024-02-22T13:10:00Z",
+  "location": {
+    "city": "Borama",
+    "district": "Borama",
+    "region": "Awdal",
+    "country": "Somalia",
+    "lat": 9.955991,
+    "lon": 43.217957
+  },
+  "categories": [
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "health_risk": 12
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

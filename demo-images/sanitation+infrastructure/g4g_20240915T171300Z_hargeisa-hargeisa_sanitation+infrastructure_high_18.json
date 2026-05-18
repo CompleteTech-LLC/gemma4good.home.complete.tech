@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240915T171300Z_hargeisa-hargeisa_sanitation+infrastructure_high_18",
+  "image_file": "g4g_20240915T171300Z_hargeisa-hargeisa_sanitation+infrastructure_high_18.jpg",
+  "variation": "sanitation+infrastructure",
+  "timestamp": "2024-09-15T17:13:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.569201,
+    "lon": 44.052715
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Muddy runoff pooling beside access path; visible infrastructure failure at collection point.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 3,
+    "infrastructure": 6
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

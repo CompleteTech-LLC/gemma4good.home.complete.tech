@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240822T111100Z_mogadishu-daynile_water_quality+health_risk_low_16",
+  "image_file": "g4g_20240822T111100Z_mogadishu-daynile_water_quality+health_risk_low_16.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-08-22T11:11:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.104312,
+    "lon": 45.247737
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Turbid water visible in collection container; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 12,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

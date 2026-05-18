@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240117T122200Z_borama-borama_water_quality_low_17",
+  "image_file": "g4g_20240117T122200Z_borama-borama_water_quality_low_17.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-01-17T12:22:00Z",
+  "location": {
+    "city": "Borama",
+    "district": "Borama",
+    "region": "Awdal",
+    "country": "Somalia",
+    "lat": 9.92459,
+    "lon": 43.165555
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "low",
+  "short_note": "Cloudy brown water observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 13
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

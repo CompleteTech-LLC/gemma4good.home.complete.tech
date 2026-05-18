@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240528T131800Z_hargeisa-hargeisa_sanitation+infrastructure_critical_13",
+  "image_file": "g4g_20240528T131800Z_hargeisa-hargeisa_sanitation+infrastructure_critical_13.jpg",
+  "variation": "sanitation+infrastructure",
+  "timestamp": "2024-05-28T13:18:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.550835,
+    "lon": 44.072973
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "critical",
+  "short_note": "Poor drainage around public collection area; broken water-system fitting losing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 8,
+    "infrastructure": 6
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

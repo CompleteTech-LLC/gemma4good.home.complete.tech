@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240327T102700Z_doolow-doolow_infrastructure+health_risk_high_12",
+  "image_file": "g4g_20240327T102700Z_doolow-doolow_infrastructure+health_risk_high_12.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-03-27T10:27:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.147998,
+    "lon": 42.097072
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 10,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

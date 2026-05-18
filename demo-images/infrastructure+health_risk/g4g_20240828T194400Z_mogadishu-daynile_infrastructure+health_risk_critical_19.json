@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240828T194400Z_mogadishu-daynile_infrastructure+health_risk_critical_19",
+  "image_file": "g4g_20240828T194400Z_mogadishu-daynile_infrastructure+health_risk_critical_19.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-08-28T19:44:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.1076,
+    "lon": 45.280911
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Visible infrastructure failure at collection point; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 11,
+    "health_risk": 15
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

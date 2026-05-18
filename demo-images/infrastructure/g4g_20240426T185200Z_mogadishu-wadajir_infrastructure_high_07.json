@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240426T185200Z_mogadishu-wadajir_infrastructure_high_07",
+  "image_file": "g4g_20240426T185200Z_mogadishu-wadajir_infrastructure_high_07.jpg",
+  "variation": "infrastructure",
+  "timestamp": "2024-04-26T18:52:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Wadajir",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.049158,
+    "lon": 45.286095
+  },
+  "categories": [
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Visible infrastructure failure at collection point.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "infrastructure": 13
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

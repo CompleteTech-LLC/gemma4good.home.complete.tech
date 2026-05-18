@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240331T095900Z_afgooye-afgooye_water_quality_high_04",
+  "image_file": "g4g_20240331T095900Z_afgooye-afgooye_water_quality_high_04.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-03-31T09:59:00Z",
+  "location": {
+    "city": "Afgooye",
+    "district": "Afgooye",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 2.128041,
+    "lon": 45.134476
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "high",
+  "short_note": "Turbid water visible in collection container.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 14
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

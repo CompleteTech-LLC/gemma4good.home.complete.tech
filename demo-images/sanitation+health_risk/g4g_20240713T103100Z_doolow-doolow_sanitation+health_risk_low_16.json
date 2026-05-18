@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240713T103100Z_doolow-doolow_sanitation+health_risk_low_16",
+  "image_file": "g4g_20240713T103100Z_doolow-doolow_sanitation+health_risk_low_16.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-07-13T10:31:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.18899,
+    "lon": 42.095294
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Standing wastewater and litter near water point; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 17,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

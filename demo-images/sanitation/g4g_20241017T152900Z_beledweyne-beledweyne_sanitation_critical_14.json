@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20241017T152900Z_beledweyne-beledweyne_sanitation_critical_14",
+  "image_file": "g4g_20241017T152900Z_beledweyne-beledweyne_sanitation_critical_14.jpg",
+  "variation": "sanitation",
+  "timestamp": "2024-10-17T15:29:00Z",
+  "location": {
+    "city": "Beledweyne",
+    "district": "Beledweyne",
+    "region": "Hiraan",
+    "country": "Somalia",
+    "lat": 4.769728,
+    "lon": 45.203773
+  },
+  "categories": [
+    "sanitation"
+  ],
+  "severity": "critical",
+  "short_note": "Muddy runoff pooling beside access path.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "sanitation": 9
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

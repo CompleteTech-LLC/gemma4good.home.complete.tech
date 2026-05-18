@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240617T133800Z_dhobley-dhobley_water_quality+health_risk_critical_13",
+  "image_file": "g4g_20240617T133800Z_dhobley-dhobley_water_quality+health_risk_critical_13.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-06-17T13:38:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.385061,
+    "lon": 41.00364
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Cloudy brown water observed at source; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 3,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

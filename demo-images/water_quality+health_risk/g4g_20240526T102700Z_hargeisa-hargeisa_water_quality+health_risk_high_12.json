@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240526T102700Z_hargeisa-hargeisa_water_quality+health_risk_high_12",
+  "image_file": "g4g_20240526T102700Z_hargeisa-hargeisa_water_quality+health_risk_high_12.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-05-26T10:27:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.568653,
+    "lon": 44.096479
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Turbid water visible in collection container; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 0,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

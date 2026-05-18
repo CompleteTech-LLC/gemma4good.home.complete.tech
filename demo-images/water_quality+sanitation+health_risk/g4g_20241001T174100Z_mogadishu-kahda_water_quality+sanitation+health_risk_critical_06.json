@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20241001T174100Z_mogadishu-kahda_water_quality+sanitation+health_risk_critical_06",
+  "image_file": "g4g_20241001T174100Z_mogadishu-kahda_water_quality+sanitation+health_risk_critical_06.jpg",
+  "variation": "water_quality+sanitation+health_risk",
+  "timestamp": "2024-10-01T17:41:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Kahda",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.049661,
+    "lon": 45.258268
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 4,
+    "sanitation": 15,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

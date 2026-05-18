@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240331T180900Z_luuq-luuq_water_quality+sanitation+health_risk_critical_14",
+  "image_file": "g4g_20240331T180900Z_luuq-luuq_water_quality+sanitation+health_risk_critical_14.jpg",
+  "variation": "water_quality+sanitation+health_risk",
+  "timestamp": "2024-03-31T18:09:00Z",
+  "location": {
+    "city": "Luuq",
+    "district": "Luuq",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 3.765848,
+    "lon": 42.52739
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 8,
+    "sanitation": 7,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

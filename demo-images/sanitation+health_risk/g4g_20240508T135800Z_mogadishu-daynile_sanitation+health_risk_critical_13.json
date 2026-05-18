@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240508T135800Z_mogadishu-daynile_sanitation+health_risk_critical_13",
+  "image_file": "g4g_20240508T135800Z_mogadishu-daynile_sanitation+health_risk_critical_13.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-05-08T13:58:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.0668,
+    "lon": 45.28767
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Poor drainage around public collection area; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 8,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

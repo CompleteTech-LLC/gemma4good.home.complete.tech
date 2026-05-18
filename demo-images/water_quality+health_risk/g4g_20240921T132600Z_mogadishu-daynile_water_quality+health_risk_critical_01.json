@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240921T132600Z_mogadishu-daynile_water_quality+health_risk_critical_01",
+  "image_file": "g4g_20240921T132600Z_mogadishu-daynile_water_quality+health_risk_critical_01.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-09-21T13:26:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.099147,
+    "lon": 45.290057
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Cloudy brown water observed at source; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 7,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

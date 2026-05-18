@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20241128T190000Z_mogadishu-wadajir_water_quality_medium_15",
+  "image_file": "g4g_20241128T190000Z_mogadishu-wadajir_water_quality_medium_15.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-11-28T19:00:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Wadajir",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.02784,
+    "lon": 45.328818
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "medium",
+  "short_note": "Discolored water present in household container.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

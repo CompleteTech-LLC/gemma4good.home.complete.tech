@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240119T110300Z_mogadishu-daynile_sanitation+health_risk_medium_08",
+  "image_file": "g4g_20240119T110300Z_mogadishu-daynile_sanitation+health_risk_medium_08.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-01-19T11:03:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.115407,
+    "lon": 45.244489
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Standing wastewater and litter near water point; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 13,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240113T133000Z_mogadishu-daynile_water_quality+infrastructure_medium_05",
+  "image_file": "g4g_20240113T133000Z_mogadishu-daynile_water_quality+infrastructure_medium_05.jpg",
+  "variation": "water_quality+infrastructure",
+  "timestamp": "2024-01-13T13:30:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.057217,
+    "lon": 45.232994
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure"
+  ],
+  "severity": "medium",
+  "short_note": "Cloudy brown water observed at source; broken water-system fitting losing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 19,
+    "infrastructure": 14
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240325T193600Z_doolow-doolow_sanitation+health_risk_medium_11",
+  "image_file": "g4g_20240325T193600Z_doolow-doolow_sanitation+health_risk_medium_11.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-03-25T19:36:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.171289,
+    "lon": 42.088591
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Blocked drainage with stagnant water nearby; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 2,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

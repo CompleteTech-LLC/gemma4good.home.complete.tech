@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20241204T112300Z_luuq-luuq_water_quality+sanitation+infrastructure_high_08",
+  "image_file": "g4g_20241204T112300Z_luuq-luuq_water_quality+sanitation+infrastructure_high_08.jpg",
+  "variation": "water_quality+sanitation+infrastructure",
+  "timestamp": "2024-12-04T11:23:00Z",
+  "location": {
+    "city": "Luuq",
+    "district": "Luuq",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 3.771042,
+    "lon": 42.550535
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Turbid water visible in collection container; poor drainage around public collection area; broken water-system fitting losing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 10,
+    "sanitation": 3,
+    "infrastructure": 16
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

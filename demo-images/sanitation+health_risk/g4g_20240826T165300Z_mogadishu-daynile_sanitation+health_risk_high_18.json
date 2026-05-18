@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240826T165300Z_mogadishu-daynile_sanitation+health_risk_high_18",
+  "image_file": "g4g_20240826T165300Z_mogadishu-daynile_sanitation+health_risk_high_18.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-08-26T16:53:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.102888,
+    "lon": 45.248481
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Muddy runoff pooling beside access path; unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 3,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

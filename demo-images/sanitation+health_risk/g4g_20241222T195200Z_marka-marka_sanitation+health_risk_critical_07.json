@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241222T195200Z_marka-marka_sanitation+health_risk_critical_07",
+  "image_file": "g4g_20241222T195200Z_marka-marka_sanitation+health_risk_critical_07.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-12-22T19:52:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.703089,
+    "lon": 44.749519
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Blocked drainage with stagnant water nearby; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 10,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

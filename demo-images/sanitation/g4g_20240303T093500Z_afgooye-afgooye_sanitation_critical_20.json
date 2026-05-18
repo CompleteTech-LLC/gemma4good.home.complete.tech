@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240303T093500Z_afgooye-afgooye_sanitation_critical_20",
+  "image_file": "g4g_20240303T093500Z_afgooye-afgooye_sanitation_critical_20.jpg",
+  "variation": "sanitation",
+  "timestamp": "2024-03-03T09:35:00Z",
+  "location": {
+    "city": "Afgooye",
+    "district": "Afgooye",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 2.156555,
+    "lon": 45.136
+  },
+  "categories": [
+    "sanitation"
+  ],
+  "severity": "critical",
+  "short_note": "Standing wastewater and litter near water point.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "sanitation": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

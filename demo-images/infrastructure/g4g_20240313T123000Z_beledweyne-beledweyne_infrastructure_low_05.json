@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240313T123000Z_beledweyne-beledweyne_infrastructure_low_05",
+  "image_file": "g4g_20240313T123000Z_beledweyne-beledweyne_infrastructure_low_05.jpg",
+  "variation": "infrastructure",
+  "timestamp": "2024-03-13T12:30:00Z",
+  "location": {
+    "city": "Beledweyne",
+    "district": "Beledweyne",
+    "region": "Hiraan",
+    "country": "Somalia",
+    "lat": 4.76441,
+    "lon": 45.223744
+  },
+  "categories": [
+    "infrastructure"
+  ],
+  "severity": "low",
+  "short_note": "Damaged tap assembly observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "infrastructure": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

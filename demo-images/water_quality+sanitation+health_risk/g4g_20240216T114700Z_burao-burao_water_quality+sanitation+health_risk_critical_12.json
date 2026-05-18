@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240216T114700Z_burao-burao_water_quality+sanitation+health_risk_critical_12",
+  "image_file": "g4g_20240216T114700Z_burao-burao_water_quality+sanitation+health_risk_critical_12.jpg",
+  "variation": "water_quality+sanitation+health_risk",
+  "timestamp": "2024-02-16T11:47:00Z",
+  "location": {
+    "city": "Burao",
+    "district": "Burao",
+    "region": "Togdheer",
+    "country": "Somalia",
+    "lat": 9.542616,
+    "lon": 45.539511
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Turbid water visible in collection container; poor drainage around public collection area; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 2,
+    "sanitation": 19,
+    "health_risk": 1
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

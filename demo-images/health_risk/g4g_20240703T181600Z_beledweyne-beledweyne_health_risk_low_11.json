@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240703T181600Z_beledweyne-beledweyne_health_risk_low_11",
+  "image_file": "g4g_20240703T181600Z_beledweyne-beledweyne_health_risk_low_11.jpg",
+  "variation": "health_risk",
+  "timestamp": "2024-07-03T18:16:00Z",
+  "location": {
+    "city": "Beledweyne",
+    "district": "Beledweyne",
+    "region": "Hiraan",
+    "country": "Somalia",
+    "lat": 4.744116,
+    "lon": 45.234464
+  },
+  "categories": [
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "health_risk": 10
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

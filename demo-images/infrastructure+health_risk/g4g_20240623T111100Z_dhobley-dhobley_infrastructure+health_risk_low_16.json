@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240623T111100Z_dhobley-dhobley_infrastructure+health_risk_low_16",
+  "image_file": "g4g_20240623T111100Z_dhobley-dhobley_infrastructure+health_risk_low_16.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-06-23T11:11:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.447597,
+    "lon": 41.00298
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 2,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

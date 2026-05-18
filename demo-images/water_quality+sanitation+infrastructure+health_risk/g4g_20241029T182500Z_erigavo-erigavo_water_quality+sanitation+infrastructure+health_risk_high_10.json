@@ -1,0 +1,32 @@
+{
+  "id": "g4g_20241029T182500Z_erigavo-erigavo_water_quality+sanitation+infrastructure+health_risk_high_10",
+  "image_file": "g4g_20241029T182500Z_erigavo-erigavo_water_quality+sanitation+infrastructure+health_risk_high_10.jpg",
+  "variation": "water_quality+sanitation+infrastructure+health_risk",
+  "timestamp": "2024-10-29T18:25:00Z",
+  "location": {
+    "city": "Erigavo",
+    "district": "Erigavo",
+    "region": "Sanaag",
+    "country": "Somalia",
+    "lat": 10.591023,
+    "lon": 47.344638
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "4-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 18,
+    "sanitation": 13,
+    "infrastructure": 8,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

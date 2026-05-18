@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240323T164500Z_doolow-doolow_sanitation+infrastructure_high_10",
+  "image_file": "g4g_20240323T164500Z_doolow-doolow_sanitation+infrastructure_high_10.jpg",
+  "variation": "sanitation+infrastructure",
+  "timestamp": "2024-03-23T16:45:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.14104,
+    "lon": 42.066078
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Muddy runoff pooling beside access path; visible infrastructure failure at collection point.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 19,
+    "infrastructure": 14
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

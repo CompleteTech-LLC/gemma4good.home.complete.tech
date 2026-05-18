@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240212T170500Z_hargeisa-hargeisa_infrastructure+health_risk_low_10",
+  "image_file": "g4g_20240212T170500Z_hargeisa-hargeisa_infrastructure+health_risk_low_10.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-02-12T17:05:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.58182,
+    "lon": 44.075702
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Broken water-system fitting losing water; unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 4,
+    "health_risk": 19
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

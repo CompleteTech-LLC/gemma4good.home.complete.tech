@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240309T184800Z_beledweyne-beledweyne_water_quality_medium_03",
+  "image_file": "g4g_20240309T184800Z_beledweyne-beledweyne_water_quality_medium_03.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-03-09T18:48:00Z",
+  "location": {
+    "city": "Beledweyne",
+    "district": "Beledweyne",
+    "region": "Hiraan",
+    "country": "Somalia",
+    "lat": 4.767795,
+    "lon": 45.172748
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "medium",
+  "short_note": "Discolored water present in household container.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

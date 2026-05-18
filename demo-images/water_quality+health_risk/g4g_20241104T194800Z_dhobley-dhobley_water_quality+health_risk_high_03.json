@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241104T194800Z_dhobley-dhobley_water_quality+health_risk_high_03",
+  "image_file": "g4g_20241104T194800Z_dhobley-dhobley_water_quality+health_risk_high_03.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-11-04T19:48:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.415983,
+    "lon": 41.041022
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Discolored water present in household container; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 13,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

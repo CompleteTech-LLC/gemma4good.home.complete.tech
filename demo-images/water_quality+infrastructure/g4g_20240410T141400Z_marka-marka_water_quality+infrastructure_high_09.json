@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240410T141400Z_marka-marka_water_quality+infrastructure_high_09",
+  "image_file": "g4g_20240410T141400Z_marka-marka_water_quality+infrastructure_high_09.jpg",
+  "variation": "water_quality+infrastructure",
+  "timestamp": "2024-04-10T14:14:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.687202,
+    "lon": 44.805002
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Cloudy brown water observed at source; broken water-system fitting losing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 11,
+    "infrastructure": 10
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

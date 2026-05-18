@@ -1,0 +1,32 @@
+{
+  "id": "g4g_20240506T185700Z_galkayo-galkayo_water_quality+sanitation+infrastructure+health_risk_low_02",
+  "image_file": "g4g_20240506T185700Z_galkayo-galkayo_water_quality+sanitation+infrastructure+health_risk_low_02.jpg",
+  "variation": "water_quality+sanitation+infrastructure+health_risk",
+  "timestamp": "2024-05-06T18:57:00Z",
+  "location": {
+    "city": "Galkayo",
+    "district": "Galkayo",
+    "region": "Mudug",
+    "country": "Somalia",
+    "lat": 6.785968,
+    "lon": 47.422686
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "4-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 14,
+    "sanitation": 1,
+    "infrastructure": 8,
+    "health_risk": 15
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

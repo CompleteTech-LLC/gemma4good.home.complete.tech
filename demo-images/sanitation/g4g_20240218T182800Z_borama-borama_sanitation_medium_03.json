@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240218T182800Z_borama-borama_sanitation_medium_03",
+  "image_file": "g4g_20240218T182800Z_borama-borama_sanitation_medium_03.jpg",
+  "variation": "sanitation",
+  "timestamp": "2024-02-18T18:28:00Z",
+  "location": {
+    "city": "Borama",
+    "district": "Borama",
+    "region": "Awdal",
+    "country": "Somalia",
+    "lat": 9.937782,
+    "lon": 43.169859
+  },
+  "categories": [
+    "sanitation"
+  ],
+  "severity": "medium",
+  "short_note": "Blocked drainage with stagnant water nearby.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "sanitation": 16
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

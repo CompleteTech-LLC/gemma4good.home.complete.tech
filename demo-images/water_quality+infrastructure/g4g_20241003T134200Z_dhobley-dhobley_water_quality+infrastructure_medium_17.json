@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241003T134200Z_dhobley-dhobley_water_quality+infrastructure_medium_17",
+  "image_file": "g4g_20241003T134200Z_dhobley-dhobley_water_quality+infrastructure_medium_17.jpg",
+  "variation": "water_quality+infrastructure",
+  "timestamp": "2024-10-03T13:42:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.405917,
+    "lon": 40.993079
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure"
+  ],
+  "severity": "medium",
+  "short_note": "Cloudy brown water observed at source; broken water-system fitting losing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 15,
+    "infrastructure": 2
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

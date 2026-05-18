@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240224T170100Z_dhobley-dhobley_water_quality+sanitation_high_06",
+  "image_file": "g4g_20240224T170100Z_dhobley-dhobley_water_quality+sanitation_high_06.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-02-24T17:01:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.383771,
+    "lon": 41.006743
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "high",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 2,
+    "sanitation": 13
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

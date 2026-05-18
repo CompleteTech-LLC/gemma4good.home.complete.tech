@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240913T132200Z_hargeisa-hargeisa_water_quality+health_risk_medium_17",
+  "image_file": "g4g_20240913T132200Z_hargeisa-hargeisa_water_quality+health_risk_medium_17.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-09-13T13:22:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.539188,
+    "lon": 44.099543
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Cloudy brown water observed at source; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 15,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

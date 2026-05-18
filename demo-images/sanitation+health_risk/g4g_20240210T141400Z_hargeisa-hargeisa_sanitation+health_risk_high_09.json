@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240210T141400Z_hargeisa-hargeisa_sanitation+health_risk_high_09",
+  "image_file": "g4g_20240210T141400Z_hargeisa-hargeisa_sanitation+health_risk_high_09.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-02-10T14:14:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.548819,
+    "lon": 44.081913
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Poor drainage around public collection area; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 16,
+    "health_risk": 15
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

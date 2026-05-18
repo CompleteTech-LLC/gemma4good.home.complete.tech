@@ -1,0 +1,32 @@
+{
+  "id": "g4g_20240131T190900Z_baidoa-baidoa_water_quality+sanitation+infrastructure+health_risk_critical_14",
+  "image_file": "g4g_20240131T190900Z_baidoa-baidoa_water_quality+sanitation+infrastructure+health_risk_critical_14.jpg",
+  "variation": "water_quality+sanitation+infrastructure+health_risk",
+  "timestamp": "2024-01-31T19:09:00Z",
+  "location": {
+    "city": "Baidoa",
+    "district": "Baidoa",
+    "region": "Bay",
+    "country": "Somalia",
+    "lat": 3.147094,
+    "lon": 43.664556
+  },
+  "categories": [
+    "water_quality",
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby; leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "4-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 10,
+    "sanitation": 9,
+    "infrastructure": 8,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

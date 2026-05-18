@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240814T094700Z_mogadishu-wadajir_infrastructure_medium_12",
+  "image_file": "g4g_20240814T094700Z_mogadishu-wadajir_infrastructure_medium_12.jpg",
+  "variation": "infrastructure",
+  "timestamp": "2024-08-14T09:47:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Wadajir",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.047788,
+    "lon": 45.329741
+  },
+  "categories": [
+    "infrastructure"
+  ],
+  "severity": "medium",
+  "short_note": "Leaking pipe or valve causing wet ground.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "infrastructure": 8
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20240707T084800Z_burao-burao_water_quality+infrastructure+health_risk_low_03",
+  "image_file": "g4g_20240707T084800Z_burao-burao_water_quality+infrastructure+health_risk_low_03.jpg",
+  "variation": "water_quality+infrastructure+health_risk",
+  "timestamp": "2024-07-07T08:48:00Z",
+  "location": {
+    "city": "Burao",
+    "district": "Burao",
+    "region": "Togdheer",
+    "country": "Somalia",
+    "lat": 9.539733,
+    "lon": 45.506607
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "low",
+  "short_note": "Discolored water present in household container; leaking pipe or valve causing wet ground; open containers near contaminated runoff.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 15,
+    "infrastructure": 8,
+    "health_risk": 16
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240929T190000Z_borama-borama_health_risk_medium_15",
+  "image_file": "g4g_20240929T190000Z_borama-borama_health_risk_medium_15.jpg",
+  "variation": "health_risk",
+  "timestamp": "2024-09-29T19:00:00Z",
+  "location": {
+    "city": "Borama",
+    "district": "Borama",
+    "region": "Awdal",
+    "country": "Somalia",
+    "lat": 9.911158,
+    "lon": 43.200911
+  },
+  "categories": [
+    "health_risk"
+  ],
+  "severity": "medium",
+  "short_note": "Unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "health_risk": 2
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

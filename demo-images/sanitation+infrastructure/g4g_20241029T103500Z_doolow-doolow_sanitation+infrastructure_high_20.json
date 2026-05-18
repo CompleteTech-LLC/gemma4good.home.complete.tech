@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241029T103500Z_doolow-doolow_sanitation+infrastructure_high_20",
+  "image_file": "g4g_20241029T103500Z_doolow-doolow_sanitation+infrastructure_high_20.jpg",
+  "variation": "sanitation+infrastructure",
+  "timestamp": "2024-10-29T10:35:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.177842,
+    "lon": 42.041414
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Standing wastewater and litter near water point; damaged tap assembly observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 9,
+    "infrastructure": 14
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240206T193200Z_hargeisa-hargeisa_water_quality+health_risk_critical_07",
+  "image_file": "g4g_20240206T193200Z_hargeisa-hargeisa_water_quality+health_risk_critical_07.jpg",
+  "variation": "water_quality+health_risk",
+  "timestamp": "2024-02-06T19:32:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.569858,
+    "lon": 44.092927
+  },
+  "categories": [
+    "water_quality",
+    "health_risk"
+  ],
+  "severity": "critical",
+  "short_note": "Discolored water present in household container; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 5,
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

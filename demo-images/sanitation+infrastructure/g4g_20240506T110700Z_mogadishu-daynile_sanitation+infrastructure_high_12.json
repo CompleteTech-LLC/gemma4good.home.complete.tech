@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240506T110700Z_mogadishu-daynile_sanitation+infrastructure_high_12",
+  "image_file": "g4g_20240506T110700Z_mogadishu-daynile_sanitation+infrastructure_high_12.jpg",
+  "variation": "sanitation+infrastructure",
+  "timestamp": "2024-05-06T11:07:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.0693,
+    "lon": 45.290891
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Standing wastewater and litter near water point; damaged tap assembly observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 5,
+    "infrastructure": 2
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

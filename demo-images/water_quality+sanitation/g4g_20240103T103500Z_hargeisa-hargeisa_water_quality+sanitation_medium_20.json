@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240103T103500Z_hargeisa-hargeisa_water_quality+sanitation_medium_20",
+  "image_file": "g4g_20240103T103500Z_hargeisa-hargeisa_water_quality+sanitation_medium_20.jpg",
+  "variation": "water_quality+sanitation",
+  "timestamp": "2024-01-03T10:35:00Z",
+  "location": {
+    "city": "Hargeisa",
+    "district": "Hargeisa",
+    "region": "Maroodi Jeex",
+    "country": "Somalia",
+    "lat": 9.552709,
+    "lon": 44.049906
+  },
+  "categories": [
+    "water_quality",
+    "sanitation"
+  ],
+  "severity": "medium",
+  "short_note": "Turbid water visible in collection container; poor drainage around public collection area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 4,
+    "sanitation": 9
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240721T154500Z_afgooye-afgooye_sanitation_high_10",
+  "image_file": "g4g_20240721T154500Z_afgooye-afgooye_sanitation_high_10.jpg",
+  "variation": "sanitation",
+  "timestamp": "2024-07-21T15:45:00Z",
+  "location": {
+    "city": "Afgooye",
+    "district": "Afgooye",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 2.109481,
+    "lon": 45.135986
+  },
+  "categories": [
+    "sanitation"
+  ],
+  "severity": "high",
+  "short_note": "Muddy runoff pooling beside access path.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "sanitation": 17
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

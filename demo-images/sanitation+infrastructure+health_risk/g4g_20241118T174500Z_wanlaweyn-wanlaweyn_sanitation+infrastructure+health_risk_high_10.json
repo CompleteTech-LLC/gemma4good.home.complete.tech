@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20241118T174500Z_wanlaweyn-wanlaweyn_sanitation+infrastructure+health_risk_high_10",
+  "image_file": "g4g_20241118T174500Z_wanlaweyn-wanlaweyn_sanitation+infrastructure+health_risk_high_10.jpg",
+  "variation": "sanitation+infrastructure+health_risk",
+  "timestamp": "2024-11-18T17:45:00Z",
+  "location": {
+    "city": "Wanlaweyn",
+    "district": "Wanlaweyn",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 2.583947,
+    "lon": 44.908701
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Muddy runoff pooling beside access path; visible infrastructure failure at collection point; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 1,
+    "infrastructure": 16,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

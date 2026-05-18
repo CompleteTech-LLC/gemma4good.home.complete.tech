@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20241202T124200Z_mogadishu-wadajir_infrastructure_low_17",
+  "image_file": "g4g_20241202T124200Z_mogadishu-wadajir_infrastructure_low_17.jpg",
+  "variation": "infrastructure",
+  "timestamp": "2024-12-02T12:42:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Wadajir",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.018715,
+    "lon": 45.32154
+  },
+  "categories": [
+    "infrastructure"
+  ],
+  "severity": "low",
+  "short_note": "Damaged tap assembly observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "infrastructure": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

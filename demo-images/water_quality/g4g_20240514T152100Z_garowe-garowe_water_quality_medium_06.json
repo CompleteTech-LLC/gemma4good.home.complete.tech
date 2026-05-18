@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240514T152100Z_garowe-garowe_water_quality_medium_06",
+  "image_file": "g4g_20240514T152100Z_garowe-garowe_water_quality_medium_06.jpg",
+  "variation": "water_quality",
+  "timestamp": "2024-05-14T15:21:00Z",
+  "location": {
+    "city": "Garowe",
+    "district": "Garowe",
+    "region": "Nugaal",
+    "country": "Somalia",
+    "lat": 8.404482,
+    "lon": 48.455051
+  },
+  "categories": [
+    "water_quality"
+  ],
+  "severity": "medium",
+  "short_note": "Sediment-heavy water seen during collection.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "water_quality": 0
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

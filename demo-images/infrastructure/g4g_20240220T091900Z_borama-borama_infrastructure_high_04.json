@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240220T091900Z_borama-borama_infrastructure_high_04",
+  "image_file": "g4g_20240220T091900Z_borama-borama_infrastructure_high_04.jpg",
+  "variation": "infrastructure",
+  "timestamp": "2024-02-20T09:19:00Z",
+  "location": {
+    "city": "Borama",
+    "district": "Borama",
+    "region": "Awdal",
+    "country": "Somalia",
+    "lat": 9.90734,
+    "lon": 43.206534
+  },
+  "categories": [
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Leaking pipe or valve causing wet ground.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "infrastructure": 4
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

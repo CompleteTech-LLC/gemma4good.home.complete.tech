@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20241110T162100Z_dhobley-dhobley_infrastructure+health_risk_high_06",
+  "image_file": "g4g_20241110T162100Z_dhobley-dhobley_infrastructure+health_risk_high_06.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-11-10T16:21:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.437639,
+    "lon": 40.987113
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Broken water-system fitting losing water; unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 12,
+    "health_risk": 3
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

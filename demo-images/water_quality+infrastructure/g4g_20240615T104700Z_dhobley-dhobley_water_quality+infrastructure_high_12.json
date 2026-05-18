@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240615T104700Z_dhobley-dhobley_water_quality+infrastructure_high_12",
+  "image_file": "g4g_20240615T104700Z_dhobley-dhobley_water_quality+infrastructure_high_12.jpg",
+  "variation": "water_quality+infrastructure",
+  "timestamp": "2024-06-15T10:47:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.412692,
+    "lon": 40.981694
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure"
+  ],
+  "severity": "high",
+  "short_note": "Turbid water visible in collection container; damaged tap assembly observed at source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 0,
+    "infrastructure": 2
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

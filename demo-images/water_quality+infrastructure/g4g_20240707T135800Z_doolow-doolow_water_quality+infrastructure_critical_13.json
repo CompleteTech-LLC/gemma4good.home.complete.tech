@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240707T135800Z_doolow-doolow_water_quality+infrastructure_critical_13",
+  "image_file": "g4g_20240707T135800Z_doolow-doolow_water_quality+infrastructure_critical_13.jpg",
+  "variation": "water_quality+infrastructure",
+  "timestamp": "2024-07-07T13:58:00Z",
+  "location": {
+    "city": "Doolow",
+    "district": "Doolow",
+    "region": "Gedo",
+    "country": "Somalia",
+    "lat": 4.199414,
+    "lon": 42.071435
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure"
+  ],
+  "severity": "critical",
+  "short_note": "Cloudy brown water observed at source; broken water-system fitting losing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 3,
+    "infrastructure": 6
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240806T163300Z_marka-marka_infrastructure+health_risk_high_18",
+  "image_file": "g4g_20240806T163300Z_marka-marka_infrastructure+health_risk_high_18.jpg",
+  "variation": "infrastructure+health_risk",
+  "timestamp": "2024-08-06T16:33:00Z",
+  "location": {
+    "city": "Marka",
+    "district": "Marka",
+    "region": "Lower Shabelle",
+    "country": "Somalia",
+    "lat": 1.741607,
+    "lon": 44.75391
+  },
+  "categories": [
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Broken water-system fitting losing water; unsafe access conditions near water source.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "infrastructure": 8,
+    "health_risk": 11
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

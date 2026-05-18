@@ -1,0 +1,30 @@
+{
+  "id": "g4g_20241005T112300Z_mogadishu-kahda_sanitation+infrastructure+health_risk_high_08",
+  "image_file": "g4g_20241005T112300Z_mogadishu-kahda_sanitation+infrastructure+health_risk_high_08.jpg",
+  "variation": "sanitation+infrastructure+health_risk",
+  "timestamp": "2024-10-05T11:23:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Kahda",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.029025,
+    "lon": 45.269718
+  },
+  "categories": [
+    "sanitation",
+    "infrastructure",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Standing wastewater and litter near water point; damaged tap assembly observed at source; crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "3-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 15,
+    "infrastructure": 8,
+    "health_risk": 1
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

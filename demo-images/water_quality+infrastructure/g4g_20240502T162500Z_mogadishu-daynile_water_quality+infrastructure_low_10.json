@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240502T162500Z_mogadishu-daynile_water_quality+infrastructure_low_10",
+  "image_file": "g4g_20240502T162500Z_mogadishu-daynile_water_quality+infrastructure_low_10.jpg",
+  "variation": "water_quality+infrastructure",
+  "timestamp": "2024-05-02T16:25:00Z",
+  "location": {
+    "city": "Mogadishu",
+    "district": "Daynile",
+    "region": "Banaadir",
+    "country": "Somalia",
+    "lat": 2.092778,
+    "lon": 45.27182
+  },
+  "categories": [
+    "water_quality",
+    "infrastructure"
+  ],
+  "severity": "low",
+  "short_note": "Sediment-heavy water seen during collection; visible infrastructure failure at collection point.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "water_quality": 14,
+    "infrastructure": 14
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

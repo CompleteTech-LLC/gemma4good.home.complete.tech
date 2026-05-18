@@ -1,0 +1,26 @@
+{
+  "id": "g4g_20240611T160500Z_borama-borama_health_risk_high_10",
+  "image_file": "g4g_20240611T160500Z_borama-borama_health_risk_high_10.jpg",
+  "variation": "health_risk",
+  "timestamp": "2024-06-11T16:05:00Z",
+  "location": {
+    "city": "Borama",
+    "district": "Borama",
+    "region": "Awdal",
+    "country": "Somalia",
+    "lat": 9.970736,
+    "lon": 43.210645
+  },
+  "categories": [
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Crowding risk around poor drainage area.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "single mobile field photo",
+  "source_panel_indexes": {
+    "health_risk": 7
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}

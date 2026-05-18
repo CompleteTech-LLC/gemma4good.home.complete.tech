@@ -1,0 +1,28 @@
+{
+  "id": "g4g_20240621T192000Z_dhobley-dhobley_sanitation+health_risk_high_15",
+  "image_file": "g4g_20240621T192000Z_dhobley-dhobley_sanitation+health_risk_high_15.jpg",
+  "variation": "sanitation+health_risk",
+  "timestamp": "2024-06-21T19:20:00Z",
+  "location": {
+    "city": "Dhobley",
+    "district": "Dhobley",
+    "region": "Lower Juba",
+    "country": "Somalia",
+    "lat": 0.384522,
+    "lon": 41.035996
+  },
+  "categories": [
+    "sanitation",
+    "health_risk"
+  ],
+  "severity": "high",
+  "short_note": "Blocked drainage with stagnant water nearby; unsafe collection area with muddy standing water.",
+  "scene_context": "Somalia humanitarian water and sanitation reporting, 2024",
+  "style": "photorealistic-natural smartphone field-report demo",
+  "composition": "2-panel clean contact sheet with only included categories",
+  "source_panel_indexes": {
+    "sanitation": 14,
+    "health_risk": 19
+  },
+  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+}
