@@ -1,0 +1,5 @@
+gemma4good.home.complete.tech:443 {
+    import shared_access_log
+    tls /certs/fullchain.pem /certs/privkey.pem
+    respond "This service has been retired." 410
+}
