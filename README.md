@@ -1,6 +1,9 @@
 # gemma4good.home.complete.tech
 
-Local operations workspace for the passwordless Gemma 4 Good code-server domain.
+The Train deployment was retired by owner request on 2026-09-07. The domain
+returns HTTP 410. This repository retains source and historical operations notes;
+its API, workspace, and local llama deployment are no longer active. See
+[retirement record](docs/retirement-20260907.md).
 
 ## Workspace
 
