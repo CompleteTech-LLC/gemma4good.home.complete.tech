@@ -1,8 +1,14 @@
 # gemma4good.home.complete.tech
 
-Local operations workspace for the passwordless Gemma 4 Good code-server domain.
+The Train deployment was retired by owner request on 2026-09-07. The domain
+returns HTTP 410. This repository retains source and historical operations notes;
+its API, workspace, and local llama deployment are no longer active. See
+[retirement record](docs/retirement-20260907.md).
 
-## Workspace
+## Retained source workspace
+
+This checkout is retained for source, offline assets, and historical operations
+notes. The former remote workspace and its runtime are retired.
 
 Open this directory directly in VS Code:
 
@@ -25,7 +31,10 @@ The workspace includes:
 - `.vscode/mcp.example.json` for the search MCP client shape.
 - `docs/` for local planning and implementation notes.
 
-## MCP Search
+## Historical MCP Search
+
+The MCP details below describe the former workspace configuration. They do not
+imply that Gemma4Good currently has a live browser workspace or model service.
 
 This workspace is configured to use the shared CompleteTech search MCP server:
 
@@ -35,17 +44,21 @@ https://mcp-search.home.complete.tech/mcp
 
 The real VS Code MCP config is `.vscode/mcp.json`. It contains the bearer token and is intentionally ignored by Git. Keep `.vscode/mcp.example.json` as the checked-in reference.
 
-## Access
+## Historical access
 
-Development URL:
+Retired URL:
 
 ```text
 https://gemma4good.home.complete.tech/
 ```
 
-The browser endpoint is backed by code-server with `--auth none`. There is no code-server password secret for this service.
+The former browser endpoint used code-server with `--auth none`. The code-server
+container and its remote workspace were removed during retirement.
 
-## Browser Tooling
+## Historical browser tooling
+
+These notes describe tools that were installed in the former code-server
+workspace; they are not a current deployment requirement.
 
 The remote workspace is configured for dark mode and agent CLI work:
 
@@ -60,9 +73,11 @@ The code-server terminal PATH prepends:
 /home/coder/project/.tools/node_modules/.bin
 ```
 
-## Field Report Triage
+## Historical field-report workflow
 
-The field report page is wired to the local Gemma4 model through a same-origin API:
+The former field-report page used the local Gemma4 model through a same-origin
+API. These endpoints are retained as historical references and are no longer
+served by this domain:
 
 ```text
 https://gemma4good.home.complete.tech/menu/fieldreport/
@@ -70,7 +85,11 @@ https://gemma4good.home.complete.tech/api/fieldreport/analyze
 https://gemma4good.home.complete.tech/api/fieldreport/submit
 ```
 
-The browser page follows an image-first review workflow: the user supplies a captured image, report time, and location; Gemma4 suggests the issue type, summary, severity, observations, and actions; then the user confirms or edits the draft before submit. The API validates the request and forwards it to the private Gemma4 service on the Podman network.
+When the deployment was active, the browser page followed an image-first review
+workflow: the user supplied a captured image, report time, and location;
+Gemma4 suggested the issue type, summary, severity, observations, and actions;
+then the user confirmed or edited the draft before submit. The API forwarded
+analysis to the private model service on the Podman network.
 
 Report time is prefilled in this order:
 
@@ -80,7 +99,10 @@ Report time is prefilled in this order:
 
 If the detected time is wrong, edit the `Report Time` field in the `Time and Location` card before analysis or submit. Manual edits are submitted with `capturedAtSource: "manual"`.
 
-## Remote Commands
+## Historical remote commands
+
+These commands are retained for provenance only. Do not use them to recreate the
+retired workspace, containers, routes, or model backend.
 
 From PowerShell:
 
@@ -97,18 +119,17 @@ Use the VS Code task runner for common checks:
 - `remote: dev service container`
 - `check: dev URL headers`
 
-## Current Status
+## Retirement status
 
-This workspace is wired to a development code-server backend.
+The public Caddy route returns HTTP 410. The Gemma4Good API, code-server
+workspace, and local llama deployment are absent from Train; their private
+retirement archives and this source checkout are retained.
 
-Current runtime:
+The separate Train model gateway at `172.30.88.1:18086` is not part of this
+retirement and must remain independently managed. Its local Qwen upstream is a
+separate provider decision; do not redirect it to this retired Gemma service.
 
-- DNS: `gemma4good.home.complete.tech -> 192.168.1.146`
-- Compose service: `gemma4good-code-server`
-- Podman container: `gemma4good-home-complete-tech`
-- Image: `localhost/code-server-node:22`
-- Internal route: `gemma4good-home-complete-tech:8080`
-- Persistent workspace: `/srv/openclaw/gemma4good`
-- Auth: disabled with `--auth none`
-- Workspace tools: `/srv/openclaw/gemma4good/.tools`
-- Healthcheck: local code-server HTTP root `/`, surfaced in `podman ps` as healthy/unhealthy. Do not use `/healthz | grep alive`; it can expire when there is no current browser heartbeat.
+No model-backed feature is currently offered by this domain. Reintroduction
+requires an intentional deployment, an explicitly configured provider, and a
+new retirement review; historical health checks must not be treated as current
+readiness.

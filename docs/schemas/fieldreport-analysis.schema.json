@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gemma4good.home.complete.tech/schemas/fieldreport-analysis.schema.json",
+  "title": "Gemma4Good Field Report Analysis",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "severity",
+    "category",
+    "categories",
+    "observedIssues",
+    "recommendedActions",
+    "needsEscalation",
+    "confidence"
+  ],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "category": {
+      "description": "Primary model-selected category.",
+      "$ref": "#/$defs/category"
+    },
+    "categories": {
+      "description": "All model-suggested applicable categories. Include category as the first item when possible.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/category"
+      }
+    },
+    "observedIssues": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 180
+      }
+    },
+    "recommendedActions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 180
+      }
+    },
+    "needsEscalation": {
+      "type": "boolean"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "model": {
+      "description": "Added by the API after model normalization.",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "water_quality",
+        "sanitation",
+        "infrastructure",
+        "health_risk",
+        "unknown"
+      ]
+    }
+  }
+}

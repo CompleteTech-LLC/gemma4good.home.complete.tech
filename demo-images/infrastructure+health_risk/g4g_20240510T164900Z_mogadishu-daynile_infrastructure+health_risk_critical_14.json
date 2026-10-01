@@ -24,5 +24,37 @@
     "infrastructure": 16,
     "health_risk": 15
   },
-  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+  "generated_from": "ComfyUI v1-5-pruned-emaonly.ckpt direct JSON prompt regeneration at 2026-05-18T07:40:33.477Z",
+  "prompt": {
+    "prompt_version": "v2-direct-photo",
+    "scene": "A direct photorealistic smartphone field-report photo from Daynile, Mogadishu, Banaadir, Somalia, captured in natural daylight during a 2024 humanitarian water and sanitation report. The image should look like one practical mobile upload from a field user, not a collage or presentation graphic.",
+    "required_visuals": [
+      "leaking pipe, broken tap, damaged valve, cracked storage tank, or broken hand pump",
+      "wet ground or pooling water caused by a water-system failure",
+      "damaged hardware shown clearly enough for a field coordinator to understand the repair need",
+      "unsafe collection area, muddy standing water, crowding pressure, or open containers near poor drainage",
+      "any people are distant, non-identifiable adults only, with faces turned away or too small to identify",
+      "risk is environmental and access-related, with no visible illness, injury, or medical symptoms",
+      "specific visible anchor: a broken tap head with water leaking around the joint",
+      "specific visible anchor: open household containers placed close to stagnant runoff",
+      "severity reads as critical: urgent visible concern, but still realistic and not exaggerated",
+      "location context: Daynile, Banaadir with dense urban roadside surroundings with concrete edges and compacted sandy soil",
+      "field note to visualize: Broken water-system fitting losing water; unsafe access conditions near water source."
+    ],
+    "composition": "slightly downward phone angle from a standing field user, close enough to inspect the issue. One single realistic photo containing only these issue categories: infrastructure, health risk. Do not use a contact sheet or separate panels.",
+    "style": "Photorealistic-natural documentary mobile photo, natural daylight, imperfect handheld framing, realistic scale and materials, believable shadows, normal phone-camera sharpness, no artificial polish.",
+    "avoid": [
+      "text inside the image, labels, captions, UI, logos, watermarks, branded products",
+      "cartoon style, illustration, CGI, cinematic color grading, dramatic disaster staging",
+      "gore, injury, visible disease symptoms, medical treatment scenes",
+      "identifiable faces, identifiable children, posed portraits",
+      "political, military, weapons, uniforms, flags, or conflict imagery",
+      "extra issue categories that are not listed in the JSON categories"
+    ],
+    "generation_status": "approved",
+    "quality_status": "approved"
+  },
+  "prompt_version": "v2-direct-photo",
+  "generation_status": "approved",
+  "quality_status": "approved"
 }

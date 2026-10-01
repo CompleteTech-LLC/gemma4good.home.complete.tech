@@ -24,5 +24,37 @@
     "water_quality": 14,
     "sanitation": 9
   },
-  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+  "generated_from": "ComfyUI v1-5-pruned-emaonly.ckpt direct JSON prompt regeneration at 2026-05-18T08:40:32.994Z",
+  "prompt": {
+    "prompt_version": "v2-direct-photo",
+    "scene": "A direct photorealistic smartphone field-report photo from Hargeisa, Hargeisa, Maroodi Jeex, Somalia, captured in natural daylight during a 2024 humanitarian water and sanitation report. The image should look like one practical mobile upload from a field user, not a collage or presentation graphic.",
+    "required_visuals": [
+      "turbid brown water visible in a jerrycan, bucket, shallow basin, well opening, or public tap flow",
+      "sediment, cloudiness, oily sheen, or suspended particles visible without adding labels or text",
+      "water source framed as the main evidence in a practical field-report photo",
+      "standing wastewater, poor drainage, scattered litter, muddy runoff, or blocked channel near the water point",
+      "non-graphic environmental sanitation issue visible in the surrounding ground and access path",
+      "wet mud, plastic debris, and drainage flow shown as context rather than as a staged disaster scene",
+      "specific visible anchor: a shallow metal basin holding cloudy water with visible sediment",
+      "specific visible anchor: scattered plastic waste caught along a shallow drainage channel",
+      "severity reads as low: minor but visible issue, routine follow-up level",
+      "location context: Hargeisa, Maroodi Jeex with northern urban edge with dusty ground, simple walls, and public water hardware",
+      "field note to visualize: Sediment-heavy water seen during collection; blocked drainage with stagnant water nearby."
+    ],
+    "composition": "slightly downward phone angle from a standing field user, close enough to inspect the issue. One single realistic photo containing only these issue categories: water quality, sanitation. Do not use a contact sheet or separate panels.",
+    "style": "Photorealistic-natural documentary mobile photo, natural daylight, imperfect handheld framing, realistic scale and materials, believable shadows, normal phone-camera sharpness, no artificial polish.",
+    "avoid": [
+      "text inside the image, labels, captions, UI, logos, watermarks, branded products",
+      "cartoon style, illustration, CGI, cinematic color grading, dramatic disaster staging",
+      "gore, injury, visible disease symptoms, medical treatment scenes",
+      "identifiable faces, identifiable children, posed portraits",
+      "political, military, weapons, uniforms, flags, or conflict imagery",
+      "extra issue categories that are not listed in the JSON categories"
+    ],
+    "generation_status": "approved",
+    "quality_status": "approved"
+  },
+  "prompt_version": "v2-direct-photo",
+  "generation_status": "approved",
+  "quality_status": "approved"
 }

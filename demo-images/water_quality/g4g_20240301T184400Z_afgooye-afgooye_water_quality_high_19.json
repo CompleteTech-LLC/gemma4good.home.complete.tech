@@ -22,5 +22,33 @@
   "source_panel_indexes": {
     "water_quality": 19
   },
-  "generated_from": "Gemma4Good category source sheets assembled into deterministic dataset images"
+  "generated_from": "ComfyUI v1-5-pruned-emaonly.ckpt direct JSON prompt regeneration at 2026-05-18T08:44:54.692Z",
+  "prompt": {
+    "prompt_version": "v2-direct-photo",
+    "scene": "A direct photorealistic smartphone field-report photo from Afgooye, Afgooye, Lower Shabelle, Somalia, captured in natural daylight during a 2024 humanitarian water and sanitation report. The image should look like one practical mobile upload from a field user, not a collage or presentation graphic.",
+    "required_visuals": [
+      "turbid brown water visible in a jerrycan, bucket, shallow basin, well opening, or public tap flow",
+      "sediment, cloudiness, oily sheen, or suspended particles visible without adding labels or text",
+      "water source framed as the main evidence in a practical field-report photo",
+      "specific visible anchor: a public tap dripping discolored water into a plastic container",
+      "severity reads as high: serious visible concern that should be prioritized",
+      "location context: Afgooye, Lower Shabelle with lowland settlement edge with sandy mud, drainage paths, and small roadside structures",
+      "field note to visualize: Discolored water present in household container."
+    ],
+    "composition": "off-center mobile framing with foreground evidence and background water-point context. One single realistic photo containing only these issue categories: water quality. Do not use a contact sheet or separate panels.",
+    "style": "Photorealistic-natural documentary mobile photo, natural daylight, imperfect handheld framing, realistic scale and materials, believable shadows, normal phone-camera sharpness, no artificial polish.",
+    "avoid": [
+      "text inside the image, labels, captions, UI, logos, watermarks, branded products",
+      "cartoon style, illustration, CGI, cinematic color grading, dramatic disaster staging",
+      "gore, injury, visible disease symptoms, medical treatment scenes",
+      "identifiable faces, identifiable children, posed portraits",
+      "political, military, weapons, uniforms, flags, or conflict imagery",
+      "extra issue categories that are not listed in the JSON categories"
+    ],
+    "generation_status": "approved",
+    "quality_status": "approved"
+  },
+  "prompt_version": "v2-direct-photo",
+  "generation_status": "approved",
+  "quality_status": "approved"
 }

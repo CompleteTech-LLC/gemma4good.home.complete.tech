@@ -917,6 +917,7 @@
   let gpsDetecting = false;
   let analysisStatus = 'idle';
   let analysisResult = null;
+  let imageVersion = 0;
 
   const ANALYZE_ENDPOINT = '/api/fieldreport/analyze';
   const SUBMIT_ENDPOINT = '/api/fieldreport/submit';
@@ -925,8 +926,11 @@
   function handleImageFile(file) {
     if (!file || !file.type.startsWith('image/')) return;
     capturedFile = file;
+    capturedDataURL = null;
+    const version = beginImageChange();
     const reader = new FileReader();
     reader.onload = e => {
+      if (version !== imageVersion || capturedFile !== file) return;
       capturedDataURL = e.target.result;
       const img = document.getElementById('preview-img');
       img.src = capturedDataURL;
@@ -936,11 +940,42 @@
       document.getElementById('capture-zone').classList.add('has-image');
       validate();
     };
+    reader.onerror = () => {
+      if (version !== imageVersion || capturedFile !== file) return;
+      capturedFile = null;
+      capturedDataURL = null;
+      validate();
+      showToast('Image could not be loaded');
+    };
     reader.readAsDataURL(file);
   }
 
-  document.getElementById('input-camera').addEventListener('change', e => handleImageFile(e.target.files[0]));
-  document.getElementById('input-album').addEventListener('change',  e => handleImageFile(e.target.files[0]));
+  function beginImageChange() {
+    imageVersion += 1;
+    selectedTag = null;
+    analysisStatus = 'idle';
+    analysisResult = null;
+
+    document.querySelectorAll('.tag-btn').forEach(b => {
+      b.classList.remove('selected');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    document.getElementById('note-field').value = '';
+    document.getElementById('btn-analyze-text').textContent = 'Analyze with Gemma4';
+    document.getElementById('ai-result').className = 'ai-result';
+    document.getElementById('ai-result').innerHTML = '';
+    validate();
+    return imageVersion;
+  }
+
+  document.getElementById('input-camera').addEventListener('change', e => {
+    handleImageFile(e.target.files[0]);
+    e.target.value = '';
+  });
+  document.getElementById('input-album').addEventListener('change',  e => {
+    handleImageFile(e.target.files[0]);
+    e.target.value = '';
+  });
 
   // Tap the preview image to re-open camera
   document.getElementById('capture-zone').addEventListener('click', function(e) {
@@ -1059,7 +1094,7 @@
 
   // ---- Validation ----
   function validate() {
-    const hasImg = !!capturedFile;
+    const hasImg = !!capturedFile && !!capturedDataURL;
     const hasLocation = document.getElementById('field-district').value.trim() ||
                         document.getElementById('field-city').value.trim() ||
                         gpsCoords;
@@ -1088,13 +1123,15 @@
   async function handleAnalyze() {
     if (!validate() || analysisStatus === 'loading') return;
 
+    const version = imageVersion;
     setAnalysisLoading();
 
     try {
       const district = document.getElementById('field-district').value.trim();
       const city = document.getElementById('field-city').value.trim();
       const note = document.getElementById('note-field').value.trim();
-      const imageDataUrl = await resizeImageForAnalysis(capturedFile);
+      const imageDataUrl = await resizeImageForAnalysis(capturedDataURL);
+      if (version !== imageVersion) return;
 
       const response = await fetch(ANALYZE_ENDPOINT, {
         method: 'POST',
@@ -1114,12 +1151,14 @@
       if (!response.ok) {
         throw new Error(body.error || 'analysis_failed');
       }
+      if (version !== imageVersion) return;
 
       analysisStatus = 'done';
       analysisResult = body;
       renderAnalysis(body);
       showToast('Gemma4 triage ready');
     } catch (error) {
+      if (version !== imageVersion) return;
       analysisStatus = 'error';
       renderAnalysisError(error.message || 'analysis_failed');
       showToast('Gemma4 analysis failed');
@@ -1209,10 +1248,10 @@
     }[char]));
   }
 
-  function resizeImageForAnalysis(file) {
+  function resizeImageForAnalysis(dataUrl) {
     return new Promise((resolve) => {
-      if (!file || !capturedDataURL) {
-        resolve(capturedDataURL);
+      if (!dataUrl) {
+        resolve(null);
         return;
       }
 
@@ -1229,8 +1268,8 @@
         ctx.drawImage(img, 0, 0, width, height);
         resolve(canvas.toDataURL('image/jpeg', 0.82));
       };
-      img.onerror = () => resolve(capturedDataURL);
-      img.src = capturedDataURL;
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
     });
   }
 
@@ -1248,7 +1287,11 @@
     try {
       submitButton.disabled = true;
       submitButton.innerHTML = '<span>Submitting...</span><span>→</span>';
-      const imageDataUrl = await resizeImageForAnalysis(capturedFile);
+      const version = imageVersion;
+      const imageDataUrl = await resizeImageForAnalysis(capturedDataURL);
+      if (version !== imageVersion) {
+        throw new Error('image_changed');
+      }
       const response = await fetch(SUBMIT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1279,6 +1322,7 @@
   }
 
   function resetForm() {
+    imageVersion += 1;
     capturedFile = null;
     capturedDataURL = null;
     selectedTag = null;
